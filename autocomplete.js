@@ -16,10 +16,11 @@
  * @property {Array|Object} items An array of label/value objects or an object with key/values
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
- * @property {String} serverParams Parameters to pass along to the server
+ * @property {String|Object} serverParams Parameters to pass along to the server
  * @property {Boolean} liveServer Should the endpoint be called each time on input
  * @property {Boolean} noCache Prevent caching by appending a timestamp
  * @property {Boolean} debounceTime Debounce time for live server
+ * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
  * @property {Function} onRenderItem Callback function that returns the label
  * @property {Function} onSelectItem Callback function to call on selection
  * @property {Function} onServerResponse Callback function to process server response
@@ -29,7 +30,7 @@
  * @type {Config}
  */
 const DEFAULTS = {
-  suggestionsThreshold: 2,
+  suggestionsThreshold: 1,
   maximumItems: 0,
   autoselectFirst: true,
   highlightTyped: false,
@@ -43,6 +44,7 @@ const DEFAULTS = {
   liveServer: false,
   noCache: true,
   debounceTime: 300,
+  notFoundMessage: "",
   onRenderItem: (item, label) => {
     return label;
   },
@@ -554,9 +556,16 @@ class Autocomplete {
     }
 
     if (count === 0) {
-      // Remove dropdown if not found
-      this._dropElement.classList.remove("show");
-      this._searchInput.ariaExpanded = "false";
+      if (this._config.notFoundMessage) {
+        const newChild = document.createElement("li");
+        newChild.setAttribute("role", "presentation");
+        newChild.innerHTML = `<span class="dropdown-item">${this._config.notFoundMessage}</span>`;
+        this._dropElement.appendChild(newChild);
+      } else {
+        // Remove dropdown if not found
+        this._dropElement.classList.remove("show");
+        this._searchInput.ariaExpanded = "false";
+      }
     } else {
       // Or show it if necessary
       this._dropElement.classList.add("show");

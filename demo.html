@@ -151,6 +151,18 @@
         </div>
         <div class="row mb-3 g-3">
           <div class="col-md-4">
+            <label for="autocompleteHideIfNoMatch" class="form-label">Show message if match</label>
+            <input
+              type="text"
+              class="form-control autocomplete"
+              id="autocompleteHideIfNoMatch"
+              placeholder="Type something"
+              data-not-found-message="No results found"
+            />
+          </div>
+        </div>
+        <div class="row mb-3 g-3">
+          <div class="col-md-4">
             <label for="autocompleteFullWidthInput" class="form-label">Full width</label>
             <input
               type="text"
@@ -199,11 +211,17 @@
               <option value="Not">Not</option>
             </select>
             <label for="autocompleteLiveRemote" class="form-label">Pick from remote (live + related)</label>
-            <input type="text" class="form-control" id="autocompleteLiveRemote" data-server="https://jsonplaceholder.typicode.com/users"
-            data-live-server="true" 
-            data-value-field="id"
-            data-label-field="name"
-            data-server-params='{"related":"related_field"}' placeholder="Type something" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteLiveRemote"
+              data-server="https://jsonplaceholder.typicode.com/users"
+              data-live-server="true"
+              data-value-field="id"
+              data-label-field="name"
+              data-server-params='{"related":"related_field"}'
+              placeholder="Type something"
+            />
           </div>
         </div>
 

@@ -84,6 +84,13 @@ function debounce(func, timeout = 300) {
 }
 
 /**
+ * @returns {Number}
+ */
+function randomNumber() {
+  return Math.floor(Math.random() * Date.now());
+}
+
+/**
  * @param {String} str
  * @returns {String}
  */
@@ -225,10 +232,20 @@ class Autocomplete {
   _configureSearchInput() {
     this._searchInput.autocomplete = "off";
     this._searchInput.spellcheck = false;
+    // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete
+    this._searchInput.ariaAutoComplete = "list";
+    // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-expanded
+    // use the aria-expanded state on the element with role combobox to communicate that the list is displayed.
+    this._searchInput.ariaExpanded = "false";
+    // include aria-haspopup matching the role of the element that contains the collection of suggested values.
+    this._searchInput.ariaHasPopup = "menu";
+    this._searchInput.setAttribute("role", "combobox");
   }
 
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
+    this._dropElement.setAttribute("id", "ac-menu-" + randomNumber());
+    this._dropElement.setAttribute("role", "menu");
     this._dropElement.classList.add(...["dropdown-menu", "autocomplete-menu", "p-0"]);
     this._dropElement.style.maxHeight = "280px";
     if (!this._config.fullWidth) {
@@ -237,6 +254,8 @@ class Autocomplete {
     this._dropElement.style.overflowY = "auto";
 
     insertAfter(this._searchInput, this._dropElement);
+    // include aria-controls with the value of the id of the suggested list of values.
+    this._searchInput.setAttribute("aria-controls", this._dropElement.getAttribute("id"));
   }
 
   // #endregion
@@ -290,12 +309,7 @@ class Autocomplete {
       case "ArrowDown":
         e.preventDefault();
         this._keyboardNavigation = true;
-        // Set focus if needed or move to next
-        if (!this.getSelection()) {
-          this._dropElement.querySelector("a")?.focus();
-        } else {
-          this._moveSelection(NEXT);
-        }
+        this._moveSelection(NEXT);
         break;
       case 27:
       case "Escape":
@@ -370,35 +384,45 @@ class Autocomplete {
   _moveSelection(dir = NEXT) {
     const active = this.getSelection();
     let sel = null;
+
+    // select first li
     if (!active) {
-      return sel;
-    }
-
-    const sibling = dir === NEXT ? "nextSibling" : "previousSibling";
-
-    // Iterate over visible li
-    sel = active.parentNode;
-    do {
-      sel = sel[sibling];
-    } while (sel && sel.style.display == "none");
-
-    if (!sel) {
-      return sel;
-    }
-
-    // Change classes
-    active.classList.remove(...ACTIVE_CLASSES);
-    sel.querySelector("a").classList.add(...ACTIVE_CLASSES);
-
-    // Scroll if necessary
-    if (dir === PREV) {
-      // Don't use scrollIntoView as it scrolls the whole window
-      sel.parentNode.scrollTop = sel.offsetTop - sel.parentNode.offsetTop;
+      sel = this._dropElement.firstChild;
     } else {
-      // This is the equivalent of scrollIntoView(false) but only for parent node
-      if (sel.offsetTop > sel.parentNode.offsetHeight - sel.offsetHeight) {
-        sel.parentNode.scrollTop += sel.offsetHeight;
+      const sibling = dir === NEXT ? "nextSibling" : "previousSibling";
+
+      // Iterate over visible li
+      sel = active.parentNode;
+      do {
+        sel = sel[sibling];
+      } while (sel && sel.style.display == "none");
+
+      // We have a new selection
+      if (sel) {
+        // Change classes
+        active.classList.remove(...ACTIVE_CLASSES);
+
+        // Scroll if necessary
+        if (dir === PREV) {
+          // Don't use scrollIntoView as it scrolls the whole window
+          sel.parentNode.scrollTop = sel.offsetTop - sel.parentNode.offsetTop;
+        } else {
+          // This is the equivalent of scrollIntoView(false) but only for parent node
+          if (sel.offsetTop > sel.parentNode.offsetHeight - sel.offsetHeight) {
+            sel.parentNode.scrollTop += sel.offsetHeight;
+          }
+        }
+      } else if (active) {
+        sel = active.parentElement;
       }
+    }
+
+    if (sel) {
+      const a = sel.querySelector("a");
+      a.classList.add(...ACTIVE_CLASSES);
+      this._searchInput.setAttribute("aria-activedescendant", a.getAttribute("id"));
+    } else {
+      this._searchInput.setAttribute("aria-activedescendant", "");
     }
     return sel;
   }
@@ -452,13 +476,16 @@ class Autocomplete {
     label = this._config.onRenderItem(item, label);
 
     const newChild = document.createElement("li");
+    newChild.setAttribute("role", "presentation");
     const newChildLink = document.createElement("a");
     newChild.append(newChildLink);
+    newChildLink.setAttribute("id", this._dropElement.getAttribute("id") + "-" + this._dropElement.children.length);
     newChildLink.classList.add(...["dropdown-item", "text-truncate"]);
     newChildLink.setAttribute("data-value", item.value);
     // Behave like a datalist (tab doesn't allow item selection)
     // @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
     newChildLink.setAttribute("tabindex", "-1");
+    newChildLink.setAttribute("role", "menuitem");
     newChildLink.setAttribute("href", "#");
     newChildLink.innerHTML = label;
     if (item.data) {
@@ -500,8 +527,7 @@ class Autocomplete {
    */
   _showSuggestions() {
     const lookup = removeDiacritics(this._searchInput.value).toLowerCase();
-    const items = this._dropElement;
-    items.innerHTML = "";
+    this._dropElement.innerHTML = "";
 
     const keys = Object.keys(this._items);
     let count = 0;
@@ -516,7 +542,7 @@ class Autocomplete {
         if (!firstItem) {
           firstItem = newItem;
         }
-        items.appendChild(newItem);
+        this._dropElement.appendChild(newItem);
         if (this._config.maximumItems > 0) {
           if (count >= this._config.maximumItems) break;
         }
@@ -524,16 +550,17 @@ class Autocomplete {
     }
 
     if (firstItem && this._config.autoselectFirst) {
-      firstItem.querySelector("a").classList.add(...ACTIVE_CLASSES);
-      firstItem.parentNode.scrollTop = firstItem.offsetTop;
+      this._moveSelection(NEXT);
     }
 
     if (count === 0) {
       // Remove dropdown if not found
       this._dropElement.classList.remove("show");
+      this._searchInput.ariaExpanded = "false";
     } else {
       // Or show it if necessary
       this._dropElement.classList.add("show");
+      this._searchInput.ariaExpanded = "true";
       this._positionMenu();
     }
   }

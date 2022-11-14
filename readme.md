@@ -34,6 +34,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | labelField           | <code>String</code>                        | Key for the label                                              |
 | valueField           | <code>String</code>                        | Key for the value                                              |
 | items                | <code>Array</code> \| <code>Object</code>  | An array of label/value objects or an object with key/values   |
+| source               | <code>function</code>                      | A function that provides the list of items                     |
 | datalist             | <code>String</code>                        | The id of the source datalist                                  |
 | server               | <code>String</code>                        | Endpoint for data provider                                     |
 | serverParams         | <code>String</code> \| <code>Object</code> | Parameters to pass along to the server                         |

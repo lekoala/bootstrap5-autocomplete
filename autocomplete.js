@@ -14,6 +14,7 @@
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
  * @property {Array|Object} items An array of label/value objects or an object with key/values
+ * @property {Function} source A function that provides the list of items
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
  * @property {String|Object} serverParams Parameters to pass along to the server
@@ -38,6 +39,7 @@ const DEFAULTS = {
   labelField: "label",
   valueField: "value",
   items: [],
+  source: null,
   datalist: "",
   server: "",
   serverParams: {},
@@ -454,6 +456,11 @@ class Autocomplete {
     }
     if (this._config.liveServer) {
       this._searchFunc();
+    } else if (this._config.source) {
+      this._config.source(this._searchInput.value, (items) => {
+        this.setData(items);
+        this._showSuggestions();
+      });
     } else {
       this._showSuggestions();
     }
@@ -691,7 +698,7 @@ class Autocomplete {
       .then((r) => this._config.onServerResponse(r))
       .then((suggestions) => {
         const data = suggestions.data || suggestions;
-        this._addItems(data);
+        this.setData(data);
         this._abortController = null;
         if (show) {
           this._showSuggestions();

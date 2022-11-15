@@ -9,6 +9,7 @@
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
  * @property {Number} maximumItems Maximum number of items to display
  * @property {Boolean} autoselectFirst Always select the first item
+ * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {String} labelField Key for the label
@@ -34,6 +35,7 @@ const DEFAULTS = {
   suggestionsThreshold: 1,
   maximumItems: 0,
   autoselectFirst: true,
+  updateOnSelect: false,
   highlightTyped: false,
   fullWidth: false,
   labelField: "label",
@@ -425,6 +427,9 @@ class Autocomplete {
       const a = sel.querySelector("a");
       a.classList.add(...ACTIVE_CLASSES);
       this._searchInput.setAttribute("aria-activedescendant", a.getAttribute("id"));
+      if (this._config.updateOnSelect) {
+        this._searchInput.value = a.dataset.label;
+      }
     } else {
       this._searchInput.setAttribute("aria-activedescendant", "");
     }
@@ -491,6 +496,7 @@ class Autocomplete {
     newChildLink.setAttribute("id", this._dropElement.getAttribute("id") + "-" + this._dropElement.children.length);
     newChildLink.classList.add(...["dropdown-item", "text-truncate"]);
     newChildLink.setAttribute("data-value", item.value);
+    newChildLink.setAttribute("data-label", item.label);
     // Behave like a datalist (tab doesn't allow item selection)
     // @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
     newChildLink.setAttribute("tabindex", "-1");

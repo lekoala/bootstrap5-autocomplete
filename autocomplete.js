@@ -6,6 +6,7 @@
 
 /**
  * @typedef Config
+ * @property {Boolean} showAllSuggestions Show all suggestions even if they don't match
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
  * @property {Number} maximumItems Maximum number of items to display
  * @property {Boolean} autoselectFirst Always select the first item
@@ -32,6 +33,7 @@
  * @type {Config}
  */
 const DEFAULTS = {
+  showAllSuggestions: false,
   suggestionsThreshold: 1,
   maximumItems: 0,
   autoselectFirst: true,
@@ -62,13 +64,14 @@ const DEFAULTS = {
 
 // #region constants
 
-const LOADING_CLASS = "autocomplete-loading";
+const LOADING_CLASS = "is-loading";
 const ACTIVE_CLASS = "is-active";
 const ACTIVE_CLASSES = ["is-active", "bg-primary", "text-white"];
 const NEXT = "next";
 const PREV = "prev";
 
 const INSTANCE_MAP = new WeakMap();
+let counter = 0;
 
 // #endregion
 
@@ -87,13 +90,6 @@ function debounce(func, timeout = 300) {
       func.apply(this, args);
     }, timeout);
   };
-}
-
-/**
- * @returns {Number}
- */
-function randomNumber() {
-  return Math.floor(Math.random() * Date.now());
 }
 
 /**
@@ -122,6 +118,7 @@ class Autocomplete {
    */
   constructor(el, config = {}) {
     INSTANCE_MAP.set(el, this);
+    counter++;
     this._searchInput = el;
 
     this._configure(config);
@@ -129,7 +126,6 @@ class Autocomplete {
     // Private vars
     this._preventInput = false;
     this._keyboardNavigation = false;
-    this._disabled = el.hasAttribute("disabled") || el.hasAttribute("readonly");
     this._searchFunc = debounce(() => {
       this._loadFromServer(true);
     }, this._config.debounceTime);
@@ -183,6 +179,8 @@ class Autocomplete {
     this._searchInput.removeEventListener("keydown", this);
     this._dropElement.removeEventListener("mousemove", this);
 
+    this._dropElement.parentElement.removeChild(this._dropElement);
+
     INSTANCE_MAP.delete(this._searchInput);
   }
 
@@ -206,11 +204,13 @@ class Autocomplete {
     // Allow 1/0, true/false as strings
     const parseBool = (value) => ["true", "false", "1", "0", true, false].includes(value) && !!JSON.parse(value);
 
+    // Typecast provided options based on defaults types
     for (const [key, defaultValue] of Object.entries(DEFAULTS)) {
-      const value = o[key];
+      // Check for undefined keys
       if (o[key] === void 0) {
         continue;
       }
+      const value = o[key];
       switch (typeof defaultValue) {
         case "number":
           this._config[key] = parseInt(value);
@@ -222,7 +222,17 @@ class Autocomplete {
           this._config[key] = value.toString();
           break;
         case "object":
-          this._config[key] = typeof value === "string" ? JSON.parse(value) : value;
+          // Arrays have a type object in js
+          if (Array.isArray(defaultValue)) {
+            // string separator can be | or ,
+            const separator = value.includes("|") ? "|" : ",";
+            this._config[key] = typeof value === "string" ? value.split(separator) : value;
+          } else {
+            this._config[key] = typeof value === "string" ? JSON.parse(value) : value;
+          }
+          break;
+        case "function":
+          this._config[key] = typeof value === "string" ? window[value] : value;
           break;
         default:
           this._config[key] = value;
@@ -250,7 +260,7 @@ class Autocomplete {
 
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
-    this._dropElement.setAttribute("id", "ac-menu-" + randomNumber());
+    this._dropElement.setAttribute("id", "ac-menu-" + counter);
     this._dropElement.setAttribute("role", "menu");
     this._dropElement.classList.add(...["dropdown-menu", "autocomplete-menu", "p-0"]);
     this._dropElement.style.maxHeight = "280px";
@@ -280,18 +290,11 @@ class Autocomplete {
   }
 
   onfocus(e) {
-    // Open immediately
-    if (this._searchInput.value.length === 0 && this._config.suggestionsThreshold === 0) {
-      this._showOrSearch();
-    }
-  }
-
-  onmousemove(e) {
-    this._keyboardNavigation = false;
+    this._showOrSearch();
   }
 
   /**
-   * Listen on the input and the dropdown menu because of focus
+   * keypress doesn't send arrow keys, so we use keydown
    * @param {KeyboardEvent} e
    */
   onkeydown(e) {
@@ -325,6 +328,11 @@ class Autocomplete {
     }
   }
 
+  onmousemove(e) {
+    // Moving the mouse means no longer using keyboard
+    this._keyboardNavigation = false;
+  }
+
   // #endregion
 
   // #region Api
@@ -354,15 +362,18 @@ class Autocomplete {
   }
 
   enable() {
-    this._disabled = false;
+    this._searchInput.setAttribute("disabled", "");
   }
 
   disable() {
-    this._disabled = true;
+    this._searchInput.removeAttribute("disabled");
   }
 
+  /**
+   * @returns {boolean}
+   */
   isDisabled() {
-    return this._disabled;
+    return this._searchInput.hasAttribute("disabled") || this._searchInput.disabled || this._searchInput.hasAttribute("readonly");
   }
 
   // #endregion
@@ -445,7 +456,7 @@ class Autocomplete {
    * @returns {Boolean}
    */
   _shouldShow() {
-    if (this._disabled) {
+    if (this.isDisabled()) {
       return false;
     }
     return this._searchInput.value.length >= this._config.suggestionsThreshold;
@@ -551,15 +562,17 @@ class Autocomplete {
       const key = keys[i];
       const entry = this._items[key];
 
-      if (removeDiacritics(entry.label).toLowerCase().indexOf(lookup) >= 0) {
+      const text = removeDiacritics(entry.label).toLowerCase();
+      const isMatched = lookup.length > 0 ? text.indexOf(lookup) >= 0 : true;
+      if (this._config.showAllSuggestions || isMatched) {
         count++;
         const newItem = this._createItem(lookup, entry);
         if (!firstItem) {
           firstItem = newItem;
         }
         this._dropElement.appendChild(newItem);
-        if (this._config.maximumItems > 0) {
-          if (count >= this._config.maximumItems) break;
+        if (this._config.maximumItems > 0 && count >= this._config.maximumItems) {
+          break;
         }
       }
     }
@@ -576,8 +589,7 @@ class Autocomplete {
         this._dropElement.appendChild(newChild);
       } else {
         // Remove dropdown if not found
-        this._dropElement.classList.remove("show");
-        this._searchInput.ariaExpanded = "false";
+        this._hideSuggestions();
       }
     } else {
       // Or show it if necessary
@@ -592,6 +604,8 @@ class Autocomplete {
    */
   _hideSuggestions() {
     this._dropElement.classList.remove("show");
+    this._searchInput.ariaExpanded = "false";
+    this.removeSelection();
   }
 
   /**

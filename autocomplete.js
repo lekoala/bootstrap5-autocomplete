@@ -224,9 +224,12 @@ class Autocomplete {
         case "object":
           // Arrays have a type object in js
           if (Array.isArray(defaultValue)) {
-            // string separator can be | or ,
-            const separator = value.includes("|") ? "|" : ",";
-            this._config[key] = typeof value === "string" ? value.split(separator) : value;
+            if (typeof value === "string") {
+              const separator = value.includes("|") ? "|" : ",";
+              this._config[key] = value.split(separator);
+            } else {
+              this._config[key] = value;
+            }
           } else {
             this._config[key] = typeof value === "string" ? JSON.parse(value) : value;
           }

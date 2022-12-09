@@ -22,7 +22,7 @@
  * @property {String|Object} serverParams Parameters to pass along to the server
  * @property {Boolean} liveServer Should the endpoint be called each time on input
  * @property {Boolean} noCache Prevent caching by appending a timestamp
- * @property {Boolean} debounceTime Debounce time for live server
+ * @property {Number} debounceTime Debounce time for live server
  * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
  * @property {Function} onRenderItem Callback function that returns the label
  * @property {Function} onSelectItem Callback function to call on selection
@@ -87,6 +87,7 @@ function debounce(func, timeout = 300) {
   return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
+      //@ts-ignore
       func.apply(this, args);
     }, timeout);
   };
@@ -114,7 +115,7 @@ function insertAfter(el, newEl) {
 class Autocomplete {
   /**
    * @param {HTMLInputElement} el
-   * @param {Config} config
+   * @param {Config|Object} config
    */
   constructor(el, config = {}) {
     INSTANCE_MAP.set(el, this);
@@ -149,23 +150,27 @@ class Autocomplete {
   /**
    * Attach to all elements matched by the selector
    * @param {string} selector
-   * @param {Object} opts
+   * @param {Config|Object} config
    */
   static init(selector = "input.autocomplete", config = {}) {
-    document.querySelectorAll(selector).forEach((el) => {
+    /**
+     * @type {NodeListOf<HTMLInputElement>}
+     */
+    const nodes = document.querySelectorAll(selector);
+    nodes.forEach((el) => {
       this.getOrCreateInstance(el, config);
     });
   }
 
   /**
-   * @param {HTMLElement} el
+   * @param {HTMLInputElement} el
    */
   static getInstance(el) {
     return INSTANCE_MAP.has(el) ? INSTANCE_MAP.get(el) : null;
   }
 
   /**
-   * @param {HTMLElement} el
+   * @param {HTMLInputElement} el
    * @param {Object} config
    */
   static getOrCreateInstance(el, config = {}) {
@@ -193,7 +198,7 @@ class Autocomplete {
   }
 
   /**
-   * @param {Config} config
+   * @param {Config|Object} config
    */
   _configure(config = {}) {
     this._config = Object.assign({}, DEFAULTS);
@@ -403,6 +408,9 @@ class Autocomplete {
    */
   _moveSelection(dir = NEXT) {
     const active = this.getSelection();
+    /**
+     * @type {*}
+     */
     let sel = null;
 
     // select first li
@@ -709,6 +717,10 @@ class Autocomplete {
     }
     // We have a related field
     if (params.related) {
+      /**
+       * @type {HTMLInputElement}
+       */
+      //@ts-ignore
       const input = document.getElementById(params.related);
       if (input) {
         params.related = input.value;

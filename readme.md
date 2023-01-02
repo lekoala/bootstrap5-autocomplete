@@ -26,6 +26,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 
 | Name                 | Type                                       | Description                                                              |
 | -------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
+| showAllSuggestions   | <code>Boolean</code>                       | Show all suggestions even if they don't match                            |
 | suggestionsThreshold | <code>Number</code>                        | Number of chars required to show suggestions                             |
 | maximumItems         | <code>Number</code>                        | Maximum number of items to display                                       |
 | autoselectFirst      | <code>Boolean</code>                       | Always select the first item                                             |
@@ -34,6 +35,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | fullWidth            | <code>Boolean</code>                       | Match the width on the input field                                       |
 | labelField           | <code>String</code>                        | Key for the label                                                        |
 | valueField           | <code>String</code>                        | Key for the value                                                        |
+| queryField           | <code>String</code>                        | Key for the query parameter for server                                   |
 | items                | <code>Array</code> \| <code>Object</code>  | An array of label/value objects or an object with key/values             |
 | source               | <code>function</code>                      | A function that provides the list of items                               |
 | datalist             | <code>String</code>                        | The id of the source datalist                                            |
@@ -41,7 +43,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | serverParams         | <code>String</code> \| <code>Object</code> | Parameters to pass along to the server                                   |
 | liveServer           | <code>Boolean</code>                       | Should the endpoint be called each time on input                         |
 | noCache              | <code>Boolean</code>                       | Prevent caching by appending a timestamp                                 |
-| debounceTime         | <code>Boolean</code>                       | Debounce time for live server                                            |
+| debounceTime         | <code>Number</code>                        | Debounce time for live server                                            |
 | notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable           |
 | onRenderItem         | <code>function</code>                      | Callback function that returns the label                                 |
 | onSelectItem         | <code>function</code>                      | Callback function to call on selection                                   |

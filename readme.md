@@ -54,7 +54,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable           |
 | onRenderItem         | <code>function</code>                      | Callback function that returns the label                                 |
 | onSelectItem         | <code>function</code>                      | Callback function to call on selection                                   |
-| onServerResponse     | <code>function</code>                      | Callback function to process server response                             |
+| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise                             |
 
 ## Tips
 

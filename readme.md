@@ -16,9 +16,16 @@ Autocomplete.init();
 
 ## Server side support
 
-You can also use options provided by the server. This script expects a json response that is an array or an object with the data key containing an array.
+You can also use options provided by the server. This script expects a JSON response with the following structure:
+```
+{
+    "optionValue1":"optionLabel1",
+    "optionValue2":"optionLabel2",
+    ...
+}
+```
 
-Simply set `data-server` where your endpoint is located. It should provide an array of value/label objects. The suggestions will be populated upon init except if `data-live-server` is set, in which case, it will be populated on type. A ?query= parameter is passed along with the current value of the searchInput.
+Simply set `data-server` where your endpoint is located. The suggestions will be populated upon init except if `data-live-server` is set, in which case, it will be populated on type. A ?query= parameter is passed along with the current value of the searchInput.
 
 ## Options
 
@@ -47,7 +54,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable           |
 | onRenderItem         | <code>function</code>                      | Callback function that returns the label                                 |
 | onSelectItem         | <code>function</code>                      | Callback function to call on selection                                   |
-| onServerResponse     | <code>function</code>                      | Callback function to process server response                             |
+| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise                             |
 
 ## Tips
 

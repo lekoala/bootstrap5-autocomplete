@@ -27,7 +27,7 @@
  * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
  * @property {Function} onRenderItem Callback function that returns the label
  * @property {Function} onSelectItem Callback function to call on selection
- * @property {Function} onServerResponse Callback function to process server response
+ * @property {Function} onServerResponse Callback function to process server response. Must return a Promise
  */
 
 /**

@@ -116,9 +116,9 @@ function offset(elem) {
   var x = elem.offsetLeft;
   var y = elem.offsetTop;
 
-  while (elem = elem.offsetParent) {
-      x += elem.offsetLeft;
-      y += elem.offsetTop;
+  while ((elem = elem.offsetParent)) {
+    x += elem.offsetLeft;
+    y += elem.offsetTop;
   }
 
   return { left: x, top: y };
@@ -663,16 +663,16 @@ class Autocomplete {
 
     if (this._config.fullWidth) {
       this._dropElement.style.width = this._searchInput.offsetWidth + "px";
-    }
+    } else {
+      // Overflow right
+      const w = fixedParent ? window.innerWidth : document.body.offsetWidth; // avoid rounding issues
+      const scrollbarOffset = 30; // scrollbars are not taken into account
+      const wdiff = w - 1 - (bounds.x + this._dropElement.offsetWidth) - scrollbarOffset;
 
-    // Overflow right
-    const w = fixedParent ? window.innerWidth - 1 : document.body.offsetWidth; // avoid rounding issues
-    const scrollbarOffset = 30; // scrollbars are not taken into account
-    const wdiff = w - (bounds.x + this._dropElement.offsetWidth) - scrollbarOffset;
-
-    // If the dropdowns goes out of the viewport, remove the diff from the left position using translateX
-    if (wdiff < 0) {
-      this._dropElement.style.transform = "translateX(calc(" + wdiff + "px))";
+      // If the dropdowns goes out of the viewport, remove the diff from the left position using translateX
+      if (wdiff < 0) {
+        this._dropElement.style.transform = "translateX(calc(" + wdiff + "px))";
+      }
     }
 
     // Overflow bottom

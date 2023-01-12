@@ -91,13 +91,16 @@
       // we can provide items through a function
       function suggest(query, populateResults) {
         const results = ["France", "Germany", "United Kingdom"];
-        const filteredResults = results.filter((result) => result.indexOf(query) !== -1);
+        query = query.toLowerCase();
+        const filteredResults = results.filter((result) => result.toLocaleLowerCase().indexOf(query) !== -1);
         populateResults(filteredResults);
       }
       const optsSource = Object.assign({}, opts, {
         source: suggest,
       });
       new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
+      new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
+      new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
 
       new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
       new Autocomplete(document.getElementById("autocompleteRemote"), opts);
@@ -185,7 +188,7 @@
       <form class="needs-validation" novalidate method="get" action="https://vercel-dumper.vercel.app/">
         <div class="row mb-3 g-3">
           <div class="col-md-4">
-            <label for="autocompleteInput" class="form-label">Type something</label>
+            <label for="autocompleteInput" class="form-label">Type something (values are Option from 1 to 50)</label>
             <input type="text" class="form-control autocomplete" id="autocompleteInput" placeholder="Type something" />
           </div>
           <div class="col-md-4">
@@ -346,6 +349,33 @@
             </bs-autocomplete>
           </div>
         </div>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Works in modals too</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div style="margin-left: 200px; margin-top: 200px">
+                  <table>
+                    <tr>
+                      <td><label for="autocompleteSourceInputTable" class="form-label">Pick a country (custom source)</label></td>
+                      <td><input type="text" class="form-control" id="autocompleteSourceInputTable" placeholder="Type something" /></td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!-- get a clear icon easily with this -->
+                <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
+                <input type="search" class="form-control" id="autocompleteSourceInputModal" placeholder="Type something" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
 
         <input type="reset" value="Reset" class="btn btn-outline-dark""/>
         <button class="btn btn-primary" type="submit">Submit form</button>

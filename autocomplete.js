@@ -112,6 +112,18 @@ function insertAfter(el, newEl) {
   return el.parentNode.insertBefore(newEl, el.nextSibling);
 }
 
+function offset(elem) {
+  var x = elem.offsetLeft;
+  var y = elem.offsetTop;
+
+  while (elem = elem.offsetParent) {
+      x += elem.offsetLeft;
+      y += elem.offsetTop;
+  }
+
+  return { left: x, top: y };
+}
+
 // #endregion
 
 class Autocomplete {
@@ -120,6 +132,10 @@ class Autocomplete {
    * @param {Config|Object} config
    */
   constructor(el, config = {}) {
+    if (!(el instanceof HTMLElement)) {
+      console.error("Invalid element", el);
+      return;
+    }
     INSTANCE_MAP.set(el, this);
     counter++;
     this._searchInput = el;
@@ -622,32 +638,46 @@ class Autocomplete {
   }
 
   /**
+   * Checks if parent is fixed for boundary checks
+   * @returns {Boolean}
+   */
+  _hasFixedParent() {
+    let parent = this._searchInput.parentElement;
+    while (parent && parent instanceof HTMLElement) {
+      if (parent.style.position === "fixed") {
+        return true;
+      }
+      parent = parent.parentElement;
+    }
+    return false;
+  }
+
+  /**
    * Position the dropdown menu
+   * Don't position left since it may not work in all situations due
+   * to offsetParent margin or in tables
    */
   _positionMenu() {
+    const bounds = this._searchInput.getBoundingClientRect();
+    const fixedParent = this._hasFixedParent();
+
     if (this._config.fullWidth) {
-      // Use full input width
-      this._dropElement.style.left = this._searchInput.offsetLeft + "px";
       this._dropElement.style.width = this._searchInput.offsetWidth + "px";
-    } else {
-      // Position next to search input
-      let left = this._searchInput.offsetLeft;
+    }
 
-      // Overflow right
-      const w = document.body.offsetWidth - 1; // avoid rounding issues
-      const scrollbarOffset = 30; // scrollbars are not taken into account
-      const wdiff = w - (left + this._dropElement.offsetWidth) - scrollbarOffset;
+    // Overflow right
+    const w = fixedParent ? window.innerWidth - 1 : document.body.offsetWidth; // avoid rounding issues
+    const scrollbarOffset = 30; // scrollbars are not taken into account
+    const wdiff = w - (bounds.x + this._dropElement.offsetWidth) - scrollbarOffset;
 
-      // If the dropdowns goes out of the viewport, remove the diff from the left position
-      if (wdiff < 0) {
-        left = left + wdiff;
-      }
-      this._dropElement.style.left = left + "px";
+    // If the dropdowns goes out of the viewport, remove the diff from the left position using translateX
+    if (wdiff < 0) {
+      this._dropElement.style.transform = "translateX(calc(" + wdiff + "px))";
     }
 
     // Overflow bottom
-    const h = document.body.offsetHeight;
-    const bottom = this._searchInput.getBoundingClientRect().y + window.pageYOffset + this._dropElement.offsetHeight;
+    const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
+    const bottom = bounds.y + window.pageYOffset + this._dropElement.offsetHeight;
 
     const hdiff = h - bottom;
     if (hdiff < 0) {

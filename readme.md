@@ -17,6 +17,7 @@ Autocomplete.init();
 ## Server side support
 
 You can also use options provided by the server. This script expects a JSON response with the following structure:
+
 ```
 {
     "optionValue1":"optionLabel1",
@@ -42,7 +43,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | fullWidth            | <code>Boolean</code>                       | Match the width on the input field                                       |
 | labelField           | <code>String</code>                        | Key for the label                                                        |
 | valueField           | <code>String</code>                        | Key for the value                                                        |
-| queryField           | <code>String</code>                        | Key for the query parameter for server                                   |
+| queryParam           | <code>String</code>                        | Key for the query parameter for server                                   |
 | items                | <code>Array</code> \| <code>Object</code>  | An array of label/value objects or an object with key/values             |
 | source               | <code>function</code>                      | A function that provides the list of items                               |
 | datalist             | <code>String</code>                        | The id of the source datalist                                            |
@@ -54,7 +55,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable           |
 | onRenderItem         | <code>function</code>                      | Callback function that returns the label                                 |
 | onSelectItem         | <code>function</code>                      | Callback function to call on selection                                   |
-| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise                             |
+| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise      |
 
 ## Tips
 

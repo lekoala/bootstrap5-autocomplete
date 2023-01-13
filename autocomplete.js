@@ -15,7 +15,7 @@
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
- * @property {String} queryField Key for the query parameter for server
+ * @property {String} queryParam Key for the query parameter for server
  * @property {Array|Object} items An array of label/value objects or an object with key/values
  * @property {Function} source A function that provides the list of items
  * @property {String} datalist The id of the source datalist
@@ -43,7 +43,7 @@ const DEFAULTS = {
   fullWidth: false,
   labelField: "label",
   valueField: "value",
-  queryField: "query",
+  queryParam: "query",
   items: [],
   source: null,
   datalist: "",
@@ -742,7 +742,7 @@ class Autocomplete {
 
     const params = Object.assign({}, this._config.serverParams);
     // Pass current value
-    params[this._config.queryField] = this._searchInput.value;
+    params[this._config.queryParam] = this._searchInput.value;
     // Prevent caching
     if (this._config.noCache) {
       params.t = Date.now();

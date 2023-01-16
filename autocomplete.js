@@ -145,6 +145,7 @@ class Autocomplete {
 
     if (this._config.fixed) {
       document.addEventListener("scroll", this);
+      document.addEventListener("resize", this);
     }
 
     // Add listeners (remove then on dispose()). See handleEvent.
@@ -198,6 +199,7 @@ class Autocomplete {
 
     if (this._config.fixed) {
       document.removeEventListener("scroll", this);
+      document.removeEventListener("resize", this);
     }
 
     this._dropElement.parentElement.removeChild(this._dropElement);
@@ -365,6 +367,10 @@ class Autocomplete {
   }
 
   onscroll(e) {
+    this._positionMenu();
+  }
+
+  onresize(e) {
     this._positionMenu();
   }
 

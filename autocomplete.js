@@ -196,6 +196,10 @@ class Autocomplete {
     this._searchInput.removeEventListener("keydown", this);
     this._dropElement.removeEventListener("mousemove", this);
 
+    if (this._config.fixed) {
+      document.removeEventListener("scroll", this);
+    }
+
     this._dropElement.parentElement.removeChild(this._dropElement);
 
     INSTANCE_MAP.delete(this._searchInput);

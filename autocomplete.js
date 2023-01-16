@@ -321,6 +321,10 @@ class Autocomplete {
    * @param {KeyboardEvent} e
    */
   onkeydown(e) {
+    // If the dropdown is not visible, don't handle
+    if (!this.isDropdownVisible()) {
+      return;
+    }
     const key = e.keyCode || e.key;
     switch (key) {
       case 13:
@@ -401,6 +405,13 @@ class Autocomplete {
    */
   isDisabled() {
     return this._searchInput.hasAttribute("disabled") || this._searchInput.disabled || this._searchInput.hasAttribute("readonly");
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  isDropdownVisible() {
+    return this._dropElement.classList.contains("show");
   }
 
   // #endregion

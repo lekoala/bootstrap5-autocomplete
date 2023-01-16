@@ -13,6 +13,7 @@
  * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {Boolean} fullWidth Match the width on the input field
+ * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
  * @property {String} queryParam Key for the query parameter for server
@@ -41,6 +42,7 @@ const DEFAULTS = {
   updateOnSelect: false,
   highlightTyped: false,
   fullWidth: false,
+  fixed: false,
   labelField: "label",
   valueField: "value",
   queryParam: "query",
@@ -112,18 +114,6 @@ function insertAfter(el, newEl) {
   return el.parentNode.insertBefore(newEl, el.nextSibling);
 }
 
-function offset(elem) {
-  var x = elem.offsetLeft;
-  var y = elem.offsetTop;
-
-  while ((elem = elem.offsetParent)) {
-    x += elem.offsetLeft;
-    y += elem.offsetTop;
-  }
-
-  return { left: x, top: y };
-}
-
 // #endregion
 
 class Autocomplete {
@@ -152,6 +142,10 @@ class Autocomplete {
     // Create html
     this._configureSearchInput();
     this._configureDropElement();
+
+    if (this._config.fixed) {
+      document.addEventListener("scroll", this);
+    }
 
     // Add listeners (remove then on dispose()). See handleEvent.
     this._searchInput.addEventListener("focus", this);
@@ -293,6 +287,9 @@ class Autocomplete {
     if (!this._config.fullWidth) {
       this._dropElement.style.maxWidth = "360px";
     }
+    if (this._config.fixed) {
+      this._dropElement.style.position = "fixed";
+    }
     this._dropElement.style.overflowY = "auto";
 
     insertAfter(this._searchInput, this._dropElement);
@@ -357,6 +354,10 @@ class Autocomplete {
   onmousemove(e) {
     // Moving the mouse means no longer using keyboard
     this._keyboardNavigation = false;
+  }
+
+  onscroll(e) {
+    this._positionMenu();
   }
 
   // #endregion
@@ -675,16 +676,21 @@ class Autocomplete {
       }
     }
 
-    // Overflow bottom (only if body higher than drop height)
-    const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
-    const bottom = bounds.y + window.pageYOffset + this._dropElement.offsetHeight;
-
-    const hdiff = h - bottom;
-    if (hdiff < 0 && h > bounds.height) {
-      // We display above input
-      this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
+    if (this._config.fixed) {
+      // Remove scroll position
+      this._dropElement.style.transform = "translateY(calc(-" + window.pageYOffset + "px))";
     } else {
-      this._dropElement.style.transform = "none";
+      // Overflow bottom (only if body higher than drop height)
+      const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
+      const bottom = bounds.y + window.pageYOffset + this._dropElement.offsetHeight;
+
+      const hdiff = h - bottom;
+      if (hdiff < 0 && h > bounds.height) {
+        // We display above input
+        this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
+      } else {
+        this._dropElement.style.transform = "none";
+      }
     }
   }
 

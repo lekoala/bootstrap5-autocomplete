@@ -21,184 +21,118 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+      integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Guriddo jqGrid  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.8.0/css/ui.jqgrid-bootstrap5.min.css"
+      integrity="sha512-pe0T8HNTeyVsApzv6krouJsGayYXrprnaP9MpSltQGvoQByZDnTbZ9NUIwZr5eOafBRxmwUK4fk4I3/N5ty4YQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.8.0/js/i18n/grid.locale-en.min.js"
+      integrity="sha512-Oc3yFMZtHlWgPAVqS+azgzK1R519KJEYiBhi9yr+wdm5PfAJWz960R/EkSXTe352aEZyqVK88u/+qqHaqxaWbQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.8.0/js/jquery.jqGrid.min.js"
+      integrity="sha512-hOIl/gV8jrQSC2Q5zfN8DOZCg1mwkcXmFeiImwX/OQXeL75PaqLDf/zkpm5nn9UVXUxov5uOM0uMOei1vHmeow=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
     <!-- bootstrap autocomplete -->
-    <script type="module">
-      import Autocomplete from "./autocomplete.min.js";
-      var src = [];
-      for (let i = 0; i < 50; i++) {
-        src.push({
-          title: "Option " + i,
-          id: "opt" + i,
-          data: {
-            key: i,
-          },
+    <script>
+      jQuery(document).ready(function () {
+        var grid = $("#demo").jqGrid({
+          datatype: "local",
+          data: [],
+          styleUI: "Bootstrap5",
+          colModel: [{ name: "name", label: "label" }],
         });
-      }
-      Autocomplete.init("input", {
-        items: src,
-        valueField: "id",
-        labelField: "title",
-        highlightTyped: true,
-        onSelectItem: console.log,
+        var IDs = { themodal: "alertmod_", modalhead: "alerthd_", modalcontent: "alertcnt_" };
+        var content = "<div>Warning<input class='form-control' id='test'></div>";
+        var cnt = "<div id='info_id'>";
+        cnt += "<div>" + content + "</div>";
+        cnt += "<a href='#' id='closedialog' class='fm-button btn btn-primary'>Close</a></div>";
+        cnt += "</div>";
+
+        $("#info").on("click", function () {
+          $.jgrid.createModal(
+            IDs,
+            cnt,
+            {
+              gbox: "#gbox_" + $.jgrid.jqID(grid[0].p.id),
+              jqModal: true,
+              drag: true,
+              caption: "Caption",
+              top: 100,
+              left: 100,
+              width: 400,
+              height: 200,
+
+              zIndex: 900,
+              styleUI: grid[0].p.styleUI,
+            },
+            "#gview_" + $.jgrid.jqID(grid[0].p.id),
+            $("#gbox_" + $.jgrid.jqID(grid[0].p.id))[0],
+            true
+          );
+          $.jgrid.viewModal("#" + IDs.themodal, { gbox: "#gbox_" + grid[0].p.id, jqm: true, modal: true });
+
+          import("./autocomplete.js")
+            .then((Autocomplete) => {
+              var src = [];
+              for (let i = 0; i < 50; i++) {
+                src.push({
+                  title: "Option " + i,
+                  id: "opt" + i,
+                  data: {
+                    key: i,
+                  },
+                });
+              }
+              new Autocomplete.default(document.getElementById("test"), {
+                items: src,
+                valueField: "id",
+                labelField: "title",
+                highlightTyped: true,
+                fixed: true,
+                onSelectItem: console.log,
+              });
+              $("#closedialog").on("click", function () {
+                $.jgrid.hideModal("#alertmod_", { removemodal: true });
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
       });
-      // avoid init twice
-      /*new Autocomplete(document.getElementById('OrderID'),{
-				items : src
-			});*/
     </script>
 
     <style>
-      html,
       body {
-        min-height: 100%;
+        min-height: 100vh;
       }
     </style>
   </head>
   <body>
-    <div>TODO write content</div>
-    <div
-      class="ui-jqdialog modal-content jqmID2"
-      id="editmodgrid"
-      dir="ltr"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="edithdgrid"
-      aria-hidden="false"
-      style="
-        font-size: 13.6px;
-        width: 598px;
-        height: 363px;
-        z-index: 950;
-        overflow: hidden;
-        position: absolute;
-        top: 100px;
-        left: 100px;
-        display: block;
-      "
-    >
-      <div class="ui-jqdialog-titlebar modal-header" id="edithdgrid" style="cursor: move">
-        <span class="ui-jqdialog-title" style="float: left">Edit Record</span
-        ><a class="ui-jqdialog-titlebar-close" aria-label="Close" style="right: 0.3em"><span class="bi bi-x-lg"></span></a>
-      </div>
-      <div class="ui-jqdialog-content modal-body" id="editcntgrid">
-        <div>
-          <form name="FormPost" id="FrmGrid_grid" class="FormGrid" onsubmit="return false;" style="width: 574px; height: 267px">
-            <div class="FormError alert alert-danger" style="display: none"></div>
-            <div class="tinfo topinfo"></div>
-            <table id="TblGrid_grid" class="EditTable ui-common-table">
-              <tbody>
-                <tr class="FormData" id="tr_OrderID">
-                  <td class="CaptionTD"><label for="OrderID">ID</label></td>
-                  <td class="DataTD">
-                    <input type="text" role="textbox" id="OrderID" name="OrderID" size="20" class="FormElement form-control" />
-                  </td>
-                </tr>
-                <tr class="FormData" id="tr_OrderDate">
-                  <td class="CaptionTD"><label for="OrderDate">OrderDate</label></td>
-                  <td class="DataTD">
-                    <input
-                      type="text"
-                      role="textbox"
-                      id="OrderDate"
-                      name="OrderDate"
-                      rowid="10254"
-                      module="form"
-                      checkupdate="false"
-                      size="20"
-                      class="FormElement form-control"
-                    />
-                  </td>
-                </tr>
-                <tr rowpos="3" class="FormData" id="tr_CustomerID">
-                  <td class="CaptionTD"><label for="CustomerID">CustomerID</label></td>
-                  <td class="DataTD">
-                    <input
-                      type="text"
-                      role="textbox"
-                      id="CustomerID"
-                      name="CustomerID"
-                      rowid="10254"
-                      module="form"
-                      checkupdate="false"
-                      size="20"
-                      class="FormElement form-control"
-                    />
-                  </td>
-                </tr>
-                <tr rowpos="4" class="FormData" id="tr_Freight">
-                  <td class="CaptionTD"><label for="Freight">Freight</label></td>
-                  <td class="DataTD">
-                    <input
-                      type="text"
-                      role="textbox"
-                      id="Freight"
-                      name="Freight"
-                      rowid="10254"
-                      module="form"
-                      checkupdate="false"
-                      size="20"
-                      class="FormElement form-control"
-                    />
-                  </td>
-                </tr>
-                <tr rowpos="5" class="FormData" id="tr_ShipName">
-                  <td class="CaptionTD"><label for="ShipName">ShipName</label></td>
-                  <td class="DataTD">
-                    <input
-                      type="text"
-                      role="combobox"
-                      id="ShipName"
-                      name="ShipName"
-                      rowid="10254"
-                      module="form"
-                      checkupdate="false"
-                      size="20"
-                      class="FormElement form-control"
-                      autocomplete="off"
-                      spellcheck="false"
-                      aria-autocomplete="list"
-                      aria-expanded="false"
-                      aria-haspopup="menu"
-                      aria-controls="ac-menu-2"
-                    />
-                    <ul
-                      id="ac-menu-2"
-                      role="menu"
-                      class="dropdown-menu autocomplete-menu p-0"
-                      style="max-height: 280px; max-width: 360px; overflow-y: auto"
-                    ></ul>
-                  </td>
-                </tr>
-                <tr class="FormData" style="display: none">
-                  <td class="CaptionTD"></td>
-                  <td colspan="1" class="DataTD"><input class="FormElement" id="id_g" type="text" name="grid_id" value="10254" /></td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="binfo topinfo bottominfo"></div>
-          </form>
-          <table style="height: auto" class="EditTable ui-common-table" id="TblGrid_grid_2">
-            <tbody>
-              <tr>
-                <td colspan="2"><hr class="" style="margin: 1px" /></td>
-              </tr>
-              <tr id="Act_Buttons">
-                <td class="navButton">
-                  <a id="pData" class="fm-button btn btn-light"><span class="bi bi-chevron-left"></span></a
-                  ><a id="nData" class="fm-button btn btn-light"><span class="bi bi-chevron-right"></span></a>
-                </td>
-                <td class="EditButton">
-                  <a id="sData" class="fm-button btn btn-light fm-button-icon-left">Submit<span class="bi bi-save"></span></a
-                  ><a id="cData" class="fm-button btn btn-light fm-button-icon-left">Cancel<span class="bi bi-x-square"></span></a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="jqResize ui-resizable-handle ui-resizable-se bi bi-box-arrow-in-down-right"></div>
-    </div>
-    <script></script>
+    <table id="demo">
+      <tr></tr>
+    </table>
+
+    <button id="info" class="btn btn-primary">Click Me</button>
+
+    <div style="height:90vh;background:#ccc">Some div that takes height</div>
+
+    <p>Id est eiusmod in culpa enim nulla elit. Proident et adipisicing irure aliqua consectetur laborum commodo id adipisicing sunt. Occaecat aute excepteur do non dolor culpa sunt incididunt et non excepteur ad.</p>
   </body>
 </html>

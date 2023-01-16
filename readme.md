@@ -41,6 +41,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | updateOnSelect       | <code>Boolean</code>                       | Update input value on selection (doesn't play nice with autoselectFirst) |
 | highlightTyped       | <code>Boolean</code>                       | Highlight matched part of the label                                      |
 | fullWidth            | <code>Boolean</code>                       | Match the width on the input field                                       |
+| fixed                | <code>Boolean</code>                       | Use fixed positioning (solve overflow issues)                            |
 | labelField           | <code>String</code>                        | Key for the label                                                        |
 | valueField           | <code>String</code>                        | Key for the value                                                        |
 | queryParam           | <code>String</code>                        | Key for the query parameter for server                                   |

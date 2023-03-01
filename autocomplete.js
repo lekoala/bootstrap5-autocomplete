@@ -14,6 +14,7 @@
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
+ * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
  * @property {String} queryParam Key for the query parameter for server
@@ -43,6 +44,7 @@ const DEFAULTS = {
   highlightTyped: false,
   fullWidth: false,
   fixed: false,
+  activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
   valueField: "value",
   queryParam: "query",
@@ -71,7 +73,6 @@ const DEFAULTS = {
 const LOADING_CLASS = "is-loading";
 const ACTIVE_CLASS = "is-active";
 const SHOW_CLASS = "show";
-const ACTIVE_CLASSES = ["is-active", "bg-primary", "text-white"];
 const NEXT = "next";
 const PREV = "prev";
 
@@ -439,8 +440,12 @@ class Autocomplete {
   removeSelection() {
     const selection = this.getSelection();
     if (selection) {
-      selection.classList.remove(...ACTIVE_CLASSES);
+      selection.classList.remove(...this._activeClasses());
     }
+  }
+
+  _activeClasses() {
+    return [...this._config.activeClasses, ...[ACTIVE_CLASS]];
   }
 
   /**
@@ -469,7 +474,7 @@ class Autocomplete {
       // We have a new selection
       if (sel) {
         // Change classes
-        active.classList.remove(...ACTIVE_CLASSES);
+        active.classList.remove(...this._activeClasses());
 
         // Scroll if necessary
         if (dir === PREV) {
@@ -488,7 +493,7 @@ class Autocomplete {
 
     if (sel) {
       const a = sel.querySelector("a");
-      a.classList.add(...ACTIVE_CLASSES);
+      a.classList.add(...this._activeClasses());
       this._searchInput.setAttribute("aria-activedescendant", a.getAttribute("id"));
       if (this._config.updateOnSelect) {
         this._searchInput.value = a.dataset.label;
@@ -580,7 +585,7 @@ class Autocomplete {
         return;
       }
       this.removeSelection();
-      newChild.querySelector("a").classList.add(...ACTIVE_CLASSES);
+      newChild.querySelector("a").classList.add(...this._activeClasses());
     });
     // Prevent searchInput losing focus and close the menu
     newChildLink.addEventListener("mousedown", (event) => {

@@ -141,6 +141,10 @@
         vertical-align: -0.125em;
       }
 
+      .my.test {
+        background: palegoldenrod;
+      }
+
       /* highlightTyped use mark */
       .autocomplete-menu mark {
         text-decoration: underline;
@@ -189,10 +193,17 @@
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteInput" class="form-label">Type something (values are Option from 1 to 50)</label>
-            <input type="text" name="autocompleteInput" class="form-control autocomplete" id="autocompleteInput" placeholder="Type something" />
+            <input
+              type="text"
+              name="autocompleteInput"
+              class="form-control autocomplete"
+              id="autocompleteInput"
+              placeholder="Type something"
+            />
           </div>
           <div class="col-md-4">
-            <button id="enableButton" type="button">Enable/disable</button><!-- without a type, form doesn't submit with enter -->
+            <button id="enableButton" type="button">Enable/disable</button
+            ><!-- without a type, form doesn't submit with enter -->
           </div>
         </div>
         <div class="row mb-3 g-3">
@@ -204,6 +215,7 @@
               name="autocompleteInputZero"
               id="autocompleteInputZero"
               data-suggestions-threshold="0"
+              data-active-classes="my,test,classes"
               placeholder="Type something"
             />
           </div>
@@ -225,19 +237,39 @@
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteInputDisabled" class="form-label">Type something (disabled)</label>
-            <input type="text" class="form-control autocomplete" name="autocompleteInputDisabled" id="autocompleteInputDisabled" placeholder="Type something" disabled />
+            <input
+              type="text"
+              class="form-control autocomplete"
+              name="autocompleteInputDisabled"
+              id="autocompleteInputDisabled"
+              placeholder="Type something"
+              disabled
+            />
           </div>
         </div>
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteInputReadonly" class="form-label">Type something (readonly)</label>
-            <input type="text" class="form-control autocomplete" name="autocompleteInputReadonly" id="autocompleteInputReadonly" placeholder="Type something" readonly />
+            <input
+              type="text"
+              class="form-control autocomplete"
+              name="autocompleteInputReadonly"
+              id="autocompleteInputReadonly"
+              placeholder="Type something"
+              readonly
+            />
           </div>
         </div>
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteRegularInput" class="form-label">Regular array</label>
-            <input type="text" class="form-control" id="autocompleteRegularInput" name="autocompleteRegularInput" placeholder="Type something" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteRegularInput"
+              name="autocompleteRegularInput"
+              placeholder="Type something"
+            />
           </div>
         </div>
         <div class="row mb-3 g-3">
@@ -269,7 +301,14 @@
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist</label>
-            <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" data-datalist="list-timezone" placeholder="Type something" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteDatalist"
+              name="autocompleteDatalist"
+              data-datalist="list-timezone"
+              placeholder="Type something"
+            />
 
             <datalist id="list-timezone">
               <option value="asia_aden">Asia/Aden</option>
@@ -291,7 +330,14 @@
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteRemote" class="form-label">Pick from remote</label>
-            <input type="text" class="form-control" id="autocompleteRemote" name="autocompleteRemote" data-server="demo.json" placeholder="Type something" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteRemote"
+              name="autocompleteRemote"
+              data-server="demo.json"
+              placeholder="Type something"
+            />
           </div>
         </div>
 
@@ -322,14 +368,27 @@
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteSourceInput" class="form-label">Pick a country (custom source)</label>
-            <input type="text" class="form-control" id="autocompleteSourceInput" name="autocompleteSourceInput" placeholder="Type something" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteSourceInput"
+              name="autocompleteSourceInput"
+              placeholder="Type something"
+            />
           </div>
         </div>
 
         <div class="row mb-3 g-3">
           <div class="col-md-4">
             <label for="autocompleteCountry" class="form-label">Pick a country (custom layout)</label>
-            <input type="text" class="form-control" id="autocompleteCountry" name="autocompleteCountry" placeholder="Type something" data-datalist="list-countries" />
+            <input
+              type="text"
+              class="form-control"
+              id="autocompleteCountry"
+              name="autocompleteCountry"
+              placeholder="Type something"
+              data-datalist="list-countries"
+            />
 
             <datalist id="list-countries">
               <option value="FR">France</option>
@@ -344,7 +403,13 @@
           <div class="col-md-4">
             <bs-autocomplete>
               <label for="autocompleteComponentInput" class="form-label">From a custom element</label>
-              <input type="text" class="form-control" id="autocompleteComponentInput" name="autocompleteComponentInput" placeholder="Type something" />
+              <input
+                type="text"
+                class="form-control"
+                id="autocompleteComponentInput"
+                name="autocompleteComponentInput"
+                placeholder="Type something"
+              />
 
               <datalist id="list-component">
                 <option>Love</option>
@@ -367,14 +432,28 @@
                   <table>
                     <tr>
                       <td><label for="autocompleteSourceInputTable" class="form-label">Pick a country (custom source)</label></td>
-                      <td><input type="text" class="form-control" id="autocompleteSourceInputTable" name="autocompleteSourceInputTable" placeholder="Type something" /></td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="autocompleteSourceInputTable"
+                          name="autocompleteSourceInputTable"
+                          placeholder="Type something"
+                        />
+                      </td>
                     </tr>
                   </table>
                 </div>
 
                 <!-- get a clear icon easily with this -->
                 <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
-                <input type="search" class="form-control" id="autocompleteSourceInputModal" name="autocompleteSourceInputModal" placeholder="Type something" />
+                <input
+                  type="search"
+                  class="form-control"
+                  id="autocompleteSourceInputModal"
+                  name="autocompleteSourceInputModal"
+                  placeholder="Type something"
+                />
               </div>
             </div>
           </div>

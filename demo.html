@@ -80,6 +80,10 @@
         }
       });
 
+      document.querySelector("#makebodyscrollable").addEventListener("click", (ev) => {
+        document.querySelector("#main").style.display = "block";
+      });
+
       // We can use regular objects as source and customize label
       new Autocomplete(document.getElementById("autocompleteRegularInput"), {
         items: { opt_some: "Some", opt_value: "Value", opt_here: "Here is a very long element that should be truncated", opt_dia: "çaça" },
@@ -141,6 +145,12 @@
         vertical-align: -0.125em;
       }
 
+      #main {
+        width: 120vw;
+        height: 20px;
+        background: #eee;
+      }
+
       .my.test {
         background: palegoldenrod;
       }
@@ -152,6 +162,11 @@
         color: currentColor;
         padding: 0;
       }
+
+      /* Prevent scrolling the menu from scrolling the page */
+      /* .autocomplete-menu {
+        overscroll-behavior: contain;
+      } */
 
       /* Optional nicer scrollbars */
       .autocomplete-menu {
@@ -188,6 +203,7 @@
   <body>
     <div class="container">
       <h1>Demo</h1>
+      <div id="main" style="display: none"></div>
       <button id="darkmode">Toggle dark mode</button>
       <form class="needs-validation" novalidate method="get" action="https://vercel-dumper.vercel.app/">
         <div class="row mb-3 g-3">
@@ -417,6 +433,84 @@
                 <option>Element</option>
               </datalist>
             </bs-autocomplete>
+          </div>
+        </div>
+
+        <div class="row mb-3 g-3">
+          <div class="col-md-4" dir="rtl">
+            <label for="autocompleteInputRtl" class="form-label">Type something (rtl)</label>
+            <input
+              type="text"
+              name="autocompleteInputRtl"
+              class="form-control autocomplete"
+              id="autocompleteInputRtl"
+              placeholder="Type something"
+            />
+          </div>
+
+          <div class="col-md-4" dir="rtl">
+            <label for="autocompleteInputRtl2" class="form-label">Type something (rtl, full width)</label>
+            <input
+              type="text"
+              name="autocompleteInputRtl2"
+              class="form-control autocomplete"
+              id="autocompleteInputRtl2"
+              placeholder="Type something"
+              data-full-width="1"
+            />
+          </div>
+
+          <div class="col-md-4" dir="rtl">
+            <label for="autocompleteInputRtl3" class="form-label">Type something (rtl, fixed)</label>
+            <input
+              type="text"
+              name="autocompleteInputRtl3"
+              class="form-control autocomplete"
+              id="autocompleteInputRtl3"
+              placeholder="Type something"
+              data-fixed="1"
+            />
+          </div>
+        </div>
+        <div class="row mb-3 g-3">
+          <!-- it may NOT be positioned if it has a set position (relative, absolute, etc)-->
+          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden;">
+            <label for="autocompleteInputOverflow" class="form-label">Type something (overflow, not fixed)</label>
+            <input
+              type="text"
+              name="autocompleteInputOverflow"
+              class="form-control autocomplete"
+              id="autocompleteInputOverflow"
+              placeholder="Type something"
+            />
+          </div>
+          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden; position: relative">
+            <label for="autocompleteInputFixed" class="form-label">Type something (fixed)</label>
+            <input
+              type="text"
+              name="autocompleteInputFixed"
+              class="form-control autocomplete"
+              id="autocompleteInputFixed"
+              placeholder="Type something"
+              data-fixed="1"
+            />
+          </div>
+          <div
+            class="col-md-4"
+            style="height: 80px; width: 320px; background: #ccc; border: 1px solid #666; overflow: scroll; position: relative"
+          >
+            <button id="makebodyscrollable" type="button">make body scrollable</button>
+            <div style="margin: 25px 100px; width: 500px">
+              <label for="autocompleteInputFixedScroll" class="form-label">Type something (fixed, scrolling div)</label>
+              <input
+                type="text"
+                name="autocompleteInputFixedScroll"
+                class="form-control autocomplete"
+                id="autocompleteInputFixedScroll"
+                placeholder="Type something"
+                data-fixed="1"
+              />
+            </div>
           </div>
         </div>
 

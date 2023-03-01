@@ -146,7 +146,7 @@ class Autocomplete {
     this._configureDropElement();
 
     if (this._config.fixed) {
-      document.addEventListener("scroll", this);
+      document.addEventListener("scroll", this, true);
       document.addEventListener("resize", this);
     }
 
@@ -200,7 +200,7 @@ class Autocomplete {
     this._dropElement.removeEventListener("mousemove", this);
 
     if (this._config.fixed) {
-      document.removeEventListener("scroll", this);
+      document.removeEventListener("scroll", this, true);
       document.removeEventListener("resize", this);
     }
 
@@ -299,6 +299,10 @@ class Autocomplete {
       this._dropElement.style.position = "fixed";
     }
     this._dropElement.style.overflowY = "auto";
+    // Prevent scrolling the menu from scrolling the page
+    // @link https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+    this._dropElement.style.overscrollBehavior = "contain";
+    this._dropElement.style.textAlign = "unset"; // otherwise RTL is not good
 
     insertAfter(this._searchInput, this._dropElement);
     // include aria-controls with the value of the id of the suggested list of values.
@@ -711,42 +715,52 @@ class Autocomplete {
 
   /**
    * Position the dropdown menu
-   * Don't position left since it may not work in all situations due
-   * to offsetParent margin or in tables
    */
   _positionMenu() {
+    const styles = window.getComputedStyle(this._searchInput);
     const bounds = this._searchInput.getBoundingClientRect();
     const fixedParent = this._hasFixedParent();
+    const isRTL = styles.direction === "rtl";
 
-    if (this._config.fullWidth) {
-      this._dropElement.style.width = this._searchInput.offsetWidth + "px";
-    } else {
-      // Overflow right
-      const w = fixedParent ? window.innerWidth : document.body.offsetWidth; // avoid rounding issues
-      const scrollbarOffset = 30; // scrollbars are not taken into account
-      const wdiff = w - 1 - (bounds.x + this._dropElement.offsetWidth) - scrollbarOffset;
+    // Don't position left if not fixed since it may not work in all situations
+    // due to offsetParent margin or in tables
+    let left = null;
+    let top = null;
 
-      // If the dropdowns goes out of the viewport, remove the diff from the left position using translateX
-      if (wdiff < 0) {
-        this._dropElement.style.transform = "translateX(calc(" + wdiff + "px))";
+    if (this._config.fixed) {
+      left = bounds.x;
+      top = bounds.y + bounds.height;
+
+      // Align end
+      if (isRTL && !this._config.fullWidth) {
+        left -= this._dropElement.offsetWidth - bounds.width;
       }
     }
 
-    if (this._config.fixed) {
-      // Remove scroll position
-      this._dropElement.style.transform = "translateY(calc(-" + window.pageYOffset + "px))";
-    } else {
-      // Overflow bottom (only if body higher than drop height)
-      const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
-      const bottom = bounds.y + window.pageYOffset + this._dropElement.offsetHeight;
+    // Reset any height overflow adjustement
+    this._dropElement.style.transform = "unset";
 
-      const hdiff = h - bottom;
-      if (hdiff < 0 && h > bounds.height) {
-        // We display above input
-        this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
-      } else {
-        this._dropElement.style.transform = "none";
-      }
+    // Use full holder width
+    if (this._config.fullWidth) {
+      this._dropElement.style.width = this._searchInput.offsetWidth + "px";
+    }
+
+    // Position element
+    if (left !== null) {
+      this._dropElement.style.left = left + "px";
+    }
+    if (top !== null) {
+      this._dropElement.style.top = top + "px";
+    }
+
+    // Overflow height
+    const dropBounds = this._dropElement.getBoundingClientRect();
+    const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
+    const vdiff = h - 1 - (dropBounds.y + dropBounds.height);
+
+    // We display above input if we have more space there
+    if (vdiff < 0 && bounds.y > h / 2) {
+      this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
     }
   }
 

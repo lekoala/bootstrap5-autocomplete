@@ -70,6 +70,7 @@ const DEFAULTS = {
 
 const LOADING_CLASS = "is-loading";
 const ACTIVE_CLASS = "is-active";
+const SHOW_CLASS = "show";
 const ACTIVE_CLASSES = ["is-active", "bg-primary", "text-white"];
 const NEXT = "next";
 const PREV = "prev";
@@ -311,15 +312,15 @@ class Autocomplete {
     if (this._preventInput) {
       return;
     }
-    this._showOrSearch();
+    this.showOrSearch();
   }
 
   onblur(e) {
-    this._hideSuggestions();
+    this.hideSuggestions();
   }
 
   onfocus(e) {
-    this._showOrSearch();
+    this.showOrSearch();
   }
 
   /**
@@ -356,7 +357,7 @@ class Autocomplete {
       case 27:
       case "Escape":
         this._searchInput.focus();
-        this._hideSuggestions();
+        this.hideSuggestions();
         break;
     }
   }
@@ -421,7 +422,7 @@ class Autocomplete {
    * @returns {boolean}
    */
   isDropdownVisible() {
-    return this._dropElement.classList.contains("show");
+    return this._dropElement.classList.contains(SHOW_CLASS);
   }
 
   // #endregion
@@ -515,10 +516,11 @@ class Autocomplete {
 
   /**
    * Show suggestions or load them
+   * @param {Boolean} check
    */
-  _showOrSearch() {
-    if (!this._shouldShow()) {
-      this._hideSuggestions();
+  showOrSearch(check = true) {
+    if (check && !this._shouldShow()) {
+      this.hideSuggestions();
       return;
     }
     if (this._config.liveServer) {
@@ -592,7 +594,7 @@ class Autocomplete {
       this._preventInput = true;
       this._searchInput.value = item.label;
       this._config.onSelectItem(item);
-      this._hideSuggestions();
+      this.hideSuggestions();
       this._preventInput = false;
     });
 
@@ -638,23 +640,43 @@ class Autocomplete {
         newChild.setAttribute("role", "presentation");
         newChild.innerHTML = `<span class="dropdown-item">${this._config.notFoundMessage}</span>`;
         this._dropElement.appendChild(newChild);
+        this._showDropdown();
       } else {
         // Remove dropdown if not found
-        this._hideSuggestions();
+        this.hideSuggestions();
       }
     } else {
       // Or show it if necessary
-      this._dropElement.classList.add("show");
-      this._searchInput.ariaExpanded = "true";
-      this._positionMenu();
+      this._showDropdown();
+    }
+  }
+
+  /**
+   * Show and position dropdown
+   */
+  _showDropdown() {
+    this._dropElement.classList.add(SHOW_CLASS);
+    this._searchInput.ariaExpanded = "true";
+    this._positionMenu();
+  }
+
+  /**
+   * Show or hide suggestions
+   * @param {Boolean} check
+   */
+  toggleSuggestions(check = true) {
+    if (this._dropElement.classList.contains(SHOW_CLASS)) {
+      this.hideSuggestions();
+    } else {
+      this.showOrSearch(check);
     }
   }
 
   /**
    * Hide the dropdown menu
    */
-  _hideSuggestions() {
-    this._dropElement.classList.remove("show");
+  hideSuggestions() {
+    this._dropElement.classList.remove(SHOW_CLASS);
     this._searchInput.ariaExpanded = "false";
     this.removeSelection();
   }

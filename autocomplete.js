@@ -329,18 +329,16 @@ class Autocomplete {
    * @param {KeyboardEvent} e
    */
   onkeydown(e) {
-    // If the dropdown is not visible, don't handle
-    if (!this.isDropdownVisible()) {
-      return;
-    }
     const key = e.keyCode || e.key;
     switch (key) {
       case 13:
       case "Enter":
-        e.preventDefault();
-        const selection = this.getSelection();
-        if (selection) {
-          selection.click();
+        if (this.isDropdownVisible()) {
+          e.preventDefault();
+          const selection = this.getSelection();
+          if (selection) {
+            selection.click();
+          }
         }
         break;
       case 38:
@@ -353,12 +351,19 @@ class Autocomplete {
       case "ArrowDown":
         e.preventDefault();
         this._keyboardNavigation = true;
-        this._moveSelection(NEXT);
+        if (this.isDropdownVisible()) {
+          this._moveSelection(NEXT);
+        } else {
+          // show menu regardless of input length
+          this.showOrSearch(false);
+        }
         break;
       case 27:
       case "Escape":
-        this._searchInput.focus();
-        this.hideSuggestions();
+        if (this.isDropdownVisible()) {
+          this._searchInput.focus();
+          this.hideSuggestions();
+        }
         break;
     }
   }
@@ -444,6 +449,9 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @returns {Array}
+   */
   _activeClasses() {
     return [...this._config.activeClasses, ...[ACTIVE_CLASS]];
   }

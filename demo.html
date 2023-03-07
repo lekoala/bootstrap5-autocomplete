@@ -375,6 +375,7 @@
               data-live-server="true"
               data-value-field="id"
               data-label-field="name"
+              data-fetch-options='{"headers": {"X-My-Header": "test"}}'
               data-server-params='{"related":"related_field"}'
               placeholder="Type something"
             />
@@ -474,7 +475,7 @@
         </div>
         <div class="row mb-3 g-3">
           <!-- it may NOT be positioned if it has a set position (relative, absolute, etc)-->
-          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden;">
+          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden">
             <label for="autocompleteInputOverflow" class="form-label">Type something (overflow, not fixed)</label>
             <input
               type="text"

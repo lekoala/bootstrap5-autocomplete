@@ -22,7 +22,9 @@
  * @property {Function} source A function that provides the list of items
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
+ * @property {String} serverMethod HTTP request method for data provider, default is GET
  * @property {String|Object} serverParams Parameters to pass along to the server
+ * @property {Object} fetchOptions Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
  * @property {Boolean} liveServer Should the endpoint be called each time on input
  * @property {Boolean} noCache Prevent caching by appending a timestamp
  * @property {Number} debounceTime Debounce time for live server
@@ -52,7 +54,9 @@ const DEFAULTS = {
   source: null,
   datalist: "",
   server: "",
+  serverMethod: "GET",
   serverParams: {},
+  fetchOptions: {},
   liveServer: false,
   noCache: true,
   debounceTime: 300,
@@ -834,10 +838,22 @@ class Autocomplete {
         params.related = input.value;
       }
     }
-    const urlParams = new URLSearchParams(params).toString();
+
+    const urlParams = new URLSearchParams(params);
+    let url = this._config.server;
+    let fetchOptions = Object.assign(this._config.fetchOptions, {
+      method: this._config.serverMethod || "GET",
+      signal: this._abortController.signal,
+    });
+
+    if (fetchOptions.method === "POST") {
+      fetchOptions.body = urlParams;
+    } else {
+      url += "?" + urlParams.toString();
+    }
 
     this._searchInput.classList.add(LOADING_CLASS);
-    fetch(this._config.server + "?" + urlParams, { signal: this._abortController.signal })
+    fetch(url, fetchOptions)
       .then((r) => this._config.onServerResponse(r))
       .then((suggestions) => {
         const data = suggestions.data || suggestions;

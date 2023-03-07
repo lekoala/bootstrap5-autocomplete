@@ -78,4 +78,5 @@ Modern browsers (edge, chrome, firefox, safari... not IE11). [Add a warning if n
 ## Also check out
 
 - [Bootstrap 5 Tags](https://github.com/lekoala/bootstrap5-tags): tags input for bootstrap
+- [BS Companion](https://github.com/lekoala/bs-companion): the perfect bootstrap companion
 - [Admini](https://github.com/lekoala/admini): the minimalistic bootstrap 5 admin panel

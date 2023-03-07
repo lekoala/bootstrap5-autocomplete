@@ -32,32 +32,34 @@ Simply set `data-server` where your endpoint is located. The suggestions will be
 
 Options can be either passed to the constructor (eg: optionName) or in data-option-name format.
 
-| Name                 | Type                                       | Description                                                              |
-| -------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
-| showAllSuggestions   | <code>Boolean</code>                       | Show all suggestions even if they don't match                            |
-| suggestionsThreshold | <code>Number</code>                        | Number of chars required to show suggestions                             |
-| maximumItems         | <code>Number</code>                        | Maximum number of items to display                                       |
-| autoselectFirst      | <code>Boolean</code>                       | Always select the first item                                             |
-| updateOnSelect       | <code>Boolean</code>                       | Update input value on selection (doesn't play nice with autoselectFirst) |
-| highlightTyped       | <code>Boolean</code>                       | Highlight matched part of the label                                      |
-| fullWidth            | <code>Boolean</code>                       | Match the width on the input field                                       |
-| fixed                | <code>Boolean</code>                       | Use fixed positioning (solve overflow issues)                            |
-| activeClasses        | <code>Array</code>                         | By default: ["bg-primary", "text-white"]                                 |
-| labelField           | <code>String</code>                        | Key for the label                                                        |
-| valueField           | <code>String</code>                        | Key for the value                                                        |
-| queryParam           | <code>String</code>                        | Key for the query parameter for server                                   |
-| items                | <code>Array</code> \| <code>Object</code>  | An array of label/value objects or an object with key/values             |
-| source               | <code>function</code>                      | A function that provides the list of items                               |
-| datalist             | <code>String</code>                        | The id of the source datalist                                            |
-| server               | <code>String</code>                        | Endpoint for data provider                                               |
-| serverParams         | <code>String</code> \| <code>Object</code> | Parameters to pass along to the server                                   |
-| liveServer           | <code>Boolean</code>                       | Should the endpoint be called each time on input                         |
-| noCache              | <code>Boolean</code>                       | Prevent caching by appending a timestamp                                 |
-| debounceTime         | <code>Number</code>                        | Debounce time for live server                                            |
-| notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable           |
-| onRenderItem         | <code>function</code>                      | Callback function that returns the label                                 |
-| onSelectItem         | <code>function</code>                      | Callback function to call on selection                                   |
-| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise      |
+| Name                 | Type                                       | Description                                                                             |
+| -------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| showAllSuggestions   | <code>Boolean</code>                       | Show all suggestions even if they don't match                                           |
+| suggestionsThreshold | <code>Number</code>                        | Number of chars required to show suggestions                                            |
+| maximumItems         | <code>Number</code>                        | Maximum number of items to display                                                      |
+| autoselectFirst      | <code>Boolean</code>                       | Always select the first item                                                            |
+| updateOnSelect       | <code>Boolean</code>                       | Update input value on selection (doesn't play nice with autoselectFirst)                |
+| highlightTyped       | <code>Boolean</code>                       | Highlight matched part of the label                                                     |
+| fullWidth            | <code>Boolean</code>                       | Match the width on the input field                                                      |
+| fixed                | <code>Boolean</code>                       | Use fixed positioning (solve overflow issues)                                           |
+| activeClasses        | <code>Array</code>                         | By default: ["bg-primary", "text-white"]                                                |
+| labelField           | <code>String</code>                        | Key for the label                                                                       |
+| valueField           | <code>String</code>                        | Key for the value                                                                       |
+| queryParam           | <code>String</code>                        | Key for the query parameter for server                                                  |
+| items                | <code>Array</code> \| <code>Object</code>  | An array of label/value objects or an object with key/values                            |
+| source               | <code>function</code>                      | A function that provides the list of items                                              |
+| datalist             | <code>String</code>                        | The id of the source datalist                                                           |
+| server               | <code>String</code>                        | Endpoint for data provider                                                              |
+| serverMethod         | <code>String</code>                        | HTTP request method for data provider, default is GET                                   |
+| serverParams         | <code>String</code> \| <code>Object</code> | Parameters to pass along to the server                                                  |
+| fetchOptions         | <code>Object</code>                        | Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax) |
+| liveServer           | <code>Boolean</code>                       | Should the endpoint be called each time on input                                        |
+| noCache              | <code>Boolean</code>                       | Prevent caching by appending a timestamp                                                |
+| debounceTime         | <code>Number</code>                        | Debounce time for live server                                                           |
+| notFoundMessage      | <code>String</code>                        | Display a no suggestions found message. Leave empty to disable                          |
+| onRenderItem         | <code>function</code>                      | Callback function that returns the label                                                |
+| onSelectItem         | <code>function</code>                      | Callback function to call on selection                                                  |
+| onServerResponse     | <code>function</code>                      | Callback function to process server response. Must return a Promise                     |
 
 ## Tips
 

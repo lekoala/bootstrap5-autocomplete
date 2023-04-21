@@ -5,6 +5,27 @@
 // #region config
 
 /**
+ * @callback RenderCallback
+ * @param {Object} item
+ * @param {String} label
+ * @param {Autocomplete} inst
+ * @returns {string}
+ */
+
+/**
+ * @callback ItemCallback
+ * @param {Object} item
+ * @param {Autocomplete} inst
+ * @returns {void}
+ */
+
+/**
+ * @callback ServerCallback
+ * @param {Response} response
+ * @returns {Promise}
+ */
+
+/**
  * @typedef Config
  * @property {Boolean} showAllSuggestions Show all suggestions even if they don't match
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
@@ -29,9 +50,9 @@
  * @property {Boolean} noCache Prevent caching by appending a timestamp
  * @property {Number} debounceTime Debounce time for live server
  * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
- * @property {Function} onRenderItem Callback function that returns the label
- * @property {Function} onSelectItem Callback function to call on selection
- * @property {Function} onServerResponse Callback function to process server response. Must return a Promise
+ * @property {RenderCallback} onRenderItem Callback function that returns the label
+ * @property {ItemCallback} onSelectItem Callback function to call on selection
+ * @property {ServerCallback} onServerResponse Callback function to process server response. Must return a Promise
  */
 
 /**
@@ -61,10 +82,10 @@ const DEFAULTS = {
   noCache: true,
   debounceTime: 300,
   notFoundMessage: "",
-  onRenderItem: (item, label) => {
+  onRenderItem: (item, label, inst) => {
     return label;
   },
-  onSelectItem: (item) => {},
+  onSelectItem: (item, inst) => {},
   onServerResponse: (response) => {
     return response.json();
   },
@@ -572,7 +593,7 @@ class Autocomplete {
         label.substring(idx + lookup.length, label.length);
     }
 
-    label = this._config.onRenderItem(item, label);
+    label = this._config.onRenderItem(item, label, this);
 
     const newChild = document.createElement("li");
     newChild.setAttribute("role", "presentation");
@@ -614,7 +635,7 @@ class Autocomplete {
       // Prevent input otherwise it might trigger autocomplete due to value change
       this._preventInput = true;
       this._searchInput.value = item.label;
-      this._config.onSelectItem(item, this._searchInput);
+      this._config.onSelectItem(item, this);
       this.hideSuggestions();
       this._preventInput = false;
     });
@@ -700,6 +721,20 @@ class Autocomplete {
     this._dropElement.classList.remove(SHOW_CLASS);
     this._searchInput.ariaExpanded = "false";
     this.removeSelection();
+  }
+
+  /**
+   * @returns {HTMLInputElement}
+   */
+  getInput() {
+    return this._searchInput;
+  }
+
+  /**
+   * @returns {HTMLUListElement}
+   */
+  getDropMenu() {
+    return this._dropElement;
   }
 
   /**

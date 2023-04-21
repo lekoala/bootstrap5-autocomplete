@@ -614,7 +614,7 @@ class Autocomplete {
       // Prevent input otherwise it might trigger autocomplete due to value change
       this._preventInput = true;
       this._searchInput.value = item.label;
-      this._config.onSelectItem(item);
+      this._config.onSelectItem(item, this._searchInput);
       this.hideSuggestions();
       this._preventInput = false;
     });

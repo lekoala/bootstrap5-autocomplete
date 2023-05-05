@@ -98,6 +98,10 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 
 https://codepen.io/lekoalabe/pen/MWXydNQ or see demo.html
 
+## Custom element
+
+You can now use this as a custom element as part of my [Formidable Elements](https://github.com/lekoala/formidable-elements) collection.
+
 ## Browser supports
 
 Modern browsers (edge, chrome, firefox, safari... not IE11). [Add a warning if necessary](https://github.com/lekoala/nomodule-browser-warning.js/).

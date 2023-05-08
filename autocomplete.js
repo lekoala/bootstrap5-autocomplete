@@ -22,6 +22,7 @@
 /**
  * @callback ServerCallback
  * @param {Response} response
+ * @param {Autocomplete} inst
  * @returns {Promise}
  */
 
@@ -41,6 +42,7 @@
  * @property {String} queryParam Key for the query parameter for server
  * @property {Array|Object} items An array of label/value objects or an object with key/values
  * @property {Function} source A function that provides the list of items
+ * @property {Boolean} hiddenInput Create an hidden input which stores the valueField
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
  * @property {String} serverMethod HTTP request method for data provider, default is GET
@@ -73,6 +75,7 @@ const DEFAULTS = {
   queryParam: "query",
   items: [],
   source: null,
+  hiddenInput: false,
   datalist: "",
   server: "",
   serverMethod: "GET",
@@ -86,7 +89,7 @@ const DEFAULTS = {
     return label;
   },
   onSelectItem: (item, inst) => {},
-  onServerResponse: (response) => {
+  onServerResponse: (response, inst) => {
     return response.json();
   },
 };
@@ -218,13 +221,16 @@ class Autocomplete {
   }
 
   dispose() {
+    counter--;
+
     this._searchInput.removeEventListener("focus", this);
     this._searchInput.removeEventListener("blur", this);
     this._searchInput.removeEventListener("input", this);
     this._searchInput.removeEventListener("keydown", this);
     this._dropElement.removeEventListener("mousemove", this);
 
-    if (this._config.fixed) {
+    // only remove if there are no more active elements
+    if (this._config.fixed && counter <= 0) {
       document.removeEventListener("scroll", this, true);
       window.removeEventListener("resize", this);
     }
@@ -309,6 +315,16 @@ class Autocomplete {
     // include aria-haspopup matching the role of the element that contains the collection of suggested values.
     this._searchInput.ariaHasPopup = "menu";
     this._searchInput.setAttribute("role", "combobox");
+
+    // Hidden input?
+    this._hiddenInput = null;
+    if (this._config.hiddenInput) {
+      this._hiddenInput = document.createElement("input");
+      this._hiddenInput.type = "hidden";
+      this._hiddenInput.name = this._searchInput.name;
+      this._searchInput.name = "_" + this._searchInput.name;
+      insertAfter(this._searchInput, this._hiddenInput);
+    }
   }
 
   _configureDropElement() {
@@ -341,6 +357,10 @@ class Autocomplete {
   oninput(e) {
     if (this._preventInput) {
       return;
+    }
+    // Input has changed, clear value
+    if (this._hiddenInput) {
+      this._hiddenInput.value = null;
     }
     this.showOrSearch();
   }
@@ -635,6 +655,10 @@ class Autocomplete {
       // Prevent input otherwise it might trigger autocomplete due to value change
       this._preventInput = true;
       this._searchInput.value = item.label;
+      // Populate value in hidden input
+      if (this._hiddenInput) {
+        this._hiddenInput.value = item.value;
+      }
       this._config.onSelectItem(item, this);
       this.hideSuggestions();
       this._preventInput = false;
@@ -889,7 +913,7 @@ class Autocomplete {
 
     this._searchInput.classList.add(LOADING_CLASS);
     fetch(url, fetchOptions)
-      .then((r) => this._config.onServerResponse(r))
+      .then((r) => this._config.onServerResponse(r, this))
       .then((suggestions) => {
         const data = suggestions.data || suggestions;
         this.setData(data);

@@ -11,7 +11,7 @@ form.appendChild(singleEl);
 
 let disabledEl = document.createElement("input");
 disabledEl.classList.add("autocomplete");
-disabledEl.setAttribute("disabled","");
+disabledEl.setAttribute("disabled", "");
 form.appendChild(disabledEl);
 
 // Somehow new Event syntax is not working
@@ -31,4 +31,8 @@ test("it can be disabled", (t) => {
   let regularTags = Autocomplete.getInstance(singleEl);
   t.truthy(disabledTags.isDisabled());
   t.falsy(regularTags.isDisabled());
+});
+test("it doesn't contain debug log", (t) => {
+  let count = (Autocomplete.toString().match(/console\.log/g) || []).length;
+  t.is(count, 0, "The dev should pay more attention");
 });

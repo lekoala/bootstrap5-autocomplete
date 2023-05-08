@@ -11,6 +11,7 @@
     "watch": "npm run build -- --watch",
     "build-min": "npm run build && git add -A && git commit -m \"build min file\"",
     "bump": "npm run build-min && npm version patch",
+    "update-deps": "npx npm-check-updates -u",
     "jsdoc": "npx jsdoc-to-markdown autocomplete.js"
   },
   "repository": {
@@ -36,8 +37,8 @@
     ]
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^7.7.0",
-    "ava": "^4.0.1",
-    "esbuild": "^0.14.21"
+    "@happy-dom/global-registrator": "^9.10.9",
+    "ava": "^5.2.0",
+    "esbuild": "^0.17.18"
   }
 }

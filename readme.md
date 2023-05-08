@@ -48,6 +48,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | queryParam           | <code>String</code>                            | Key for the query parameter for server                                                  |
 | items                | <code>Array</code> \| <code>Object</code>      | An array of label/value objects or an object with key/values                            |
 | source               | <code>function</code>                          | A function that provides the list of items                                              |
+| hiddenInput          | <code>Boolean</code>                           | Create an hidden input which stores the valueField                                      |
 | datalist             | <code>String</code>                            | The id of the source datalist                                                           |
 | server               | <code>String</code>                            | Endpoint for data provider                                                              |
 | serverMethod         | <code>String</code>                            | HTTP request method for data provider, default is GET                                   |
@@ -84,9 +85,10 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 
 ### ServerCallback ⇒ <code>Promise</code>
 
-| Param    | Type                  |
-| -------- | --------------------- |
-| response | <code>Response</code> |
+| Param    | Type                                       |
+| -------- | ------------------------------------------ |
+| response | <code>Response</code>                      |
+| inst     | [<code>Autocomplete</code>](#Autocomplete) |
 
 ## Tips
 

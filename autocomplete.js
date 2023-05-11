@@ -43,6 +43,7 @@
  * @property {Array|Object} items An array of label/value objects or an object with key/values
  * @property {Function} source A function that provides the list of items
  * @property {Boolean} hiddenInput Create an hidden input which stores the valueField
+ * @property {String} hiddenValue Populate the initial hidden value. Mostly useful with liveServer.
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
  * @property {String} serverMethod HTTP request method for data provider, default is GET
@@ -76,6 +77,7 @@ const DEFAULTS = {
   items: [],
   source: null,
   hiddenInput: false,
+  hiddenValue: "",
   datalist: "",
   server: "",
   serverMethod: "GET",
@@ -321,6 +323,7 @@ class Autocomplete {
     if (this._config.hiddenInput) {
       this._hiddenInput = document.createElement("input");
       this._hiddenInput.type = "hidden";
+      this._hiddenInput.value = this._config.hiddenValue;
       this._hiddenInput.name = this._searchInput.name;
       this._searchInput.name = "_" + this._searchInput.name;
       insertAfter(this._searchInput, this._hiddenInput);
@@ -849,10 +852,21 @@ class Autocomplete {
         this._addItems(items);
       }
     }
+    this._setHiddenVal();
 
     // From an external source
     if (this._config.server && !this._config.liveServer) {
       this._loadFromServer();
+    }
+  }
+
+  _setHiddenVal() {
+    if (this._config.hiddenInput && !this._config.hiddenValue) {
+      for (const [value, entry] of Object.entries(this._items)) {
+        if (entry.label == this._searchInput.value) {
+          this._hiddenInput.value = value;
+        }
+      }
     }
   }
 
@@ -917,6 +931,7 @@ class Autocomplete {
       .then((suggestions) => {
         const data = suggestions.data || suggestions;
         this.setData(data);
+        this._setHiddenVal();
         this._abortController = null;
         if (show) {
           this._showSuggestions();

@@ -97,6 +97,11 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 - If you have a really long list of options, a scrollbar will be used
 - Access instance on a given element with Autocomplete.getInstance(myEl)
 
+## Not using Bootstrap ?
+
+This class does NOT depends on Bootstrap JS. If you are not using Bootstrap, you can simply implement the css
+the way you like it :-)
+
 ## Demo
 
 https://codepen.io/lekoalabe/pen/MWXydNQ or see demo.html

@@ -837,8 +837,9 @@ class Autocomplete {
     this._addItems(this._config.items);
 
     // From a datalist
-    if (this._config.datalist) {
-      const datalist = document.querySelector(`#${this._config.datalist}`);
+    const dl = this._config.datalist;
+    if (dl) {
+      const datalist = document.querySelector(`#${dl}`);
       if (datalist) {
         const items = Array.from(datalist.children).map((o) => {
           const value = o.getAttribute("value") ?? o.innerHTML.toLowerCase();
@@ -850,6 +851,8 @@ class Autocomplete {
           };
         });
         this._addItems(items);
+      } else {
+        console.error(`Datalist not found ${dl}`);
       }
     }
     this._setHiddenVal();
@@ -875,10 +878,11 @@ class Autocomplete {
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const entry = src[key];
+      const label = typeof entry === "string" ? entry : entry.label;
       const item = typeof entry === "string" ? {} : entry;
 
       // Normalize entry
-      item.label = entry[this._config.labelField] ?? entry;
+      item.label = entry[this._config.labelField] ?? label;
       item.value = entry[this._config.valueField] ?? key;
       this._items[item.value] = item;
     }

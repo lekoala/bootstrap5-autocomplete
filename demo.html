@@ -1,585 +1,492 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
-  <head>
-    <title>Bootstrap 5 autocomplete demo</title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+<head>
+  <title>Bootstrap 5 autocomplete demo</title>
 
-    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#eeeeee" media="(prefers-color-scheme: dark)" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#111111" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#eeeeee" media="(prefers-color-scheme: dark)" />
 
-    <script src="https://cdn.jsdelivr.net/npm/last-icon@2/last-icon.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1/dist/css/bootstrap-dark.min.css" rel="stylesheet" /> -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/last-icon@2/last-icon.min.js"></script>
 
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1/dist/css/bootstrap-dark.min.css" rel="stylesheet" /> -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" type="module"></script>
+
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.bundle.min.js" type="module"></script> -->
 
-    <script type="module">
-      import Autocomplete from "./autocomplete.min.js";
+  <script type="module">
+    import Autocomplete from "./autocomplete.min.js";
 
-      // Example custom element
-      class BsAutocomplete extends HTMLElement {
-        constructor() {
-          super();
+    // Example custom element, but use this instead otherwise
+    // @link https://github.com/lekoala/formidable-elements
+    class BsAutocomplete extends HTMLElement {
+      constructor() {
+        super();
 
-          this.el = this.querySelector("input");
+        this.el = this.querySelector("input");
 
-          const opts = {};
-          const datalist = this.querySelector("datalist");
-          if (datalist) {
-            opts.datalist = datalist.getAttribute("id");
-          }
-          this.inst = new Autocomplete(this.el, opts);
+        const opts = {};
+        const datalist = this.querySelector("datalist");
+        if (datalist) {
+          opts.datalist = datalist.getAttribute("id");
         }
+        this.inst = new Autocomplete(this.el, opts);
       }
+    }
 
-      customElements.define("bs-autocomplete", BsAutocomplete);
-      // End example element
+    customElements.define("bs-autocomplete", BsAutocomplete);
+    // End example element
 
-      const opts = {
-        onSelectItem: console.log,
-      };
+    const opts = {
+      onSelectItem: console.log,
+    };
 
-      var src = [];
-      for (let i = 0; i < 50; i++) {
-        src.push({
-          title: "Option " + i,
-          id: "opt" + i,
-          data: {
-            key: i,
-          },
-        });
-      }
-      Autocomplete.init("input.autocomplete", {
-        items: src,
-        valueField: "id",
-        labelField: "title",
-        highlightTyped: true,
-        onSelectItem: console.log,
-      });
-
-      document.getElementById("enableButton").addEventListener("click", (e) => {
-        e.preventDefault();
-        const el = document.getElementById("autocompleteInput");
-        const inst = Autocomplete.getInstance(el);
-        if (inst.isDisabled()) {
-          inst.enable();
-        } else {
-          inst.disable();
-        }
-      });
-
-      document.querySelector("#makebodyscrollable").addEventListener("click", (ev) => {
-        document.querySelector("#main").style.display = "block";
-      });
-
-      // We can use regular objects as source and customize label
-      new Autocomplete(document.getElementById("autocompleteRegularInput"), {
-        items: { opt_some: "Some", opt_value: "Value", opt_here: "Here is a very long element that should be truncated", opt_dia: "çaça" },
-        onRenderItem: (item, label) => {
-          return label + " (" + item.value + ")";
+    var src = [];
+    for (let i = 0; i < 50; i++) {
+      src.push({
+        title: "Option " + i,
+        id: "opt" + i,
+        data: {
+          key: i,
         },
       });
+    }
+    Autocomplete.init("input.autocomplete", {
+      items: src,
+      valueField: "id",
+      labelField: "title",
+      highlightTyped: true,
+      onSelectItem: console.log,
+    });
 
-      // we can provide items through a function
-      function suggest(query, populateResults) {
-        const results = ["France", "Germany", "United Kingdom"];
-        query = query.toLowerCase();
-        const filteredResults = results.filter((result) => result.toLocaleLowerCase().indexOf(query) !== -1);
-        populateResults(filteredResults);
+    document.getElementById("enableButton").addEventListener("click", (e) => {
+      e.preventDefault();
+      const el = document.getElementById("autocompleteInput");
+      const inst = Autocomplete.getInstance(el);
+      if (inst.isDisabled()) {
+        inst.enable();
+      } else {
+        inst.disable();
       }
-      const optsSource = Object.assign({}, opts, {
-        source: suggest,
-      });
-      new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
-      new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
-      new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
+    });
 
-      new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
-      new Autocomplete(document.getElementById("autocompleteRemote"), opts);
-      new Autocomplete(document.getElementById("autocompleteLiveRemote"), opts);
+    document.querySelector("#makebodyscrollable").addEventListener("click", (ev) => {
+      document.querySelector("#main").style.display = "block";
+    });
 
-      const optsCountry = Object.assign({}, opts, {
-        onRenderItem: (item, label) => {
-          return `<l-i set="fl" name="${item.value.toLowerCase()}" size="16"></l-i> ${label}`;
-        },
-      });
-      new Autocomplete(document.getElementById("autocompleteCountry"), optsCountry);
+    // We can use regular objects as source and customize label
+    new Autocomplete(document.getElementById("autocompleteRegularInput"), {
+      items: { opt_some: "Some", opt_value: "Value", opt_here: "Here is a very long element that should be truncated", opt_dia: "çaça" },
+      onRenderItem: (item, label) => {
+        return label + " (" + item.value + ")";
+      },
+    });
 
-      document.querySelector("#darkmode").addEventListener("click", function (ev) {
-        if (document.documentElement.dataset.bsTheme == "dark") {
-          document.documentElement.dataset.bsTheme = "light";
-        } else {
-          document.documentElement.dataset.bsTheme = "dark";
-        }
-      });
-    </script>
-    <style>
-      l-i {
-        --size: 1em;
-        display: inline-flex;
-        width: var(--size);
-        height: var(--size);
-        vertical-align: middle;
+    // we can provide items through a function
+    function suggest(query, populateResults) {
+      const results = ["France", "Germany", "United Kingdom"];
+      query = query.toLowerCase();
+      const filteredResults = results.filter((result) => result.toLocaleLowerCase().indexOf(query) !== -1);
+      populateResults(filteredResults);
+    }
+    const optsSource = Object.assign({}, opts, {
+      source: suggest,
+    });
+    new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
+    new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
+    new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
+
+    new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
+    new Autocomplete(document.getElementById("autocompleteRemote"), opts);
+    new Autocomplete(document.getElementById("autocompleteLiveRemote"), opts);
+
+    const optsCountry = Object.assign({}, opts, {
+      onRenderItem: (item, label) => {
+        return `<l-i set="fl" name="${item.value.toLowerCase()}" size="16"></l-i> ${label}`;
+      },
+    });
+    new Autocomplete(document.getElementById("autocompleteCountry"), optsCountry);
+
+    document.querySelector("#darkmode").addEventListener("click", function (ev) {
+      if (document.documentElement.dataset.bsTheme == "dark") {
+        document.documentElement.dataset.bsTheme = "light";
+      } else {
+        document.documentElement.dataset.bsTheme = "dark";
       }
-      l-i svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-      p l-i,
-      button l-i,
-      a l-i,
-      span l-i {
-        vertical-align: -0.125em;
+    });
+  </script>
+  <style>
+    l-i {
+      --size: 1em;
+      display: inline-flex;
+      width: var(--size);
+      height: var(--size);
+      vertical-align: middle;
+    }
+
+    l-i svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    p l-i,
+    button l-i,
+    a l-i,
+    span l-i {
+      vertical-align: -0.125em;
+    }
+
+    #main {
+      width: 120vw;
+      height: 20px;
+      background: #eee;
+    }
+
+    .my.test {
+      background: palegoldenrod;
+    }
+
+    @keyframes blinking {
+      0% {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
       }
 
-      #main {
-        width: 120vw;
-        height: 20px;
-        background: #eee;
+      100% {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0);
       }
+    }
 
-      .my.test {
-        background: palegoldenrod;
-      }
+    input.is-loading {
+      animation: blinking 1s infinite;
+    }
 
-      /* highlightTyped use mark */
-      .autocomplete-menu mark {
-        text-decoration: underline;
-        background: none;
-        color: currentColor;
-        padding: 0;
-      }
+    /* highlightTyped use mark */
+    .autocomplete-menu mark {
+      text-decoration: underline;
+      background: none;
+      color: currentColor;
+      padding: 0;
+    }
 
-      /* Prevent scrolling the menu from scrolling the page */
-      /* .autocomplete-menu {
+    /* Prevent scrolling the menu from scrolling the page */
+    /* .autocomplete-menu {
         overscroll-behavior: contain;
       } */
 
-      /* Optional nicer scrollbars */
-      .autocomplete-menu {
-        --scroller-color: 0, 0%;
-        --scroller-color-lightness: 80%;
-        --scroller-bg-lightness: 90%;
-        --scroller-hover-factor: 0.8;
-        --scroller-thumb: hsl(var(--scroller-color), var(--scroller-color-lightness));
-        /* Replicate hover for webkit */
-        --scroller-thumb-hover: hsl(var(--scroller-color), calc(var(--scroller-color-lightness) * var(--scroller-hover-factor)));
-        --scroller-background: hsl(var(--scroller-color), calc(var(--scroller-bg-lightness)));
-        scrollbar-color: var(--scroller-thumb) var(--scroller-background);
-        scrollbar-width: thin;
-      }
-      [data-bs-theme="dark"] .autocomplete-menu {
-        --scroller-color-lightness: 30%;
-        --scroller-bg-lightness: 40%;
-      }
-      .autocomplete-menu::-webkit-scrollbar {
-        width: 8px;
-      }
-      .autocomplete-menu::-webkit-scrollbar-track {
-        background: var(--scroller-background);
-      }
-      .autocomplete-menu::-webkit-scrollbar-thumb {
-        background: var(--scroller-thumb);
-      }
-      .autocomplete-menu::-webkit-scrollbar-thumb:hover {
-        background: var(--scroller-thumb-hover);
-      }
-    </style>
-  </head>
+    /* Optional nicer scrollbars */
+    .autocomplete-menu {
+      --scroller-color: 0, 0%;
+      --scroller-color-lightness: 80%;
+      --scroller-bg-lightness: 90%;
+      --scroller-hover-factor: 0.8;
+      --scroller-thumb: hsl(var(--scroller-color), var(--scroller-color-lightness));
+      /* Replicate hover for webkit */
+      --scroller-thumb-hover: hsl(var(--scroller-color), calc(var(--scroller-color-lightness) * var(--scroller-hover-factor)));
+      --scroller-background: hsl(var(--scroller-color), calc(var(--scroller-bg-lightness)));
+      scrollbar-color: var(--scroller-thumb) var(--scroller-background);
+      scrollbar-width: thin;
+    }
 
-  <body>
-    <div class="container">
-      <h1>Demo</h1>
-      <div id="main" style="display: none"></div>
-      <button id="darkmode">Toggle dark mode</button>
-      <form class="needs-validation" novalidate method="get" action="https://vercel-dumper.vercel.app/">
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteInput" class="form-label">Type something (values are Option from 1 to 50)</label>
-            <input
-              type="text"
-              name="autocompleteInput"
-              class="form-control autocomplete"
-              id="autocompleteInput"
-              placeholder="Type something"
-            />
-          </div>
-          <div class="col-md-4">
-            <button id="enableButton" type="button">Enable/disable</button
-            ><!-- without a type, form doesn't submit with enter -->
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteInputZero" class="form-label">Type something (zero threshold)</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              name="autocompleteInputZero"
-              id="autocompleteInputZero"
-              data-suggestions-threshold="0"
-              data-active-classes="my,test,classes"
-              placeholder="Type something"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteInputUpdate" class="form-label">Type something (update on select)</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              name="autocompleteInputUpdate"
-              id="autocompleteInputUpdate"
-              data-update-on-select="1"
-              data-autoselect-first="0"
-              placeholder="Type something"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteInputDisabled" class="form-label">Type something (disabled)</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              name="autocompleteInputDisabled"
-              id="autocompleteInputDisabled"
-              placeholder="Type something"
-              disabled
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteInputReadonly" class="form-label">Type something (readonly)</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              name="autocompleteInputReadonly"
-              id="autocompleteInputReadonly"
-              placeholder="Type something"
-              readonly
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteRegularInput" class="form-label">Regular array</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteRegularInput"
-              name="autocompleteRegularInput"
-              placeholder="Type something"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteHideIfNoMatch" class="form-label">Show message if no matches found</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              id="autocompleteHideIfNoMatch"
-              name="autocompleteHideIfNoMatch"
-              placeholder="Type something"
-              data-not-found-message="No results found"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteFullWidthInput" class="form-label">Full width</label>
-            <input
-              type="text"
-              class="form-control autocomplete"
-              id="autocompleteFullWidthInput"
-              name="autocompleteFullWidthInput"
-              data-full-width="true"
-              placeholder="Type something"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteDatalist"
-              name="autocompleteDatalist"
-              data-datalist="list-timezone"
-              placeholder="Type something"
-            />
+    [data-bs-theme="dark"] .autocomplete-menu {
+      --scroller-color-lightness: 30%;
+      --scroller-bg-lightness: 40%;
+    }
 
-            <datalist id="list-timezone">
-              <option value="asia_aden">Asia/Aden</option>
-              <!-- we can use the value attribute -->
-              <option>Asia/Aqtau</option>
-              <option>Asia/Baghdad</option>
-              <option>Asia/Barnaul</option>
-              <option>Asia/Chita</option>
-              <option>Asia/Dhaka</option>
-              <option>Asia/Famagusta</option>
-              <option>Asia/Hong_Kong</option>
-              <option>Asia/Jayapura</option>
-              <option>Asia/Kuala_Lumpur</option>
-              <option>Asia/Jakarta</option>
-            </datalist>
-          </div>
+    .autocomplete-menu::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .autocomplete-menu::-webkit-scrollbar-track {
+      background: var(--scroller-background);
+    }
+
+    .autocomplete-menu::-webkit-scrollbar-thumb {
+      background: var(--scroller-thumb);
+    }
+
+    .autocomplete-menu::-webkit-scrollbar-thumb:hover {
+      background: var(--scroller-thumb-hover);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Demo</h1>
+    <div id="main" style="display: none"></div>
+    <button id="darkmode">Toggle dark mode</button>
+    <form class="needs-validation" novalidate method="get" action="https://vercel-dumper.vercel.app/">
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteInput" class="form-label">Type something (values are Option from 1 to 50)</label>
+          <input type="text" name="autocompleteInput" class="form-control autocomplete" id="autocompleteInput"
+            placeholder="Type something" />
         </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteRemote" class="form-label">Pick from remote</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteRemote"
-              name="autocompleteRemote"
-              data-server="demo.json"
-              placeholder="Type something"
-              data-hidden-input="true"
-              value="Server 1"
-            />
-          </div>
+        <div class="col-md-4">
+          <button id="enableButton" type="button">Enable/disable</button><!-- without a type, form doesn't submit with enter -->
         </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <select name="" id="related_field">
-              <option value="Choose">Choose</option>
-              <option value="Me">Me</option>
-              <option value="Or">Or</option>
-              <option value="Not">Not</option>
-            </select>
-            <label for="autocompleteLiveRemote" class="form-label">Pick from remote (live + related)</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteLiveRemote"
-              name="autocompleteLiveRemote"
-              data-server="https://jsonplaceholder.typicode.com/users"
-              data-live-server="true"
-              data-value-field="id"
-              data-label-field="name"
-              data-fetch-options='{"headers": {"X-My-Header": "test"}}'
-              data-server-params='{"related":"related_field"}'
-              data-hidden-input="true"
-              data-hidden-value="42"
-              placeholder="Type something"
-              value="User 42"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteSourceInput" class="form-label">Pick a country (custom source)</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteSourceInput"
-              name="autocompleteSourceInput"
-              placeholder="Type something"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <label for="autocompleteCountry" class="form-label">Pick a country (custom layout)</label>
-            <input
-              type="text"
-              class="form-control"
-              id="autocompleteCountry"
-              name="autocompleteCountry"
-              placeholder="Type something"
-              data-datalist="list-countries"
-            />
-
-            <datalist id="list-countries">
-              <option value="FR">France</option>
-              <option value="BE">Belgique</option>
-              <option value="LU">Luxembourg</option>
-              <option value="NL">Netherlands</option>
-            </datalist>
-          </div>
-        </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4">
-            <bs-autocomplete>
-              <label for="autocompleteComponentInput" class="form-label">From a custom element</label>
-              <input
-                type="text"
-                class="form-control"
-                id="autocompleteComponentInput"
-                name="autocompleteComponentInput"
-                placeholder="Type something"
-              />
-
-              <datalist id="list-component">
-                <option>Love</option>
-                <option>Custom</option>
-                <option>Element</option>
-              </datalist>
-            </bs-autocomplete>
-          </div>
-        </div>
-
-        <div class="row mb-3 g-3">
-          <div class="col-md-4" dir="rtl">
-            <label for="autocompleteInputRtl" class="form-label">Type something (rtl)</label>
-            <input
-              type="text"
-              name="autocompleteInputRtl"
-              class="form-control autocomplete"
-              id="autocompleteInputRtl"
-              placeholder="Type something"
-            />
-          </div>
-
-          <div class="col-md-4" dir="rtl">
-            <label for="autocompleteInputRtl2" class="form-label">Type something (rtl, full width)</label>
-            <input
-              type="text"
-              name="autocompleteInputRtl2"
-              class="form-control autocomplete"
-              id="autocompleteInputRtl2"
-              placeholder="Type something"
-              data-full-width="1"
-            />
-          </div>
-
-          <div class="col-md-4" dir="rtl">
-            <label for="autocompleteInputRtl3" class="form-label">Type something (rtl, fixed)</label>
-            <input
-              type="text"
-              name="autocompleteInputRtl3"
-              class="form-control autocomplete"
-              id="autocompleteInputRtl3"
-              placeholder="Type something"
-              data-fixed="1"
-            />
-          </div>
-        </div>
-        <div class="row mb-3 g-3">
-          <!-- it may NOT be positioned if it has a set position (relative, absolute, etc)-->
-          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden">
-            <label for="autocompleteInputOverflow" class="form-label">Type something (overflow, not fixed)</label>
-            <input
-              type="text"
-              name="autocompleteInputOverflow"
-              class="form-control autocomplete"
-              id="autocompleteInputOverflow"
-              placeholder="Type something"
-            />
-          </div>
-          <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden; position: relative">
-            <label for="autocompleteInputFixed" class="form-label">Type something (fixed)</label>
-            <input
-              type="text"
-              name="autocompleteInputFixed"
-              class="form-control autocomplete"
-              id="autocompleteInputFixed"
-              placeholder="Type something"
-              data-fixed="1"
-            />
-          </div>
-          <div
-            class="col-md-4"
-            style="height: 80px; width: 320px; background: #ccc; border: 1px solid #666; overflow: scroll; position: relative"
-          >
-            <button id="makebodyscrollable" type="button">make body scrollable</button>
-            <div style="margin: 25px 100px; width: 500px">
-              <label for="autocompleteInputFixedScroll" class="form-label">Type something (fixed, scrolling div)</label>
-              <input
-                type="text"
-                name="autocompleteInputFixedScroll"
-                class="form-control autocomplete"
-                id="autocompleteInputFixedScroll"
-                placeholder="Type something"
-                data-fixed="1"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Works in modals too</button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-body">
-                <div style="margin-left: 200px; margin-top: 200px">
-                  <table>
-                    <tr>
-                      <td><label for="autocompleteSourceInputTable" class="form-label">Pick a country (custom source)</label></td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="autocompleteSourceInputTable"
-                          name="autocompleteSourceInputTable"
-                          placeholder="Type something"
-                        />
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-                <!-- get a clear icon easily with this -->
-                <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
-                <input
-                  type="search"
-                  class="form-control"
-                  id="autocompleteSourceInputModal"
-                  name="autocompleteSourceInputModal"
-                  placeholder="Type something"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <br />
-
-        <input type="reset" value="Reset" class="btn btn-outline-dark""/>
-        <button class="btn btn-primary" type="submit">Submit form</button>
-
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-        <br /><!-- add a bit of space -->
-      </form>
-    </div>
-    <footer style="position: fixed; bottom: 0; left: 0; right: 0; padding: 1em; background: #eee">
-      <div class="container">
-        <input type="search" class="form-control autocomplete" id="autocompleteBottomInput" placeholder="Type something" />
       </div>
-    </footer>
-  </body>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteInputZero" class="form-label">Type something (zero threshold)</label>
+          <input type="text" class="form-control autocomplete" name="autocompleteInputZero" id="autocompleteInputZero"
+            data-suggestions-threshold="0" data-active-classes="my,test,classes" placeholder="Type something" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteInputUpdate" class="form-label">Type something (update on select)</label>
+          <input type="text" class="form-control autocomplete" name="autocompleteInputUpdate" id="autocompleteInputUpdate"
+            data-update-on-select="1" data-autoselect-first="0" placeholder="Type something" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteInputDisabled" class="form-label">Type something (disabled)</label>
+          <input type="text" class="form-control autocomplete" name="autocompleteInputDisabled" id="autocompleteInputDisabled"
+            placeholder="Type something" disabled />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteInputReadonly" class="form-label">Type something (readonly)</label>
+          <input type="text" class="form-control autocomplete" name="autocompleteInputReadonly" id="autocompleteInputReadonly"
+            placeholder="Type something" readonly />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteRegularInput" class="form-label">Regular array</label>
+          <input type="text" class="form-control" id="autocompleteRegularInput" name="autocompleteRegularInput"
+            placeholder="Type something" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteHideIfNoMatch" class="form-label">Show message if no matches found</label>
+          <input type="text" class="form-control autocomplete" id="autocompleteHideIfNoMatch" name="autocompleteHideIfNoMatch"
+            placeholder="Type something" data-not-found-message="No results found" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteFullWidthInput" class="form-label">Full width</label>
+          <input type="text" class="form-control autocomplete" id="autocompleteFullWidthInput" name="autocompleteFullWidthInput"
+            data-full-width="true" placeholder="Type something" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist</label>
+          <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" data-datalist="list-timezone"
+            placeholder="Type something" />
+
+          <datalist id="list-timezone">
+            <option value="asia_aden">Asia/Aden</option>
+            <!-- we can use the value attribute -->
+            <option>Asia/Aqtau</option>
+            <option>Asia/Baghdad</option>
+            <option>Asia/Barnaul</option>
+            <option>Asia/Chita</option>
+            <option>Asia/Dhaka</option>
+            <option>Asia/Famagusta</option>
+            <option>Asia/Hong_Kong</option>
+            <option>Asia/Jayapura</option>
+            <option>Asia/Kuala_Lumpur</option>
+            <option>Asia/Jakarta</option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteRemote" class="form-label">Pick from remote</label>
+          <input type="text" class="form-control" id="autocompleteRemote" name="autocompleteRemote" data-server="demo.json"
+            placeholder="Type something" data-hidden-input="true" value="Server 1" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <select name="" id="related_field">
+            <option value="Choose">Choose</option>
+            <option value="Me">Me</option>
+            <option value="Or">Or</option>
+            <option value="Not">Not</option>
+          </select>
+          <label for="autocompleteLiveRemote" class="form-label">Pick from remote (live + related)</label>
+          <input type="text" class="form-control" id="autocompleteLiveRemote" name="autocompleteLiveRemote"
+            data-server="https://jsonplaceholder.typicode.com/users" data-live-server="true" data-value-field="id" data-label-field="name"
+            data-fetch-options='{"headers": {"X-My-Header": "test"}}' data-server-params='{"related":"related_field"}'
+            data-hidden-input="true" data-hidden-value="42" placeholder="Type something" value="User 42" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteSourceInput" class="form-label">Pick a country (custom source)</label>
+          <input type="text" class="form-control" id="autocompleteSourceInput" name="autocompleteSourceInput"
+            placeholder="Type something" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteCountry" class="form-label">Pick a country (custom layout)</label>
+          <input type="text" class="form-control" id="autocompleteCountry" name="autocompleteCountry" placeholder="Type something"
+            data-datalist="list-countries" />
+
+          <datalist id="list-countries">
+            <option value="FR">France</option>
+            <option value="BE">Belgique</option>
+            <option value="LU">Luxembourg</option>
+            <option value="NL">Netherlands</option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <bs-autocomplete>
+            <label for="autocompleteComponentInput" class="form-label">From a custom element</label>
+            <input type="text" class="form-control" id="autocompleteComponentInput" name="autocompleteComponentInput"
+              placeholder="Type something" />
+
+            <datalist id="list-component">
+              <option>Love</option>
+              <option>Custom</option>
+              <option>Element</option>
+            </datalist>
+          </bs-autocomplete>
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteLocation" class="form-label">Pick a city</label>
+
+          <div class="input-group select-group">
+            <span class="input-group-text bg-white border-end-0">
+              <l-i name="star"></l-i>
+            </span>
+            <input class="form-control js-select-city autocomplete" id="autocompleteLocation" name="autocompleteLocation" type="text"
+              placeholder="Pick a city" data-datalist="list-city">
+
+            <datalist id="list-city">
+              <option>Paris</option>
+              <option>New York</option>
+              <option>Brussels</option>
+            </datalist>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4" dir="rtl">
+          <label for="autocompleteInputRtl" class="form-label">Type something (rtl)</label>
+          <input type="text" name="autocompleteInputRtl" class="form-control autocomplete" id="autocompleteInputRtl"
+            placeholder="Type something" />
+        </div>
+
+        <div class="col-md-4" dir="rtl">
+          <label for="autocompleteInputRtl2" class="form-label">Type something (rtl, full width)</label>
+          <input type="text" name="autocompleteInputRtl2" class="form-control autocomplete" id="autocompleteInputRtl2"
+            placeholder="Type something" data-full-width="1" />
+        </div>
+
+        <div class="col-md-4" dir="rtl">
+          <label for="autocompleteInputRtl3" class="form-label">Type something (rtl, fixed)</label>
+          <input type="text" name="autocompleteInputRtl3" class="form-control autocomplete" id="autocompleteInputRtl3"
+            placeholder="Type something" data-fixed="1" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <!-- it may NOT be positioned if it has a set position (relative, absolute, etc)-->
+        <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden">
+          <label for="autocompleteInputOverflow" class="form-label">Type something (overflow, not fixed)</label>
+          <input type="text" name="autocompleteInputOverflow" class="form-control autocomplete" id="autocompleteInputOverflow"
+            placeholder="Type something" />
+        </div>
+        <div class="col-md-4" style="height: 80px; background: #ccc; border: 1px solid #666; overflow: hidden; position: relative">
+          <label for="autocompleteInputFixed" class="form-label">Type something (fixed)</label>
+          <input type="text" name="autocompleteInputFixed" class="form-control autocomplete" id="autocompleteInputFixed"
+            placeholder="Type something" data-fixed="1" />
+        </div>
+        <div class="col-md-4"
+          style="height: 80px; width: 320px; background: #ccc; border: 1px solid #666; overflow: scroll; position: relative">
+          <button id="makebodyscrollable" type="button">make body scrollable</button>
+          <div style="margin: 25px 100px; width: 500px">
+            <label for="autocompleteInputFixedScroll" class="form-label">Type something (fixed, scrolling div)</label>
+            <input type="text" name="autocompleteInputFixedScroll" class="form-control autocomplete" id="autocompleteInputFixedScroll"
+              placeholder="Type something" data-fixed="1" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Works in modals too</button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div style="margin-left: 200px; margin-top: 200px">
+                <table>
+                  <tr>
+                    <td><label for="autocompleteSourceInputTable" class="form-label">Pick a country (custom source)</label></td>
+                    <td>
+                      <input type="text" class="form-control" id="autocompleteSourceInputTable" name="autocompleteSourceInputTable"
+                        placeholder="Type something" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- get a clear icon easily with this -->
+              <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
+              <input type="search" class="form-control" id="autocompleteSourceInputModal" name="autocompleteSourceInputModal"
+                placeholder="Type something" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+
+      <input type="reset" value="Reset" class="btn btn-outline-dark""/>
+        <button class=" btn btn-primary" type="submit">Submit form</button>
+
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+      <br /><!-- add a bit of space -->
+    </form>
+  </div>
+  <footer style="position: fixed; bottom: 0; left: 0; right: 0; padding: 1em; background: #eee">
+    <div class="container">
+      <input type="search" class="form-control autocomplete" id="autocompleteBottomInput" placeholder="Type something" />
+    </div>
+  </footer>
+</body>
+
 </html>

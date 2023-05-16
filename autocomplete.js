@@ -146,6 +146,16 @@ function insertAfter(el, newEl) {
   return el.parentNode.insertBefore(newEl, el.nextSibling);
 }
 
+/**
+ * @param {string} html
+ * @returns {string}
+ */
+function decodeHtml(html) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
+
 // #endregion
 
 class Autocomplete {
@@ -657,7 +667,7 @@ class Autocomplete {
 
       // Prevent input otherwise it might trigger autocomplete due to value change
       this._preventInput = true;
-      this._searchInput.value = item.label;
+      this._searchInput.value = decodeHtml(item.label);
       // Populate value in hidden input
       if (this._hiddenInput) {
         this._hiddenInput.value = item.value;
@@ -846,8 +856,8 @@ class Autocomplete {
           const label = o.innerHTML;
 
           return {
-            value: value,
-            label: label,
+            value,
+            label,
           };
         });
         this._addItems(items);
@@ -873,6 +883,9 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @param {Array|Object} src An array of items or a value:label object
+   */
   _addItems(src) {
     const keys = Object.keys(src);
     for (let i = 0; i < keys.length; i++) {

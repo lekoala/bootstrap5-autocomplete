@@ -71,6 +71,11 @@
       onSelectItem: console.log,
     });
 
+    Autocomplete.init("input.dataautocomplete", {
+      highlightTyped: true,
+      onSelectItem: console.log,
+    });
+
     document.getElementById("enableButton").addEventListener("click", (e) => {
       e.preventDefault();
       const el = document.getElementById("autocompleteInput");
@@ -383,13 +388,15 @@
               <l-i name="star"></l-i>
             </span>
             <!-- you need fixed positioning -->
-            <input class="form-control js-select-city autocomplete" id="autocompleteLocation" name="autocompleteLocation" type="text"
-              placeholder="Pick a city" data-datalist="list-city" data-fixed="true">
+            <input class="form-control js-select-city dataautocomplete" id="autocompleteLocation" name="autocompleteLocation" type="text"
+              placeholder="Pick a city" data-datalist="list-city" data-fixed="true" data-hidden-input="true">
 
             <datalist id="list-city">
               <option>Paris</option>
               <option>New York</option>
               <option>Brussels</option>
+              <option>abc&lt;br&gt;efg</option>
+              <option>hij&lt;br&gt;klm</option>
             </datalist>
           </div>
         </div>

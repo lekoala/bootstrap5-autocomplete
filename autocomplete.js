@@ -36,6 +36,7 @@
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
+ * @property {Boolean} fuzzy Fuzzy search
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
@@ -72,6 +73,7 @@ const DEFAULTS = {
   highlightTyped: false,
   fullWidth: false,
   fixed: false,
+  fuzzy: false,
   activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
   valueField: "value",
@@ -151,6 +153,30 @@ function normalize(str) {
     return "";
   }
   return removeDiacritics(str.toString()).toLowerCase();
+}
+
+/**
+ * A simple fuzzy match algorithm that checks if chars are matched
+ * in order in the target string
+ *
+ * @param {String} str
+ * @param {String} lookup
+ * @returns {Boolean}
+ */
+function fuzzyMatch(str, lookup) {
+  if (str.indexOf(lookup) >= 0) {
+    return true;
+  }
+  let pos = 0;
+  for (let i = 0; i < lookup.length; i++) {
+    const c = lookup[i];
+    if (c == " ") continue;
+    pos = str.indexOf(c, pos) + 1;
+    if (pos <= 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -720,20 +746,24 @@ class Autocomplete {
       const key = keys[i];
       const entry = this._items[key];
 
+      const showAllSuggestions = this._config.showAllSuggestions;
       let isMatched = lookup.length == 0;
-      if (!this._config.showAllSuggestions && lookup.length > 0) {
+      if (!showAllSuggestions && lookup.length > 0) {
         // match on any field
         this._config.searchFields.forEach((sf) => {
           const text = normalize(entry[sf]);
-          if (text.indexOf(lookup) >= 0) {
+          const found = this._config.fuzzy ? fuzzyMatch(text, lookup) : text.indexOf(lookup) >= 0;
+          if (found) {
             isMatched = true;
           }
         });
       }
-      if (this._config.showAllSuggestions || isMatched) {
+      const selectFirst = isMatched || lookup.length === 0;
+      if (showAllSuggestions || isMatched) {
         count++;
         const newItem = this._createItem(lookup, entry);
-        if (!firstItem) {
+        // Only select as first item if its matching or no lookup
+        if (!firstItem && selectFirst) {
           firstItem = newItem;
         }
         this._dropElement.appendChild(newItem);

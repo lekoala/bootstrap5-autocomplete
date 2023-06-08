@@ -894,7 +894,6 @@ class Autocomplete {
   _positionMenu() {
     const styles = window.getComputedStyle(this._searchInput);
     const bounds = this._searchInput.getBoundingClientRect();
-    const fixedParent = this._hasFixedParent();
     const isRTL = styles.direction === "rtl";
 
     // Don't position left if not fixed since it may not work in all situations
@@ -931,10 +930,9 @@ class Autocomplete {
     // Overflow height
     const dropBounds = this._dropElement.getBoundingClientRect();
     const h = window.innerHeight;
-    const vdiff = h - 1 - (dropBounds.y + dropBounds.height);
 
-    // We display above input if we have more space there
-    if (vdiff < 0 && bounds.y > h / 2) {
+    // We display above input if it overflows
+    if (dropBounds.y + dropBounds.height > h) {
       this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
     }
   }

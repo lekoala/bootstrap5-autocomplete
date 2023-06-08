@@ -48,6 +48,7 @@
  * @property {String} server Endpoint for data provider
  * @property {String} serverMethod HTTP request method for data provider, default is GET
  * @property {String|Object} serverParams Parameters to pass along to the server
+ * @property {String} serverDataKey By default: data
  * @property {Object} fetchOptions Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
  * @property {Boolean} liveServer Should the endpoint be called each time on input
  * @property {Boolean} noCache Prevent caching by appending a timestamp
@@ -82,6 +83,7 @@ const DEFAULTS = {
   server: "",
   serverMethod: "GET",
   serverParams: {},
+  serverDataKey: "data",
   fetchOptions: {},
   liveServer: false,
   noCache: true,
@@ -108,6 +110,7 @@ const PREV = "prev";
 
 const INSTANCE_MAP = new WeakMap();
 let counter = 0;
+let activeCounter = 0;
 
 // #endregion
 
@@ -170,6 +173,7 @@ class Autocomplete {
     }
     INSTANCE_MAP.set(el, this);
     counter++;
+    activeCounter++;
     this._searchInput = el;
 
     this._configure(config);
@@ -233,7 +237,7 @@ class Autocomplete {
   }
 
   dispose() {
-    counter--;
+    activeCounter--;
 
     this._searchInput.removeEventListener("focus", this);
     this._searchInput.removeEventListener("blur", this);
@@ -242,7 +246,7 @@ class Autocomplete {
     this._dropElement.removeEventListener("mousemove", this);
 
     // only remove if there are no more active elements
-    if (this._config.fixed && counter <= 0) {
+    if (this._config.fixed && activeCounter <= 0) {
       document.removeEventListener("scroll", this, true);
       window.removeEventListener("resize", this);
     }
@@ -257,7 +261,16 @@ class Autocomplete {
    * @param {Event} event
    */
   handleEvent(event) {
-    this[`on${event.type}`](event);
+    // debounce scroll and resize
+    const debounced = ["scroll", "resize"];
+    if (debounced.includes(event.type)) {
+      if (this._timer) window.cancelAnimationFrame(this._timer);
+      this._timer = window.requestAnimationFrame(() => {
+        this[`on${event.type}`](event);
+      });
+    } else {
+      this[`on${event.type}`](event);
+    }
   }
 
   /**
@@ -892,12 +905,16 @@ class Autocomplete {
       const key = keys[i];
       const entry = src[key];
       const label = typeof entry === "string" ? entry : entry.label;
-      const item = typeof entry === "string" ? {} : entry;
+      const item = typeof entry !== "object" ? {} : entry;
 
       // Normalize entry
       item.label = entry[this._config.labelField] ?? label;
       item.value = entry[this._config.valueField] ?? key;
-      this._items[item.value] = item;
+
+      // Make sure we have a label
+      if (item.label) {
+        this._items[item.value] = item;
+      }
     }
   }
 
@@ -946,7 +963,7 @@ class Autocomplete {
     fetch(url, fetchOptions)
       .then((r) => this._config.onServerResponse(r, this))
       .then((suggestions) => {
-        const data = suggestions.data || suggestions;
+        const data = suggestions[this._config.serverDataKey] || suggestions;
         this.setData(data);
         this._setHiddenVal();
         this._abortController = null;

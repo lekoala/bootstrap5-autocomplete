@@ -42,6 +42,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | highlightTyped       | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
 | fullWidth            | <code>Boolean</code>                           | Match the width on the input field                                                                      |
 | fixed                | <code>Boolean</code>                           | Use fixed positioning (solve overflow issues)                                                           |
+| fuzzy                | <code>Boolean</code>                           | Fuzzy search                                                                                            |
 | activeClasses        | <code>Array</code>                             | By default: ["bg-primary", "text-white"]                                                                |
 | labelField           | <code>String</code>                            | Key for the label                                                                                       |
 | valueField           | <code>String</code>                            | Key for the value                                                                                       |

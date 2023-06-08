@@ -571,27 +571,46 @@ class Autocomplete {
   }
 
   /**
+   * @param {HTMLElement} li
+   * @returns {Boolean}
+   */
+  _isItemEnabled(li) {
+    if (li.style.display === "none") {
+      return false;
+    }
+    const fc = li.firstElementChild;
+    return fc.tagName === "A" && !fc.classList.contains("disabled");
+  }
+
+  /**
    * @param {String} dir
+   * @param {*|HTMLElement} sel
    * @returns {HTMLElement}
    */
-  _moveSelection(dir = NEXT) {
+  _moveSelection(dir = NEXT, sel = null) {
     const active = this.getSelection();
-    /**
-     * @type {*}
-     */
-    let sel = null;
 
     // select first li
     if (!active) {
-      sel = this._dropElement.firstChild;
+      // no active selection, cannot go back
+      if (dir === PREV) {
+        return sel;
+      }
+      // find first enabled item
+      if (!sel) {
+        sel = this._dropElement.firstChild;
+        while (sel && !this._isItemEnabled(sel)) {
+          sel = sel["nextSibling"];
+        }
+      }
     } else {
       const sibling = dir === NEXT ? "nextSibling" : "previousSibling";
 
-      // Iterate over visible li
+      // Iterate over enabled li
       sel = active.parentNode;
       do {
         sel = sel[sibling];
-      } while (sel && sel.style.display == "none");
+      } while (sel && !this._isItemEnabled(sel));
 
       // We have a new selection
       if (sel) {
@@ -660,6 +679,20 @@ class Autocomplete {
     } else {
       this._showSuggestions();
     }
+  }
+
+  /**
+   * @param {String} name
+   * @returns {HTMLElement}
+   */
+  _createGroup(name) {
+    const newChild = document.createElement("li");
+    newChild.setAttribute("role", "presentation");
+    const newChildSpan = document.createElement("span");
+    newChild.append(newChildSpan);
+    newChildSpan.classList.add(...["dropdown-header", "text-truncate"]);
+    newChildSpan.innerHTML = name;
+    return newChild;
   }
 
   /**
@@ -742,12 +775,15 @@ class Autocomplete {
     const keys = Object.keys(this._items);
     let count = 0;
     let firstItem = null;
+
+    const groups = [];
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const entry = this._items[key];
 
       // Check search length since we can trigger dropdown with arrow
       const showAllSuggestions = this._config.showAllSuggestions || lookup.length === 0;
+      // Do we find a matching string or do we display immediately ?
       let isMatched = lookup.length == 0 && this._config.suggestionsThreshold === 0;
       if (!showAllSuggestions && lookup.length > 0) {
         // match on any field
@@ -762,6 +798,14 @@ class Autocomplete {
       const selectFirst = isMatched || lookup.length === 0;
       if (showAllSuggestions || isMatched) {
         count++;
+
+        // Group
+        if (entry.group && !groups.includes(entry.group)) {
+          const newItem = this._createGroup(entry.group);
+          this._dropElement.appendChild(newItem);
+          groups.push(entry.group);
+        }
+
         const newItem = this._createItem(lookup, entry);
         // Only select as first item if its matching or no lookup
         if (!firstItem && selectFirst) {
@@ -775,7 +819,8 @@ class Autocomplete {
     }
 
     if (firstItem && this._config.autoselectFirst) {
-      this._moveSelection(NEXT);
+      this.removeSelection();
+      this._moveSelection(NEXT, firstItem);
     }
 
     if (count === 0) {
@@ -956,6 +1001,13 @@ class Autocomplete {
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const entry = src[key];
+
+      if (entry.group && entry.items) {
+        entry.items.forEach((e) => (e.group = entry.group));
+        this._addItems(entry.items);
+        continue;
+      }
+
       const label = typeof entry === "string" ? entry : entry.label;
       const item = typeof entry !== "object" ? {} : entry;
 

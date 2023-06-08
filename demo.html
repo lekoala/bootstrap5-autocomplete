@@ -63,6 +63,22 @@
         },
       });
     }
+
+    var groupedSrc = [];
+    for (let i = 0; i < 5; i++) {
+      var children = [];
+      for (let j = i * 10; j < i * 10 + 10; j++) {
+        children.push({
+          label: "Option " + j,
+          value: "opt" + j,
+        });
+      }
+      groupedSrc.push({
+        group: "Group " + i,
+        items: children,
+      });
+    }
+
     Autocomplete.init("input.autocomplete", {
       items: src,
       valueField: "id",
@@ -109,10 +125,14 @@
     const optsSource = Object.assign({}, opts, {
       source: suggest,
     });
+    const optsGrouped = Object.assign({}, opts, {
+      items: groupedSrc,
+    });
     new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
 
+    new Autocomplete(document.getElementById("autocompleteGroup"), optsGrouped);
     new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
     new Autocomplete(document.getElementById("autocompleteRemote"), opts);
     new Autocomplete(document.getElementById("autocompleteRemotePhone"), opts);
@@ -319,6 +339,14 @@
 
       <div class="row mb-3 g-3">
         <div class="col-md-4">
+          <label for="autocompleteGroup" class="form-label">Grouped options</label>
+          <input type="text" class="form-control" id="autocompleteGroup" name="autocompleteGroup" placeholder="Type something"
+            data-hidden-input="true" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
           <label for="autocompleteRemote" class="form-label">Pick from remote</label>
           <input type="text" class="form-control" id="autocompleteRemote" name="autocompleteRemote" data-server="demo.json"
             placeholder="Type something" data-hidden-input="true" value="Server 1" />
@@ -364,11 +392,14 @@
           <input type="text" class="form-control" id="autocompleteCountry" name="autocompleteCountry" placeholder="Type something"
             data-datalist="list-countries" />
 
+          <!-- no optgroup ! https://developer.mozilla.org/en-US/docs/Web/HTML/Element/optgroup -->
           <datalist id="list-countries">
-            <option value="FR">France</option>
             <option value="BE">Belgique</option>
-            <option value="LU">Luxembourg</option>
             <option value="NL">Netherlands</option>
+            <option value="LU">Luxembourg</option>
+            <option value="FR">France</option>
+            <option value="ES">Spain</option>
+            <option value="IT">Italy</option>
           </datalist>
         </div>
       </div>

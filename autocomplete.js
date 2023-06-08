@@ -39,6 +39,7 @@
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
+ * @property {Array} searchFields Key for the search
  * @property {String} queryParam Key for the query parameter for server
  * @property {Array|Object} items An array of label/value objects or an object with key/values
  * @property {Function} source A function that provides the list of items
@@ -74,6 +75,7 @@ const DEFAULTS = {
   activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
   valueField: "value",
+  searchFields: ["label"],
   queryParam: "query",
   items: [],
   source: null,
@@ -138,6 +140,17 @@ function debounce(func, timeout = 300) {
  */
 function removeDiacritics(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
+ * @param {String|Number} str
+ * @returns {String}
+ */
+function normalize(str) {
+  if (!str) {
+    return "";
+  }
+  return removeDiacritics(str.toString()).toLowerCase();
 }
 
 /**
@@ -632,7 +645,7 @@ class Autocomplete {
     let label = item.label;
 
     if (this._config.highlightTyped) {
-      const idx = removeDiacritics(label).toLowerCase().indexOf(lookup);
+      const idx = normalize(label).indexOf(lookup);
       label =
         label.substring(0, idx) +
         `<mark>${label.substring(idx, idx + lookup.length)}</mark>` +
@@ -697,7 +710,7 @@ class Autocomplete {
    * Show drop menu with suggestions
    */
   _showSuggestions() {
-    const lookup = removeDiacritics(this._searchInput.value).toLowerCase();
+    const lookup = normalize(this._searchInput.value);
     this._dropElement.innerHTML = "";
 
     const keys = Object.keys(this._items);
@@ -707,8 +720,16 @@ class Autocomplete {
       const key = keys[i];
       const entry = this._items[key];
 
-      const text = removeDiacritics(entry.label).toLowerCase();
-      const isMatched = lookup.length > 0 ? text.indexOf(lookup) >= 0 : true;
+      let isMatched = lookup.length == 0;
+      if (!this._config.showAllSuggestions && lookup.length > 0) {
+        // match on any field
+        this._config.searchFields.forEach((sf) => {
+          const text = normalize(entry[sf]);
+          if (text.indexOf(lookup) >= 0) {
+            isMatched = true;
+          }
+        });
+      }
       if (this._config.showAllSuggestions || isMatched) {
         count++;
         const newItem = this._createItem(lookup, entry);

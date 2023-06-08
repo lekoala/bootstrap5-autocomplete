@@ -45,6 +45,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | activeClasses        | <code>Array</code>                             | By default: ["bg-primary", "text-white"]                                                                |
 | labelField           | <code>String</code>                            | Key for the label                                                                                       |
 | valueField           | <code>String</code>                            | Key for the value                                                                                       |
+| searchFields         | <code>Array</code>                             | Key for the search                                                                                      |
 | queryParam           | <code>String</code>                            | Key for the query parameter for server                                                                  |
 | items                | <code>Array</code> \| <code>Object</code>      | An array of label/value objects or an object with key/values                                            |
 | source               | <code>function</code>                          | A function that provides the list of items                                                              |

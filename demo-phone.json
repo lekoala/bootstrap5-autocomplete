@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "entity_id": 1,
+    "entity_type": "App\\Models\\Customer",
+    "country_code": "+55",
+    "phone_number": "84959842677",
+    "created_at": "2023-06-07T15:55:33.000000Z",
+    "updated_at": "2023-06-07T15:55:33.000000Z",
+    "full_phone_number": "+5584959842677",
+    "br_format": "(84) 959842677",
+    "phone_and_name": "(84) 959842677 | My name here"
+  }
+]

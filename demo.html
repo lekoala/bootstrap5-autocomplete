@@ -115,6 +115,7 @@
 
     new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
     new Autocomplete(document.getElementById("autocompleteRemote"), opts);
+    new Autocomplete(document.getElementById("autocompleteRemotePhone"), opts);
     new Autocomplete(document.getElementById("autocompleteLiveRemote"), opts);
 
     const optsCountry = Object.assign({}, opts, {
@@ -326,6 +327,15 @@
 
       <div class="row mb-3 g-3">
         <div class="col-md-4">
+          <label for="autocompleteRemotePhone" class="form-label">Pick from remote custom search fields</label>
+          <input type="text" class="form-control" id="autocompleteRemotePhone" name="autocompleteRemotePhone" data-server="demo-phone.json"
+            data-label-field="phone_and_name" data-value-field="id" data-search-fields="phone_number,label" placeholder="Type something"
+            data-hidden-input="true" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
           <select name="my_related_field" id="related_field">
             <option value="Choose">Choose</option>
             <option value="Me">Me</option>
@@ -447,11 +457,10 @@
       <div class="row mb-3">
         <div class="mb-3">
           <label for="select-remote" class="form-label">Pick a repo</label>
-          <input type="text" name="remote" class="form-control autocomplete" id="select-remote"
-            placeholder="Type something" data-full-width="1" data-server="https://api.github.com/search/repositories" 
-            data-server-data-key="items" data-hidden-input="true" 
-            data-label-field="name" data-value-field="id" data-query-param="q" data-live-server="true" />
-      </div>
+          <input type="text" name="remote" class="form-control autocomplete" id="select-remote" placeholder="Type something"
+            data-full-width="1" data-server="https://api.github.com/search/repositories" data-server-data-key="items"
+            data-hidden-input="true" data-label-field="name" data-value-field="id" data-query-param="q" data-live-server="true" />
+        </div>
       </div>
 
       <!-- Button trigger modal -->

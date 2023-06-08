@@ -369,7 +369,7 @@ class Autocomplete {
   // #region Html
 
   _configureSearchInput() {
-    this._searchInput.autocomplete = "off";
+    this._searchInput.autocomplete = "field-" + Date.now(); // off is ignored
     this._searchInput.spellcheck = false;
     // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete
     this._searchInput.ariaAutoComplete = "list";

@@ -746,7 +746,8 @@ class Autocomplete {
       const key = keys[i];
       const entry = this._items[key];
 
-      const showAllSuggestions = this._config.showAllSuggestions;
+      // Check search length since we can trigger dropdown with arrow
+      const showAllSuggestions = this._config.showAllSuggestions || lookup.length === 0;
       let isMatched = lookup.length == 0 && this._config.suggestionsThreshold === 0;
       if (!showAllSuggestions && lookup.length > 0) {
         // match on any field

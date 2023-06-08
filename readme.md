@@ -100,6 +100,24 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 - If you have a really long list of options, a scrollbar will be used
 - Access instance on a given element with Autocomplete.getInstance(myEl)
 
+## Groups
+
+You can have your items grouped by using the following syntax:
+
+```js
+const src = [
+  {
+    group: "My Group Name",
+    items: [
+      {
+        value: "...",
+        label: "...",
+      },
+    ],
+  },
+];
+```
+
 ## Not using Bootstrap ?
 
 This class does NOT depends on Bootstrap JS. If you are not using Bootstrap, you can simply implement the css

@@ -394,7 +394,7 @@ class Autocomplete {
 
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
-    this._dropElement.setAttribute("id", "ac-menu-" + counter);
+    this._dropElement.id = "ac-menu-" + counter;
     this._dropElement.setAttribute("role", "menu");
     this._dropElement.classList.add(...["dropdown-menu", "autocomplete-menu", "p-0"]);
     this._dropElement.style.maxHeight = "280px";
@@ -412,7 +412,7 @@ class Autocomplete {
 
     insertAfter(this._searchInput, this._dropElement);
     // include aria-controls with the value of the id of the suggested list of values.
-    this._searchInput.setAttribute("aria-controls", this._dropElement.getAttribute("id"));
+    this._searchInput.setAttribute("aria-controls", this._dropElement.id);
   }
 
   // #endregion
@@ -616,7 +616,7 @@ class Autocomplete {
     if (sel) {
       const a = sel.querySelector("a");
       a.classList.add(...this._activeClasses());
-      this._searchInput.setAttribute("aria-activedescendant", a.getAttribute("id"));
+      this._searchInput.setAttribute("aria-activedescendant", a.id);
       if (this._config.updateOnSelect) {
         this._searchInput.value = a.dataset.label;
       }
@@ -684,7 +684,7 @@ class Autocomplete {
     newChild.setAttribute("role", "presentation");
     const newChildLink = document.createElement("a");
     newChild.append(newChildLink);
-    newChildLink.setAttribute("id", this._dropElement.getAttribute("id") + "-" + this._dropElement.children.length);
+    newChildLink.id = this._dropElement.id + "-" + this._dropElement.children.length;
     newChildLink.classList.add(...["dropdown-item", "text-truncate"]);
     newChildLink.setAttribute("data-value", item.value);
     newChildLink.setAttribute("data-label", item.label);

@@ -747,7 +747,7 @@ class Autocomplete {
       const entry = this._items[key];
 
       const showAllSuggestions = this._config.showAllSuggestions;
-      let isMatched = lookup.length == 0;
+      let isMatched = lookup.length == 0 && this._config.suggestionsThreshold === 0;
       if (!showAllSuggestions && lookup.length > 0) {
         // match on any field
         this._config.searchFields.forEach((sf) => {

@@ -769,6 +769,10 @@ class Autocomplete {
    * Show drop menu with suggestions
    */
   _showSuggestions() {
+    // It's not focused anymore
+    if (document.activeElement != this._searchInput) {
+      return;
+    }
     const lookup = normalize(this._searchInput.value);
     this._dropElement.innerHTML = "";
 
@@ -885,21 +889,6 @@ class Autocomplete {
   }
 
   /**
-   * Checks if parent is fixed for boundary checks
-   * @returns {Boolean}
-   */
-  _hasFixedParent() {
-    let parent = this._searchInput.parentElement;
-    while (parent && parent instanceof HTMLElement) {
-      if (parent.style.position === "fixed") {
-        return true;
-      }
-      parent = parent.parentElement;
-    }
-    return false;
-  }
-
-  /**
    * Position the dropdown menu
    */
   _positionMenu() {
@@ -941,7 +930,7 @@ class Autocomplete {
 
     // Overflow height
     const dropBounds = this._dropElement.getBoundingClientRect();
-    const h = fixedParent ? window.innerHeight : document.body.offsetHeight;
+    const h = window.innerHeight;
     const vdiff = h - 1 - (dropBounds.y + dropBounds.height);
 
     // We display above input if we have more space there

@@ -198,6 +198,16 @@ function decodeHtml(html) {
   return txt.value;
 }
 
+/**
+ * @param {HTMLElement} el
+ * @param {Object} attrs
+ */
+function attrs(el, attrs) {
+  for (const [k, v] of Object.entries(attrs)) {
+    el.setAttribute(k, v);
+  }
+}
+
 // #endregion
 
 class Autocomplete {
@@ -371,15 +381,16 @@ class Autocomplete {
   _configureSearchInput() {
     this._searchInput.autocomplete = "field-" + Date.now(); // off is ignored
     this._searchInput.spellcheck = false;
+    // note: firefox doesn't support the properties so we use attributes
     // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete
-    this._searchInput.ariaAutoComplete = "list";
     // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-expanded
     // use the aria-expanded state on the element with role combobox to communicate that the list is displayed.
-    this._searchInput.ariaExpanded = "false";
-    // include aria-haspopup matching the role of the element that contains the collection of suggested values.
-    this._searchInput.ariaHasPopup = "menu";
-    this._searchInput.setAttribute("role", "combobox");
-
+    attrs(this._searchInput, {
+      "aria-auto-complete": "list",
+      "aria-has-popup": "menu",
+      "aria-expanded": "false",
+      role: "combobox",
+    });
     // Hidden input?
     this._hiddenInput = null;
     if (this._config.hiddenInput) {
@@ -849,7 +860,9 @@ class Autocomplete {
    */
   _showDropdown() {
     this._dropElement.classList.add(SHOW_CLASS);
-    this._searchInput.ariaExpanded = "true";
+    attrs(this._searchInput, {
+      "aria-expanded": "true",
+    });
     this._positionMenu();
   }
 
@@ -870,7 +883,9 @@ class Autocomplete {
    */
   hideSuggestions() {
     this._dropElement.classList.remove(SHOW_CLASS);
-    this._searchInput.ariaExpanded = "false";
+    attrs(this._searchInput, {
+      "aria-expanded": "false",
+    });
     this.removeSelection();
   }
 

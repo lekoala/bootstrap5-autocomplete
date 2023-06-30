@@ -59,6 +59,7 @@
  * @property {RenderCallback} onRenderItem Callback function that returns the label
  * @property {ItemCallback} onSelectItem Callback function to call on selection
  * @property {ServerCallback} onServerResponse Callback function to process server response. Must return a Promise
+ * @property {ItemCallback} onChange Callback function to call on change-event. Returns currently selected item if any
  */
 
 /**
@@ -100,6 +101,7 @@ const DEFAULTS = {
   onServerResponse: (response, inst) => {
     return response.json();
   },
+  onChange: (item, inst) => { },
 };
 
 // #endregion
@@ -245,6 +247,7 @@ class Autocomplete {
 
     // Add listeners (remove then on dispose()). See handleEvent.
     this._searchInput.addEventListener("focus", this);
+    this._searchInput.addEventListener("change", this);
     this._searchInput.addEventListener("blur", this);
     this._searchInput.addEventListener("input", this);
     this._searchInput.addEventListener("keydown", this);
@@ -289,6 +292,7 @@ class Autocomplete {
     activeCounter--;
 
     this._searchInput.removeEventListener("focus", this);
+    this._searchInput.removeEventListener("change", this);
     this._searchInput.removeEventListener("blur", this);
     this._searchInput.removeEventListener("input", this);
     this._searchInput.removeEventListener("keydown", this);
@@ -439,6 +443,12 @@ class Autocomplete {
       this._hiddenInput.value = null;
     }
     this.showOrSearch();
+  }
+
+  onchange(e) {
+    const search = this._searchInput.value;
+    const item = Object.values(this._items).find(item => item.label === search);
+    this._config.onChange(item, this);
   }
 
   onblur(e) {

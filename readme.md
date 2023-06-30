@@ -79,6 +79,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | onRenderItem         | [<code>RenderCallback</code>](#RenderCallback) | Callback function that returns the label                                                                |
 | onSelectItem         | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on selection                                                                  |
 | onServerResponse     | [<code>ServerCallback</code>](#ServerCallback) | Callback function to process server response. Must return a Promise                                     |
+| onChange             | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on change-event. Returns currently selected item if any                       |
 
 ## Callbacks
 

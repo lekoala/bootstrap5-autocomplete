@@ -245,6 +245,11 @@ class Autocomplete {
       window.addEventListener("resize", this);
     }
 
+    // Rebind handleEvent to make sure the scope will not change
+    this.handleEvent = (ev) => {
+      this._handleEvent(ev);
+    };
+
     // Add listeners (remove then on dispose()). See handleEvent.
     this._searchInput.addEventListener("focus", this);
     this._searchInput.addEventListener("change", this);
@@ -310,10 +315,19 @@ class Autocomplete {
   }
 
   /**
-   * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
+   * event-polyfill compat / handleEvent is expected on class
+   * @link https://github.com/lifaon74/events-polyfill/issues/10
    * @param {Event} event
    */
   handleEvent(event) {
+    this._handleEvent(event);
+  }
+
+  /**
+   * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
+   * @param {Event} event
+   */
+  _handleEvent(event) {
     // debounce scroll and resize
     const debounced = ["scroll", "resize"];
     if (debounced.includes(event.type)) {

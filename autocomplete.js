@@ -101,7 +101,7 @@ const DEFAULTS = {
   onServerResponse: (response, inst) => {
     return response.json();
   },
-  onChange: (item, inst) => { },
+  onChange: (item, inst) => {},
 };
 
 // #endregion
@@ -447,7 +447,7 @@ class Autocomplete {
 
   onchange(e) {
     const search = this._searchInput.value;
-    const item = Object.values(this._items).find(item => item.label === search);
+    const item = Object.values(this._items).find((item) => item.label === search);
     this._config.onChange(item, this);
   }
 
@@ -1043,7 +1043,12 @@ class Autocomplete {
     }
     this._abortController = new AbortController();
 
-    const params = Object.assign({}, this._config.serverParams);
+    // Read data params dynamically as well
+    let extraParams = this._searchInput.dataset.serverParams || {};
+    if (typeof extraParams == "string") {
+      extraParams = JSON.parse(extraParams);
+    }
+    const params = Object.assign({}, this._config.serverParams, extraParams);
     // Pass current value
     params[this._config.queryParam] = this._searchInput.value;
     // Prevent caching

@@ -376,6 +376,16 @@
             data-fetch-options='{"headers": {"X-My-Header": "test"}}' data-server-params='{"related":"related_field"}'
             data-hidden-input="true" data-hidden-value="42" placeholder="Type something" value="User 42" />
         </div>
+
+        <div class="col-md-4">
+          <button type="button" id="upparams">Update params</button>
+          <script type="module">
+            document.getElementById('upparams').addEventListener('click', (e) => {
+              let inst = document.getElementById('autocompleteLiveRemote');
+              inst.dataset.serverParams = '{"key": "' + Date.now() + '"}';
+            })
+          </script>
+        </div>
       </div>
 
       <div class="row mb-3 g-3">

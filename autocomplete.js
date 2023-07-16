@@ -166,7 +166,7 @@ function normalize(str) {
  * @returns {Boolean}
  */
 function fuzzyMatch(str, lookup) {
-  if (str.indexOf(lookup) >= 0) {
+  if (str.indexOf(lookup) == 0) {
     return true;
   }
   let pos = 0;
@@ -814,7 +814,7 @@ class Autocomplete {
         // match on any field
         this._config.searchFields.forEach((sf) => {
           const text = normalize(entry[sf]);
-          const found = this._config.fuzzy ? fuzzyMatch(text, lookup) : text.indexOf(lookup) >= 0;
+          const found = this._config.fuzzy ? fuzzyMatch(text, lookup) : text.indexOf(lookup) == 0;
           if (found) {
             isMatched = true;
           }

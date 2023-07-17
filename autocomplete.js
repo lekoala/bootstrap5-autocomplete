@@ -37,6 +37,7 @@
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {Boolean} fuzzy Fuzzy search
+ * @property {Boolean} startsWith Must start with the string. Defaults to false (it matches any position).
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
@@ -75,6 +76,7 @@ const DEFAULTS = {
   fullWidth: false,
   fixed: false,
   fuzzy: false,
+  startsWith: false,
   activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
   valueField: "value",
@@ -828,7 +830,13 @@ class Autocomplete {
         // match on any field
         this._config.searchFields.forEach((sf) => {
           const text = normalize(entry[sf]);
-          const found = this._config.fuzzy ? fuzzyMatch(text, lookup) : text.indexOf(lookup) >= 0;
+          let found = false;
+          if (this._config.fuzzy) {
+            found = fuzzyMatch(text, lookup);
+          } else {
+            const idx = text.indexOf(lookup);
+            found = this._config.startsWith ? idx === 0 : idx >= 0;
+          }
           if (found) {
             isMatched = true;
           }

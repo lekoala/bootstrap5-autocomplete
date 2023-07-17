@@ -942,18 +942,20 @@ class Autocomplete {
     const styles = window.getComputedStyle(this._searchInput);
     const bounds = this._searchInput.getBoundingClientRect();
     const isRTL = styles.direction === "rtl";
+    const fullWidth = this._config.fullWidth;
+    const fixed = this._config.fixed;
 
     // Don't position left if not fixed since it may not work in all situations
     // due to offsetParent margin or in tables
     let left = null;
     let top = null;
 
-    if (this._config.fixed) {
+    if (fixed) {
       left = bounds.x;
       top = bounds.y + bounds.height;
 
       // Align end
-      if (isRTL && !this._config.fullWidth) {
+      if (isRTL && !fullWidth) {
         left -= this._dropElement.offsetWidth - bounds.width;
       }
     }
@@ -962,7 +964,7 @@ class Autocomplete {
     this._dropElement.style.transform = "unset";
 
     // Use full holder width
-    if (this._config.fullWidth) {
+    if (fullWidth) {
       this._dropElement.style.width = this._searchInput.offsetWidth + "px";
     }
 
@@ -980,7 +982,11 @@ class Autocomplete {
 
     // We display above input if it overflows
     if (dropBounds.y + dropBounds.height > h) {
-      this._dropElement.style.transform = "translateY(calc(-100% - " + this._searchInput.offsetHeight + "px))";
+      // We need to add the offset twice
+      const topOffset = fullWidth ? bounds.height + 4 : bounds.height;
+      // In chrome, we need 100.1% to avoid blurry text
+      // @link https://stackoverflow.com/questions/32034574/font-looks-blurry-after-translate-in-chrome
+      this._dropElement.style.transform = "translateY(calc(-100.1% - " + topOffset + "px))";
     }
   }
 

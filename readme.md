@@ -115,6 +115,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 - Use arrow down to show dropdown (and arrow up to hide it)
 - If you have a really long list of options, a scrollbar will be used
 - Access instance on a given element with Autocomplete.getInstance(myEl)
+- Use type="search" for your inputs to get a clear icon
 
 ## Groups
 

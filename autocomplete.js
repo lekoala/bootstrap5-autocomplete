@@ -424,7 +424,6 @@ class Autocomplete {
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
     this._dropElement.id = "ac-menu-" + counter;
-    this._dropElement.setAttribute("role", "menu");
     this._dropElement.classList.add(...["dropdown-menu", "autocomplete-menu", "p-0"]);
     this._dropElement.style.maxHeight = "280px";
     if (!this._config.fullWidth) {
@@ -890,6 +889,8 @@ class Autocomplete {
    */
   _showDropdown() {
     this._dropElement.classList.add(SHOW_CLASS);
+    // Register role when shown to avoid empty children issues
+    this._dropElement.setAttribute("role", "menu");
     attrs(this._searchInput, {
       "aria-expanded": "true",
     });

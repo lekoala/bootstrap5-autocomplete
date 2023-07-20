@@ -399,7 +399,7 @@ class Autocomplete {
   // #region Html
 
   _configureSearchInput() {
-    this._searchInput.autocomplete = "field-" + Date.now(); // off is ignored
+    this._searchInput.autocomplete = "off";
     this._searchInput.spellcheck = false;
     // note: firefox doesn't support the properties so we use attributes
     // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete

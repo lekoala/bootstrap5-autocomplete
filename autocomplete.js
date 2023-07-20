@@ -35,6 +35,7 @@
  * @property {Boolean} ignoreEnter Don't listen for enter key
  * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
+ * @property {String} highlightClass Class added to the mark label
  * @property {Boolean} fullWidth Match the width on the input field
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {Boolean} fuzzy Fuzzy search
@@ -75,6 +76,7 @@ const DEFAULTS = {
   ignoreEnter: false,
   updateOnSelect: false,
   highlightTyped: false,
+  highlightClass: "",
   fullWidth: false,
   fixed: false,
   fuzzy: false,
@@ -741,7 +743,7 @@ class Autocomplete {
       const idx = normalize(label).indexOf(lookup);
       label =
         label.substring(0, idx) +
-        `<mark>${label.substring(idx, idx + lookup.length)}</mark>` +
+        `<mark class="${this._config.highlightClass}">${label.substring(idx, idx + lookup.length)}</mark>` +
         label.substring(idx + lookup.length, label.length);
     }
 

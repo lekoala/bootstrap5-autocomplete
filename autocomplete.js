@@ -32,6 +32,7 @@
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
  * @property {Number} maximumItems Maximum number of items to display
  * @property {Boolean} autoselectFirst Always select the first item
+ * @property {Boolean} ignoreEnter Don't listen for enter key
  * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {Boolean} fullWidth Match the width on the input field
@@ -71,6 +72,7 @@ const DEFAULTS = {
   suggestionsThreshold: 1,
   maximumItems: 0,
   autoselectFirst: true,
+  ignoreEnter: false,
   updateOnSelect: false,
   highlightTyped: false,
   fullWidth: false,
@@ -253,11 +255,9 @@ class Autocomplete {
     };
 
     // Add listeners (remove then on dispose()). See handleEvent.
-    this._searchInput.addEventListener("focus", this);
-    this._searchInput.addEventListener("change", this);
-    this._searchInput.addEventListener("blur", this);
-    this._searchInput.addEventListener("input", this);
-    this._searchInput.addEventListener("keydown", this);
+    ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
+      this._searchInput.addEventListener(type, this);
+    });
     this._dropElement.addEventListener("mousemove", this);
 
     this._fetchData();
@@ -298,11 +298,9 @@ class Autocomplete {
   dispose() {
     activeCounter--;
 
-    this._searchInput.removeEventListener("focus", this);
-    this._searchInput.removeEventListener("change", this);
-    this._searchInput.removeEventListener("blur", this);
-    this._searchInput.removeEventListener("input", this);
-    this._searchInput.removeEventListener("keydown", this);
+    ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
+      this._searchInput.removeEventListener(type, this);
+    });
     this._dropElement.removeEventListener("mousemove", this);
 
     // only remove if there are no more active elements
@@ -484,7 +482,7 @@ class Autocomplete {
     switch (key) {
       case 13:
       case "Enter":
-        if (this.isDropdownVisible()) {
+        if (!this._config.ignoreEnter && this.isDropdownVisible()) {
           e.preventDefault();
           const selection = this.getSelection();
           if (selection) {

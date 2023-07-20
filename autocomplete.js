@@ -32,7 +32,7 @@
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
  * @property {Number} maximumItems Maximum number of items to display
  * @property {Boolean} autoselectFirst Always select the first item
- * @property {Boolean} ignoreEnter Don't listen for enter key
+ * @property {Boolean} ignoreEnter Ignore enter if no items are selected (play nicely with autoselectFirst=0)
  * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {String} highlightClass Class added to the mark label
@@ -483,11 +483,13 @@ class Autocomplete {
     switch (key) {
       case 13:
       case "Enter":
-        if (!this._config.ignoreEnter && this.isDropdownVisible()) {
-          e.preventDefault();
+        if (this.isDropdownVisible()) {
           const selection = this.getSelection();
           if (selection) {
             selection.click();
+          }
+          if (selection || !this._config.ignoreEnter) {
+            e.preventDefault();
           }
         }
         break;

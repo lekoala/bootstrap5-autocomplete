@@ -55,6 +55,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | ignoreEnter          | <code>Boolean</code>                           | Don't listen for enter key                                                                              |
 | updateOnSelect       | <code>Boolean</code>                           | Update input value on selection (doesn't play nice with autoselectFirst)                                |
 | highlightTyped       | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
+| highlightClass       | <code>String</code>                            | Class added to the mark label                                                                           |
 | fullWidth            | <code>Boolean</code>                           | Match the width on the input field                                                                      |
 | fixed                | <code>Boolean</code>                           | Use fixed positioning (solve overflow issues)                                                           |
 | fuzzy                | <code>Boolean</code>                           | Fuzzy search                                                                                            |

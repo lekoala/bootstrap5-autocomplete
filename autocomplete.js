@@ -404,8 +404,8 @@ class Autocomplete {
     // @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-expanded
     // use the aria-expanded state on the element with role combobox to communicate that the list is displayed.
     attrs(this._searchInput, {
-      "aria-auto-complete": "list",
-      "aria-has-popup": "menu",
+      "aria-autocomplete": "list",
+      "aria-haspopup": "menu",
       "aria-expanded": "false",
       role: "combobox",
     });

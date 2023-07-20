@@ -52,6 +52,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | suggestionsThreshold | <code>Number</code>                            | Number of chars required to show suggestions                                                            |
 | maximumItems         | <code>Number</code>                            | Maximum number of items to display                                                                      |
 | autoselectFirst      | <code>Boolean</code>                           | Always select the first item                                                                            |
+| ignoreEnter          | <code>Boolean</code>                           | Don't listen for enter key                                                                              |
 | updateOnSelect       | <code>Boolean</code>                           | Update input value on selection (doesn't play nice with autoselectFirst)                                |
 | highlightTyped       | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
 | fullWidth            | <code>Boolean</code>                           | Match the width on the input field                                                                      |

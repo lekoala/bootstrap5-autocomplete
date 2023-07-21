@@ -260,7 +260,9 @@ class Autocomplete {
     ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
       this._searchInput.addEventListener(type, this);
     });
-    this._dropElement.addEventListener("mousemove", this);
+    ["mousemove", "mouseleave"].forEach((type) => {
+      this._dropElement.addEventListener(type, this);
+    });
 
     this._fetchData();
   }
@@ -303,7 +305,9 @@ class Autocomplete {
     ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
       this._searchInput.removeEventListener(type, this);
     });
-    this._dropElement.removeEventListener("mousemove", this);
+    ["mousemove", "mouseleave"].forEach((type) => {
+      this._dropElement.removeEventListener(type, this);
+    });
 
     // only remove if there are no more active elements
     if (this._config.fixed && activeCounter <= 0) {
@@ -523,6 +527,11 @@ class Autocomplete {
   onmousemove(e) {
     // Moving the mouse means no longer using keyboard
     this._keyboardNavigation = false;
+  }
+
+  onmouseleave(e) {
+    // Remove selection
+    this.removeSelection();
   }
 
   onscroll(e) {

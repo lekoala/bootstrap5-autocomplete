@@ -61,7 +61,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | fuzzy                      | <code>Boolean</code>                           | Fuzzy search                                                                                            |
 | startsWith                 | <code>Boolean</code>                           | Must start with the string. Defaults to false (it matches any position).                                |
 | preventBrowserAutocomplete | <code>Boolean</code>                           | Additional measures to prevent browser autocomplete                                                     |
-| itemClass                  | <code>String</code>                            | Applied to the 'li'. Accepts space separated classes.                                                   |
+| itemClass                  | <code>String</code>                            | Applied to the dropdown item. Accepts space separated classes.                                          |
 | activeClasses              | <code>Array</code>                             | By default: ["bg-primary", "text-white"]                                                                |
 | labelField                 | <code>String</code>                            | Key for the label                                                                                       |
 | valueField                 | <code>String</code>                            | Key for the value                                                                                       |

@@ -41,7 +41,7 @@
  * @property {Boolean} fuzzy Fuzzy search
  * @property {Boolean} startsWith Must start with the string. Defaults to false (it matches any position).
  * @property {Boolean} preventBrowserAutocomplete Additional measures to prevent browser autocomplete
- * @property {String} itemClass Applied to the 'li'. Accepts space separated classes.
+ * @property {String} itemClass Applied to the dropdown item. Accepts space separated classes.
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
@@ -791,6 +791,9 @@ class Autocomplete {
     newChild.append(newChildLink);
     newChildLink.id = this._dropElement.id + "-" + this._dropElement.children.length;
     newChildLink.classList.add(...["dropdown-item", "text-truncate"]);
+    if (this._config.itemClass) {
+      newChildLink.classList.add(...this._config.itemClass.split(" "));
+    }
     newChildLink.setAttribute("data-value", item.value);
     newChildLink.setAttribute("data-label", item.label);
     // Behave like a datalist (tab doesn't allow item selection)
@@ -927,9 +930,6 @@ class Autocomplete {
   _createLi() {
     const newChild = document.createElement("li");
     newChild.setAttribute("role", "presentation");
-    if (this._config.itemClass) {
-      newChild.classList.add(...this._config.itemClass.split(" "));
-    }
     return newChild;
   }
 

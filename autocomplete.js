@@ -40,6 +40,7 @@
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {Boolean} fuzzy Fuzzy search
  * @property {Boolean} startsWith Must start with the string. Defaults to false (it matches any position).
+ * @property {String} itemClass Applied to the 'li'. Accepts space separated classes.
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
  * @property {String} valueField Key for the value
@@ -81,6 +82,7 @@ const DEFAULTS = {
   fixed: false,
   fuzzy: false,
   startsWith: false,
+  itemClass: "",
   activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
   valueField: "value",
@@ -733,8 +735,7 @@ class Autocomplete {
    * @returns {HTMLElement}
    */
   _createGroup(name) {
-    const newChild = document.createElement("li");
-    newChild.setAttribute("role", "presentation");
+    const newChild = this._createLi();
     const newChildSpan = document.createElement("span");
     newChild.append(newChildSpan);
     newChildSpan.classList.add(...["dropdown-header", "text-truncate"]);
@@ -760,8 +761,7 @@ class Autocomplete {
 
     label = this._config.onRenderItem(item, label, this);
 
-    const newChild = document.createElement("li");
-    newChild.setAttribute("role", "presentation");
+    const newChild = this._createLi();
     const newChildLink = document.createElement("a");
     newChild.append(newChildLink);
     newChildLink.id = this._dropElement.id + "-" + this._dropElement.children.length;
@@ -882,8 +882,7 @@ class Autocomplete {
 
     if (count === 0) {
       if (this._config.notFoundMessage) {
-        const newChild = document.createElement("li");
-        newChild.setAttribute("role", "presentation");
+        const newChild = this._createLi();
         newChild.innerHTML = `<span class="dropdown-item">${this._config.notFoundMessage}</span>`;
         this._dropElement.appendChild(newChild);
         this._showDropdown();
@@ -895,6 +894,18 @@ class Autocomplete {
       // Or show it if necessary
       this._showDropdown();
     }
+  }
+
+  /**
+   * @returns {HTMLLIElement}
+   */
+  _createLi() {
+    const newChild = document.createElement("li");
+    newChild.setAttribute("role", "presentation");
+    if (this._config.itemClass) {
+      newChild.classList.add(...this._config.itemClass.split(" "));
+    }
+    return newChild;
   }
 
   /**

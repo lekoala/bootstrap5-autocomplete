@@ -40,6 +40,7 @@
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {Boolean} fuzzy Fuzzy search
  * @property {Boolean} startsWith Must start with the string. Defaults to false (it matches any position).
+ * @property {Boolean} preventBrowserAutocomplete Additional measures to prevent browser autocomplete
  * @property {String} itemClass Applied to the 'li'. Accepts space separated classes.
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
  * @property {String} labelField Key for the label
@@ -82,6 +83,7 @@ const DEFAULTS = {
   fixed: false,
   fuzzy: false,
   startsWith: false,
+  preventBrowserAutocomplete: false,
   itemClass: "",
   activeClasses: ["bg-primary", "text-white"],
   labelField: "label",
@@ -216,6 +218,20 @@ function attrs(el, attrs) {
   for (const [k, v] of Object.entries(attrs)) {
     el.setAttribute(k, v);
   }
+}
+
+/**
+ * Add a zero width join between chars
+ * @param {HTMLElement|Element} el
+ */
+function zwijit(el) {
+  //@ts-ignore
+  el.ariaLabel = el.innerText;
+  //@ts-ignore
+  el.innerHTML = el.innerText
+    .split("")
+    .map((char) => char + "&zwj;")
+    .join("");
 }
 
 // #endregion
@@ -417,6 +433,16 @@ class Autocomplete {
       "aria-expanded": "false",
       role: "combobox",
     });
+
+    // Even with autocomplete "off" we can get suggestion from browser due to label
+    if (this._searchInput.id && this._config.preventBrowserAutocomplete) {
+      const label = document.querySelector(`[for="${this._searchInput.id}"]`);
+      console.log(label);
+      if (label) {
+        zwijit(label);
+      }
+    }
+
     // Hidden input?
     this._hiddenInput = null;
     if (this._config.hiddenInput) {

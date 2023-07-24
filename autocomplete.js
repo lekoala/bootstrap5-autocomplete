@@ -437,7 +437,6 @@ class Autocomplete {
     // Even with autocomplete "off" we can get suggestion from browser due to label
     if (this._searchInput.id && this._config.preventBrowserAutocomplete) {
       const label = document.querySelector(`[for="${this._searchInput.id}"]`);
-      console.log(label);
       if (label) {
         zwijit(label);
       }

@@ -1149,9 +1149,11 @@ class Autocomplete {
 
     const urlParams = new URLSearchParams(params);
     let url = this._config.server;
+
+    const abortController = new AbortController(); // Create a new instance
     let fetchOptions = Object.assign(this._config.fetchOptions, {
       method: this._config.serverMethod || "GET",
-      signal: this._abortController.signal,
+      signal: abortController.signal,
     });
 
     if (fetchOptions.method === "POST") {
@@ -1171,10 +1173,10 @@ class Autocomplete {
         if (show) {
           this._showSuggestions();
         }
-      })
+      }) 
       .catch((e) => {
         if (e.name === "AbortError") {
-          return;
+          // Ignore the AbortError silently
         }
         console.error(e);
       })

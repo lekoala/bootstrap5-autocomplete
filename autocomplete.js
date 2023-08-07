@@ -1173,7 +1173,8 @@ class Autocomplete {
         }
       })
       .catch((e) => {
-        if (e.name === "AbortError") {
+        // Current version of Firefox rejects the promise with a DOMException
+        if (e.name === "AbortError" || this._abortController.signal.aborted) {
           return;
         }
         console.error(e);

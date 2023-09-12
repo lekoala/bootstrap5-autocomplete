@@ -1105,7 +1105,7 @@ class Autocomplete {
 
       // Make sure we have a label
       if (item.label) {
-        this._items[item.value] = item;
+        this._items[item.label] = item;
       }
     }
   }

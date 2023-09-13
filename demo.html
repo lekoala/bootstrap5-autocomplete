@@ -37,7 +37,9 @@
 
         this.el = this.querySelector("input");
 
-        const opts = {};
+        const opts = {
+          onSelectItem: console.log,
+        };
         const datalist = this.querySelector("datalist");
         if (datalist) {
           opts.datalist = datalist.getAttribute("id");
@@ -269,8 +271,12 @@
       <div class="row mb-3 g-3">
         <div class="col-md-4">
           <label for="autocompleteInputZero" class="form-label">Type something (zero threshold + fuzzy search)</label>
-          <input type="text" class="form-control autocomplete" name="autocompleteInputZero" id="autocompleteInputZero"
-            data-suggestions-threshold="0" data-active-classes="my,test,classes" data-fuzzy="true" placeholder="Type something" />
+          <div class="input-group mb-3">
+            <button class="btn btn-outline-secondary" type="button" id="button-clear">Clear</button>
+            <input type="text" class="form-control autocomplete" name="autocompleteInputZero" id="autocompleteInputZero"
+            data-suggestions-threshold="0" data-active-classes="my,test,classes" data-clear-control="#button-clear" data-fixed="true" data-fuzzy="true" placeholder="Type something" />
+          </div>
+        
         </div>
       </div>
       <div class="row mb-3 g-3">
@@ -397,7 +403,8 @@
 
       <div class="row mb-3 g-3">
         <div class="col-md-4">
-          <label for="autocompleteSourceInput" class="form-label">Pick a country (custom source)</label>
+          <label for="autocompleteSourceInput" class="form-label">Pick a c&zwj;ountry (custom
+            source)</label><!-- adding zero width joins fixes autocomplete menu triggered by the label -->
           <input type="text" class="form-control" id="autocompleteSourceInput" name="autocompleteSourceInput" placeholder="Type something"
             data-not-found-message="No country found" />
         </div>

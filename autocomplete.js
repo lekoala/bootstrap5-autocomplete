@@ -51,6 +51,7 @@
  * @property {Function} source A function that provides the list of items
  * @property {Boolean} hiddenInput Create an hidden input which stores the valueField
  * @property {String} hiddenValue Populate the initial hidden value. Mostly useful with liveServer.
+ * @property {String} clearControl Selector that will clear the input on click.
  * @property {String} datalist The id of the source datalist
  * @property {String} server Endpoint for data provider
  * @property {String} serverMethod HTTP request method for data provider, default is GET
@@ -94,6 +95,7 @@ const DEFAULTS = {
   source: null,
   hiddenInput: false,
   hiddenValue: "",
+  clearControl: "",
   datalist: "",
   server: "",
   serverMethod: "GET",
@@ -269,10 +271,10 @@ class Autocomplete {
       window.addEventListener("resize", this);
     }
 
-    // Rebind handleEvent to make sure the scope will not change
-    this.handleEvent = (ev) => {
-      this._handleEvent(ev);
-    };
+    const clearControl = this._getClearControl();
+    if (clearControl) {
+      clearControl.addEventListener("click", this);
+    }
 
     // Add listeners (remove then on dispose()). See handleEvent.
     ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
@@ -327,6 +329,11 @@ class Autocomplete {
       this._dropElement.removeEventListener(type, this);
     });
 
+    const clearControl = this._getClearControl();
+    if (clearControl) {
+      clearControl.removeEventListener("click", this);
+    }
+
     // only remove if there are no more active elements
     if (this._config.fixed && activeCounter <= 0) {
       document.removeEventListener("scroll", this, true);
@@ -338,20 +345,18 @@ class Autocomplete {
     INSTANCE_MAP.delete(this._searchInput);
   }
 
-  /**
-   * event-polyfill compat / handleEvent is expected on class
-   * @link https://github.com/lifaon74/events-polyfill/issues/10
-   * @param {Event} event
-   */
-  handleEvent(event) {
-    this._handleEvent(event);
+  _getClearControl() {
+    if (this._config.clearControl) {
+      return document.querySelector(this._config.clearControl);
+    }
   }
 
   /**
+   * @link https://github.com/lifaon74/events-polyfill/issues/10
    * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
    * @param {Event} event
    */
-  _handleEvent(event) {
+  handleEvent = (event) => {
     // debounce scroll and resize
     const debounced = ["scroll", "resize"];
     if (debounced.includes(event.type)) {
@@ -362,7 +367,7 @@ class Autocomplete {
     } else {
       this[`on${event.type}`](event);
     }
-  }
+  };
 
   /**
    * @param {Config|Object} config
@@ -479,6 +484,12 @@ class Autocomplete {
   // #endregion
 
   // #region Events
+
+  onclick(e) {
+    if (e.target.matches(this._config.clearControl)) {
+      this.clear();
+    }
+  }
 
   oninput(e) {
     if (this._preventInput) {
@@ -617,6 +628,13 @@ class Autocomplete {
    */
   isDropdownVisible() {
     return this._dropElement.classList.contains(SHOW_CLASS);
+  }
+
+  clear() {
+    this._searchInput.value = "";
+    if (this._hiddenInput) {
+      this._hiddenInput.value = "";
+    }
   }
 
   // #endregion

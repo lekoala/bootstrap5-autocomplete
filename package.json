@@ -1,7 +1,7 @@
 {
   "name": "bootstrap5-autocomplete",
   "type": "module",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "Autocomplete for Bootstrap 5 (and 4!)",
   "main": "autocomplete",
   "scripts": {

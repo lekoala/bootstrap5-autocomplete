@@ -27,6 +27,12 @@
  */
 
 /**
+ * @callback FetchCallback
+ * @param {Autocomplete} inst
+ * @returns {void}
+ */
+
+/**
  * @typedef Config
  * @property {Boolean} showAllSuggestions Show all suggestions even if they don't match
  * @property {Number} suggestionsThreshold Number of chars required to show suggestions
@@ -66,6 +72,8 @@
  * @property {ItemCallback} onSelectItem Callback function to call on selection
  * @property {ServerCallback} onServerResponse Callback function to process server response. Must return a Promise
  * @property {ItemCallback} onChange Callback function to call on change-event. Returns currently selected item if any
+ * @property {FetchCallback} onBeforeFetch Callback function before fetch
+ * @property {FetchCallback} onAfterFetch Callback function after fetch
  */
 
 /**
@@ -114,6 +122,8 @@ const DEFAULTS = {
     return response.json();
   },
   onChange: (item, inst) => {},
+  onBeforeFetch: (inst) => {},
+  onAfterFetch: (inst) => {},
 };
 
 // #endregion
@@ -1179,6 +1189,8 @@ class Autocomplete {
     }
 
     this._searchInput.classList.add(LOADING_CLASS);
+    this._config.onBeforeFetch(this);
+
     fetch(url, fetchOptions)
       .then((r) => this._config.onServerResponse(r, this))
       .then((suggestions) => {
@@ -1199,6 +1211,7 @@ class Autocomplete {
       })
       .finally((e) => {
         this._searchInput.classList.remove(LOADING_CLASS);
+        this._config.onAfterFetch(this);
       });
   }
 

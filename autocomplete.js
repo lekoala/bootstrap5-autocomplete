@@ -806,10 +806,12 @@ class Autocomplete {
 
     if (this._config.highlightTyped) {
       const idx = normalize(label).indexOf(lookup);
-      label =
-        label.substring(0, idx) +
-        `<mark class="${this._config.highlightClass}">${label.substring(idx, idx + lookup.length)}</mark>` +
-        label.substring(idx + lookup.length, label.length);
+      if(idx !== -1){
+        label =
+          label.substring(0, idx) +
+          `<mark class="${this._config.highlightClass}">${label.substring(idx, idx + lookup.length)}</mark>` +
+          label.substring(idx + lookup.length, label.length);
+      }
     }
 
     label = this._config.onRenderItem(item, label, this);

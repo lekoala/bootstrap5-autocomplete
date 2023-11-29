@@ -863,6 +863,7 @@ class Autocomplete {
       newChild.classList.add(...["d-flex", "justify-content-between"]);
       fillIn.addEventListener("click", (event) => {
         this._searchInput.value = item.label;
+        this._searchInput.focus(); // focus back to keep editing
       });
     }
 

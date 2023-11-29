@@ -1,0 +1,29 @@
+{
+    "status": "success",
+    "data": {
+        "total": 3,
+        "items": [
+            {
+                "id": "981617517",
+                "name": "EQUINOR BIL OSLO",
+                "highlight": "\\u003cmark\\u003e\\u003cb\\u003eEQUINOR\\u003c/b\\u003e\\u003c/mark\\u003e \\u003cmark\\u003e\\u003cb\\u003eB\\u003c/b\\u003eIL\\u003c/mark\\u003e OSLO",
+                "code": "FLI",
+                "score": 46.73977867834532
+            },
+            {
+                "id": "993015253",
+                "name": "EQUINOR BIL BERGEN",
+                "highlight": "\\u003cmark\\u003e\\u003cb\\u003eEQUINOR\\u003c/b\\u003e\\u003c/mark\\u003e \\u003cmark\\u003e\\u003cb\\u003eB\\u003c/b\\u003eIL\\u003c/mark\\u003e \\u003cmark\\u003e\\u003cb\\u003eB\\u003c/b\\u003eERGEN\\u003c/mark\\u003e",
+                "code": "FLI",
+                "score": 46.581858857682334
+            },
+            {
+                "id": "999145671",
+                "name": "EQUINOR BERGEN BÅTLAG",
+                "highlight": "\\u003cmark\\u003e\\u003cb\\u003eEQUINOR\\u003c/b\\u003e\\u003c/mark\\u003e \\u003cmark\\u003e\\u003cb\\u003eB\\u003c/b\\u003eERGEN\\u003c/mark\\u003e \\u003cmark\\u003e\\u003cb\\u003eB\\u003c/b\\u003eÅTLAG\\u003c/mark\\u003e",
+                "code": "FLI",
+                "score": 44.4037772735859
+            }
+        ]
+    }
+}

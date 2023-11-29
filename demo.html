@@ -65,6 +65,15 @@
         },
       });
     }
+    // test for fuzzy
+    src.push({
+      title: "Sümething",
+      id: "fuzzy1"
+    })
+    src.push({
+      title: "Sómething",
+      id: "fuzzy2"
+    })
 
     var groupedSrc = [];
     for (let i = 0; i < 5; i++) {
@@ -274,9 +283,10 @@
           <div class="input-group mb-3">
             <button class="btn btn-outline-secondary" type="button" id="button-clear">Clear</button>
             <input type="text" class="form-control autocomplete" name="autocompleteInputZero" id="autocompleteInputZero"
-            data-suggestions-threshold="0" data-active-classes="my,test,classes" data-clear-control="#button-clear" data-fixed="true" data-fuzzy="true" placeholder="Type something" />
+              data-suggestions-threshold="0" data-active-classes="my,test,classes" data-clear-control="#button-clear" data-fixed="true"
+              data-fuzzy="true" placeholder="Type something" />
           </div>
-        
+
         </div>
       </div>
       <div class="row mb-3 g-3">
@@ -515,6 +525,15 @@
           <input type="text" name="remote" class="form-control autocomplete" id="select-remote" placeholder="Type something"
             data-full-width="1" data-server="https://api.github.com/search/repositories" data-server-data-key="items"
             data-hidden-input="true" data-label-field="name" data-value-field="id" data-query-param="q" data-live-server="true" />
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="mb-3">
+          <label for="elect-remote-nested-remote" class="form-label">Nested data key</label>
+          <input type="text" name="remote_nested" class="form-control autocomplete" id="select-remote-nested" placeholder="Type something"
+            data-full-width="1" data-server="demo-nested.json" data-server-data-key="data.items" data-hidden-input="true"
+            data-label-field="name" data-value-field="id" data-query-param="q" data-live-server="true" />
         </div>
       </div>
 

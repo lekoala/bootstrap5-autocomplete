@@ -246,6 +246,10 @@ function zwijit(el) {
     .join("");
 }
 
+function nested(str, obj = "window") {
+  return str.split(".").reduce((r, p) => r[p], obj);
+}
+
 // #endregion
 
 class Autocomplete {
@@ -806,7 +810,7 @@ class Autocomplete {
 
     if (this._config.highlightTyped) {
       const idx = normalize(label).indexOf(lookup);
-      if(idx !== -1){
+      if (idx !== -1) {
         label =
           label.substring(0, idx) +
           `<mark class="${this._config.highlightClass}">${label.substring(idx, idx + lookup.length)}</mark>` +
@@ -1196,7 +1200,7 @@ class Autocomplete {
     fetch(url, fetchOptions)
       .then((r) => this._config.onServerResponse(r, this))
       .then((suggestions) => {
-        const data = suggestions[this._config.serverDataKey] || suggestions;
+        const data = nested(this._config.serverDataKey, suggestions) || suggestions;
         this.setData(data);
         this._setHiddenVal();
         this._abortController = null;

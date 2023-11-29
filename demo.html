@@ -142,6 +142,13 @@
     new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
+    new Autocomplete(document.getElementById("autocompleteSourceInputModalScroll"), {
+      items: src,
+      valueField: "id",
+      labelField: "title",
+      highlightTyped: true,
+      onSelectItem: console.log,
+    });
 
     new Autocomplete(document.getElementById("autocompleteGroup"), optsGrouped);
     new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
@@ -312,8 +319,8 @@
       </div>
       <div class="row mb-3 g-3">
         <div class="col-md-4">
-          <label for="autocompleteRegularInput" class="form-label">Regular array</label>
-          <input type="text" class="form-control" id="autocompleteRegularInput" name="autocompleteRegularInput"
+          <label for="autocompleteRegularInput" class="form-label">Regular array + fill in</label>
+          <input type="text" class="form-control" id="autocompleteRegularInput" name="autocompleteRegularInput" data-fill-in="1"
             placeholder="Type something" />
         </div>
       </div>
@@ -560,6 +567,11 @@
               <!-- get a clear icon easily with this -->
               <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
               <input type="search" class="form-control" id="autocompleteSourceInputModal" name="autocompleteSourceInputModal"
+                placeholder="Type something" />
+
+              <!-- must be able to use mouse to scroll -->
+              <label for="autocompleteSourceInputModalScroll" class="form-label">Pick something from a long list</label>
+              <input type="search" class="form-control" id="autocompleteSourceInputModalScroll" name="autocompleteSourceInputModalScroll"
                 placeholder="Type something" />
             </div>
           </div>

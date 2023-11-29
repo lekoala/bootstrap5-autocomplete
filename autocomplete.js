@@ -46,6 +46,7 @@
  * @property {Boolean} fixed Use fixed positioning (solve overflow issues)
  * @property {Boolean} fuzzy Fuzzy search
  * @property {Boolean} startsWith Must start with the string. Defaults to false (it matches any position).
+ * @property {Boolean} fillIn Show fill in icon.
  * @property {Boolean} preventBrowserAutocomplete Additional measures to prevent browser autocomplete
  * @property {String} itemClass Applied to the dropdown item. Accepts space separated classes.
  * @property {Array} activeClasses By default: ["bg-primary", "text-white"]
@@ -92,6 +93,7 @@ const DEFAULTS = {
   fixed: false,
   fuzzy: false,
   startsWith: false,
+  fillIn: false,
   preventBrowserAutocomplete: false,
   itemClass: "",
   activeClasses: ["bg-primary", "text-white"],
@@ -523,7 +525,15 @@ class Autocomplete {
   }
 
   onblur(e) {
-    this.hideSuggestions();
+    // Clicking on the scrollbar will trigger a blur in modals...
+    if (e.relatedTarget && e.relatedTarget.classList.contains("modal")) {
+      // Set focus back in
+      this._searchInput.focus();
+      return;
+    }
+    setTimeout(() => {
+      this.hideSuggestions();
+    }, 100);
   }
 
   onfocus(e) {
@@ -840,6 +850,20 @@ class Autocomplete {
       for (const [key, value] of Object.entries(item.data)) {
         newChildLink.dataset[key] = value;
       }
+    }
+
+    if (this._config.fillIn) {
+      const fillIn = document.createElement("button");
+      fillIn.type = "button"; // prevent submit
+      fillIn.classList.add(...["btn", "btn-link", "border-0"]);
+      fillIn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H3.707l10.147 10.146a.5.5 0 0 1-.708.708L3 3.707V8.5a.5.5 0 0 1-1 0z"/>
+      </svg>`;
+      newChild.append(fillIn);
+      newChild.classList.add(...["d-flex", "justify-content-between"]);
+      fillIn.addEventListener("click", (event) => {
+        this._searchInput.value = label;
+      });
     }
 
     // Hover sets active item

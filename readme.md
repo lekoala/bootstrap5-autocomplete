@@ -60,6 +60,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | fixed                      | <code>Boolean</code>                           | Use fixed positioning (solve overflow issues)                                                           |
 | fuzzy                      | <code>Boolean</code>                           | Fuzzy search                                                                                            |
 | startsWith                 | <code>Boolean</code>                           | Must start with the string. Defaults to false (it matches any position).                                |
+| fillIn                     | <code>Boolean</code>                           | Show fill in icon.                                                                                      |
 | preventBrowserAutocomplete | <code>Boolean</code>                           | Additional measures to prevent browser autocomplete                                                     |
 | itemClass                  | <code>String</code>                            | Applied to the dropdown item. Accepts space separated classes.                                          |
 | activeClasses              | <code>Array</code>                             | By default: ["bg-primary", "text-white"]                                                                |
@@ -86,6 +87,8 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | onSelectItem               | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on selection                                                                  |
 | onServerResponse           | [<code>ServerCallback</code>](#ServerCallback) | Callback function to process server response. Must return a Promise                                     |
 | onChange                   | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on change-event. Returns currently selected item if any                       |
+| onBeforeFetch              | [<code>FetchCallback</code>](#FetchCallback)   | Callback function before fetch                                                                          |
+| onAfterFetch               | [<code>FetchCallback</code>](#FetchCallback)   | Callback function after fetch                                                                           |
 
 ## Callbacks
 

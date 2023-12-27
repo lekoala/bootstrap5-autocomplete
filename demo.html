@@ -96,6 +96,18 @@
       labelField: "title",
       highlightTyped: true,
       onSelectItem: console.log,
+      onBeforeFetch: (inst) => {
+        const icon = inst.getInput().parentElement.querySelector('.loading-icon');
+        if (icon) {
+          icon.style.display = "block";
+        }
+      },
+      onAfterFetch: (inst) => {
+        const icon = inst.getInput().parentElement.querySelector('.loading-icon');
+        if (icon) {
+          icon.style.display = "none";
+        }
+      },
     });
 
     Autocomplete.init("input.dataautocomplete", {
@@ -216,6 +228,13 @@
 
     input.is-loading {
       animation: blinking 1s infinite;
+    }
+
+    .loading-icon {
+      display: none;
+      position: absolute;
+      top: 50%;
+      right: 1.5em;
     }
 
     /* highlightTyped use mark */
@@ -527,11 +546,29 @@
       </div>
 
       <div class="row mb-3">
-        <div class="mb-3">
+        <div class="mb-3 position-relative">
           <label for="select-remote" class="form-label">Pick a repo</label>
           <input type="text" name="remote" class="form-control autocomplete" id="select-remote" placeholder="Type something"
             data-full-width="1" data-server="https://api.github.com/search/repositories" data-server-data-key="items"
             data-hidden-input="true" data-label-field="name" data-value-field="id" data-query-param="q" data-live-server="true" />
+
+          <svg x="0px" y="0px" width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" class="loading-icon">
+            <rect x=" 0" y="10" width="4" height="10" fill="currentColor" opacity="0.2">
+              <animate attributeName="opacity" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="height" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="y" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+            </rect>
+            <rect x="8" y="10" width="4" height="10" fill="currentColor" opacity="0.2">
+              <animate attributeName="opacity" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="height" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="y" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+            </rect>
+            <rect x="16" y="10" width="4" height="10" fill="currentColor" opacity="0.2">
+              <animate attributeName="opacity" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="height" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+              <animate attributeName="y" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+            </rect>
+          </svg>
         </div>
       </div>
 

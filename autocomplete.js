@@ -27,6 +27,14 @@
  */
 
 /**
+ * @callback ErrorCallback
+ * @param {Error} e
+ * @param {AbortSignal} signal
+ * @param {Autocomplete} inst
+ * @returns {void}
+ */
+
+/**
  * @callback FetchCallback
  * @param {Autocomplete} inst
  * @returns {void}
@@ -72,6 +80,7 @@
  * @property {RenderCallback} onRenderItem Callback function that returns the label
  * @property {ItemCallback} onSelectItem Callback function to call on selection
  * @property {ServerCallback} onServerResponse Callback function to process server response. Must return a Promise
+ * @property {ErrorCallback} onServerError Callback function to process server errors.
  * @property {ItemCallback} onChange Callback function to call on change-event. Returns currently selected item if any
  * @property {FetchCallback} onBeforeFetch Callback function before fetch
  * @property {FetchCallback} onAfterFetch Callback function after fetch
@@ -122,6 +131,13 @@ const DEFAULTS = {
   onSelectItem: (item, inst) => {},
   onServerResponse: (response, inst) => {
     return response.json();
+  },
+  onServerError: (e, signal, inst) => {
+    // Current version of Firefox rejects the promise with a DOMException
+    if (e.name === "AbortError" || signal.aborted) {
+      return;
+    }
+    console.error(e);
   },
   onChange: (item, inst) => {},
   onBeforeFetch: (inst) => {},
@@ -1234,11 +1250,7 @@ class Autocomplete {
         }
       })
       .catch((e) => {
-        // Current version of Firefox rejects the promise with a DOMException
-        if (e.name === "AbortError" || this._abortController.signal.aborted) {
-          return;
-        }
-        console.error(e);
+        this._config.onServerError(e, this._abortController.signal, this);
       })
       .finally((e) => {
         this._searchInput.classList.remove(LOADING_CLASS);

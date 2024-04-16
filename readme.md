@@ -86,6 +86,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | onRenderItem               | [<code>RenderCallback</code>](#RenderCallback) | Callback function that returns the label                                                                |
 | onSelectItem               | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on selection                                                                  |
 | onServerResponse           | [<code>ServerCallback</code>](#ServerCallback) | Callback function to process server response. Must return a Promise                                     |
+| onServerError              | [<code>ErrorCallback</code>](#ErrorCallback)   | Callback function to process server errors.                                                             |
 | onChange                   | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on change-event. Returns currently selected item if any                       |
 | onBeforeFetch              | [<code>FetchCallback</code>](#FetchCallback)   | Callback function before fetch                                                                          |
 | onAfterFetch               | [<code>FetchCallback</code>](#FetchCallback)   | Callback function after fetch                                                                           |
@@ -117,6 +118,16 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | -------- | ------------------------------------------ |
 | response | <code>Response</code>                      |
 | inst     | [<code>Autocomplete</code>](#Autocomplete) |
+
+<a name="ErrorCallback"></a>
+
+## ErrorCallback ⇒ <code>void</code>
+
+| Param  | Type                                       |
+| ------ | ------------------------------------------ |
+| e      | <code>Error</code>                         |
+| signal | <code>AbortSignal</code>                   |
+| inst   | [<code>Autocomplete</code>](#Autocomplete) |
 
 ## Tips
 

@@ -151,9 +151,14 @@
     const optsGrouped = Object.assign({}, opts, {
       items: groupedSrc,
     });
+    const optsFixed = Object.assign({}, opts, {
+      fixed: true,
+      source: suggest,
+    });
     new Autocomplete(document.getElementById("autocompleteSourceInput"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputModal"), optsSource);
     new Autocomplete(document.getElementById("autocompleteSourceInputTable"), optsSource);
+    new Autocomplete(document.getElementById("autocompleteModalFixed"), optsFixed);
     new Autocomplete(document.getElementById("autocompleteSourceInputModalScroll"), {
       items: src,
       valueField: "id",
@@ -609,6 +614,10 @@
               <!-- must be able to use mouse to scroll -->
               <label for="autocompleteSourceInputModalScroll" class="form-label">Pick something from a long list</label>
               <input type="search" class="form-control" id="autocompleteSourceInputModalScroll" name="autocompleteSourceInputModalScroll"
+                placeholder="Type something" />
+
+              <label for="autocompleteModalFixed" class="form-label">Pick something (fixed)</label>
+              <input type="search" class="form-control" id="autocompleteModalFixed" name="autocompleteModalFixed"
                 placeholder="Type something" />
             </div>
           </div>

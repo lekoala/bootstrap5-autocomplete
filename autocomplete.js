@@ -288,6 +288,7 @@ class Autocomplete {
     this._configure(config);
 
     // Private vars
+    this._isMouse = false;
     this._preventInput = false;
     this._keyboardNavigation = false;
     this._searchFunc = debounce(() => {
@@ -541,8 +542,8 @@ class Autocomplete {
   }
 
   onblur(e) {
-    // Clicking on the scrollbar will trigger a blur in modals...
-    if (e.relatedTarget && e.relatedTarget.classList.contains("modal")) {
+    // Clicking on the scroll in a modal blur the element incorrectly
+    if (this._isMouse && e.relatedTarget && e.relatedTarget.classList.contains("modal")) {
       // Set focus back in
       this._searchInput.focus();
       return;
@@ -603,11 +604,13 @@ class Autocomplete {
   }
 
   onmousemove(e) {
+    this._isMouse = true;
     // Moving the mouse means no longer using keyboard
     this._keyboardNavigation = false;
   }
 
   onmouseleave(e) {
+    this._isMouse = false;
     // Remove selection
     this.removeSelection();
   }

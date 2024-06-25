@@ -80,6 +80,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | serverDataKey              | <code>String</code>                            | By default: data                                                                                        |
 | fetchOptions               | <code>Object</code>                            | Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)                 |
 | liveServer                 | <code>Boolean</code>                           | Should the endpoint be called each time on input                                                        |
+| noEmptyQuery               | <code>Boolean</code>                           | Prevent fetch from server when automplete input is empty                                                        |
 | noCache                    | <code>Boolean</code>                           | Prevent caching by appending a timestamp                                                                |
 | debounceTime               | <code>Number</code>                            | Debounce time for live server                                                                           |
 | notFoundMessage            | <code>String</code>                            | Display a no suggestions found message. Leave empty to disable                                          |

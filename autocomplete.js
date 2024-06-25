@@ -74,6 +74,7 @@
  * @property {String} serverDataKey By default: data
  * @property {Object} fetchOptions Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
  * @property {Boolean} liveServer Should the endpoint be called each time on input
+ * @property {Boolean} noEmptyQuery Prevent fetch from server when automplete input is empty
  * @property {Boolean} noCache Prevent caching by appending a timestamp
  * @property {Number} debounceTime Debounce time for live server
  * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
@@ -122,6 +123,7 @@ const DEFAULTS = {
   serverDataKey: "data",
   fetchOptions: {},
   liveServer: false,
+  noEmptyQuery: false,
   noCache: true,
   debounceTime: 300,
   notFoundMessage: "",
@@ -1192,6 +1194,9 @@ class Autocomplete {
    * @param {boolean} show
    */
   _loadFromServer(show = false) {
+    if (this._config.noEmptyQuery && this._searchInput.value.length === 0) {
+      return;
+    }
     if (this._abortController) {
       this._abortController.abort();
     }

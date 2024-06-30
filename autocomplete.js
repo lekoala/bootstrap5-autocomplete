@@ -888,8 +888,8 @@ class Autocomplete {
 
     // Hover sets active item
     newChildLink.addEventListener("mouseenter", (event) => {
-      // Don't trigger enter if using arrows
-      if (this._keyboardNavigation) {
+      // Don't trigger enter if using arrows or not currently using the mouse
+      if (this._keyboardNavigation || !this._isMouse) {
         return;
       }
       this.removeSelection();

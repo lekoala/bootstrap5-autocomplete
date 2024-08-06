@@ -1,5 +1,6 @@
 /**
  * Bootstrap 5 autocomplete
+ * @license MIT
  */
 
 // #region config

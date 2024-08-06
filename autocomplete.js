@@ -1,5 +1,6 @@
 /**
  * Bootstrap 5 autocomplete
+ * https://github.com/lekoala/bootstrap5-autocomplete
  * @license MIT
  */
 

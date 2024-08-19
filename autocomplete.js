@@ -544,9 +544,11 @@ class Autocomplete {
   }
 
   onblur(e) {
+    const related = e.relatedTarget;
     // Clicking on the scroll in a modal blur the element incorrectly
-    if (this._isMouse && e.relatedTarget && e.relatedTarget.classList.contains("modal")) {
-      // Set focus back in
+    // In chrome >= 127, the related target is the dropdown menu
+    if (this._isMouse && related && (related.classList.contains("modal") || related.classList.contains("autocomplete-menu"))) {
+      // Restore focus
       this._searchInput.focus();
       return;
     }

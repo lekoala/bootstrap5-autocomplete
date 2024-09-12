@@ -580,6 +580,16 @@ class Autocomplete {
           }
         }
         break;
+      case 9:
+      case "Tab":
+        if (this.isDropdownVisible() && this._searchInput.value) {
+          const selection = this.getSelection();
+          if (selection) {
+            selection.click();
+            e.preventDefault();
+          }
+        }
+        break;
       case 38:
       case "ArrowUp":
         e.preventDefault();

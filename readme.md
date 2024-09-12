@@ -53,6 +53,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | maximumItems               | <code>Number</code>                            | Maximum number of items to display                                                                      |
 | autoselectFirst            | <code>Boolean</code>                           | Always select the first item                                                                            |
 | ignoreEnter                | <code>Boolean</code>                           | Ignore enter if no items are selected (play nicely with autoselectFirst=0)                              |
+| tabSelect                  | <code>Boolean</code>                           | Tab will trigger selection if active                                                                    |
 | updateOnSelect             | <code>Boolean</code>                           | Update input value on selection (doesn't play nice with autoselectFirst)                                |
 | highlightTyped             | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
 | highlightClass             | <code>String</code>                            | Class added to the mark label                                                                           |

@@ -364,8 +364,10 @@
       </div>
       <div class="row mb-3 g-3">
         <div class="col-md-4">
-          <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist</label>
-          <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" data-datalist="list-timezone"
+          <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist + tab select</label>
+          <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" 
+            data-tab-select="1"
+            data-datalist="list-timezone"
             placeholder="Type something" />
 
           <datalist id="list-timezone">

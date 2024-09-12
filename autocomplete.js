@@ -49,6 +49,7 @@
  * @property {Number} maximumItems Maximum number of items to display
  * @property {Boolean} autoselectFirst Always select the first item
  * @property {Boolean} ignoreEnter Ignore enter if no items are selected (play nicely with autoselectFirst=0)
+ * @property {Boolean} tabSelect Tab will trigger selection if active
  * @property {Boolean} updateOnSelect Update input value on selection (doesn't play nice with autoselectFirst)
  * @property {Boolean} highlightTyped Highlight matched part of the label
  * @property {String} highlightClass Class added to the mark label
@@ -97,6 +98,7 @@ const DEFAULTS = {
   maximumItems: 0,
   autoselectFirst: true,
   ignoreEnter: false,
+  tabSelect: false,
   updateOnSelect: false,
   highlightTyped: false,
   highlightClass: "",
@@ -582,7 +584,7 @@ class Autocomplete {
         break;
       case 9:
       case "Tab":
-        if (this.isDropdownVisible() && this._searchInput.value) {
+        if (this.isDropdownVisible() && this._config.tabSelect) {
           const selection = this.getSelection();
           if (selection) {
             selection.click();

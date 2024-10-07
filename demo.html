@@ -73,7 +73,16 @@
     src.push({
       title: "Sómething",
       id: "fuzzy2"
-    })
+    });
+
+    // test with numeric keys
+    var numericSrc = [];
+    for (let i = 50; i > 0; i--) {
+      numericSrc.push({
+        label: "Option " + i,
+        value: i,
+      });
+    }
 
     var groupedSrc = [];
     for (let i = 0; i < 5; i++) {
@@ -136,6 +145,10 @@
       onRenderItem: (item, label) => {
         return label + " (" + item.value + ")";
       },
+    });
+
+    new Autocomplete(document.getElementById('autocompleteNumeric'), {
+      items: numericSrc
     });
 
     // we can provide items through a function
@@ -350,6 +363,12 @@
       </div>
       <div class="row mb-3 g-3">
         <div class="col-md-4">
+          <label for="autocompleteNumeric" class="form-label">Numeric ids keep natural order</label>
+          <input type="text" class="form-control" id="autocompleteNumeric" name="autocompleteNumeric" placeholder="Type something" />
+        </div>
+      </div>
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
           <label for="autocompleteHideIfNoMatch" class="form-label">Show message if no matches found</label>
           <input type="text" class="form-control autocomplete" id="autocompleteHideIfNoMatch" name="autocompleteHideIfNoMatch"
             placeholder="Type something" data-not-found-message="No results found" />
@@ -365,10 +384,8 @@
       <div class="row mb-3 g-3">
         <div class="col-md-4">
           <label for="autocompleteDatalist" class="form-label">Pick a time zone from datalist + tab select</label>
-          <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" 
-            data-tab-select="1"
-            data-datalist="list-timezone"
-            placeholder="Type something" />
+          <input type="text" class="form-control" id="autocompleteDatalist" name="autocompleteDatalist" data-tab-select="1"
+            data-datalist="list-timezone" placeholder="Type something" />
 
           <datalist id="list-timezone">
             <option value="asia_aden">Asia/Aden</option>
@@ -611,7 +628,7 @@
               <!-- get a clear icon easily with this -->
               <label for="autocompleteSourceInputModal" class="form-label">Pick a country (custom source)</label>
               <input type="search" class="form-control" id="autocompleteSourceInputModal" name="autocompleteSourceInputModal"
-                placeholder="Type something" />
+                data-hidden-input="true" placeholder="Type something" />
 
               <!-- must be able to use mouse to scroll -->
               <label for="autocompleteSourceInputModalScroll" class="form-label">Pick something from a long list</label>

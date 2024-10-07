@@ -541,7 +541,7 @@ class Autocomplete {
 
   onchange(e) {
     const search = this._searchInput.value;
-    const item = Object.values(this._items).find((item) => item.label === search);
+    const item = this._items.find((item) => item.label === search);
     this._config.onChange(item, this);
   }
 
@@ -663,7 +663,7 @@ class Autocomplete {
   }
 
   setData(src) {
-    this._items = {};
+    this._items = [];
     this._addItems(src);
   }
 
@@ -945,15 +945,11 @@ class Autocomplete {
     const lookup = normalize(this._searchInput.value);
     this._dropElement.innerHTML = "";
 
-    const keys = Object.keys(this._items);
     let count = 0;
     let firstItem = null;
 
     const groups = [];
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const entry = this._items[key];
-
+    for (const entry of this._items) {
       // Check search length since we can trigger dropdown with arrow
       const showAllSuggestions = this._config.showAllSuggestions || lookup.length === 0;
       // Do we find a matching string or do we display immediately ?
@@ -1133,7 +1129,7 @@ class Autocomplete {
   }
 
   _fetchData() {
-    this._items = {};
+    this._items = [];
 
     // From an array of items or an object
     this._addItems(this._config.items);
@@ -1167,23 +1163,36 @@ class Autocomplete {
 
   _setHiddenVal() {
     if (this._config.hiddenInput && !this._config.hiddenValue) {
-      for (const [value, entry] of Object.entries(this._items)) {
+      for (const entry of this._items) {
         if (entry.label == this._searchInput.value) {
-          this._hiddenInput.value = value;
+          this._hiddenInput.value = entry.value;
         }
       }
     }
+  }
+
+  _normalizeData(src) {
+    if (Array.isArray(src)) {
+      return src;
+    }
+
+    let arr = [];
+    // Normalize objects into an array of value/label objects
+    for (const [value, label] of Object.entries(src)) {
+      arr.push({
+        value,
+        label,
+      });
+    }
+    return arr;
   }
 
   /**
    * @param {Array|Object} src An array of items or a value:label object
    */
   _addItems(src) {
-    const keys = Object.keys(src);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const entry = src[key];
-
+    src = this._normalizeData(src);
+    for (const entry of src) {
       if (entry.group && entry.items) {
         entry.items.forEach((e) => (e.group = entry.group));
         this._addItems(entry.items);
@@ -1193,13 +1202,13 @@ class Autocomplete {
       const label = typeof entry === "string" ? entry : entry.label;
       const item = typeof entry !== "object" ? {} : entry;
 
-      // Normalize entry
+      // Normalize entry when the entry is just a string (value = label)
       item.label = entry[this._config.labelField] ?? label;
-      item.value = entry[this._config.valueField] ?? key;
+      item.value = entry[this._config.valueField] ?? label;
 
       // Make sure we have a label
       if (item.label) {
-        this._items[item.value] = item;
+        this._items.push(item);
       }
     }
   }

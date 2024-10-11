@@ -909,7 +909,9 @@ class Autocomplete {
         return;
       }
       this.removeSelection();
-      newChild.querySelector("a").classList.add(...this._activeClasses());
+      const a = newChild.querySelector("a");
+      a.classList.add(...this._activeClasses());
+      this._searchInput.setAttribute("aria-activedescendant", a.id);
     });
     // Prevent searchInput losing focus and close the menu
     newChildLink.addEventListener("mousedown", (event) => {

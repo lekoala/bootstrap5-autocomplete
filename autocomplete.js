@@ -317,7 +317,7 @@ class Autocomplete {
     ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
       this._searchInput.addEventListener(type, this);
     });
-    ["mousemove", "mouseleave"].forEach((type) => {
+    ["mousemove", "mouseenter", "mouseleave"].forEach((type) => {
       this._dropElement.addEventListener(type, this);
     });
 
@@ -362,7 +362,7 @@ class Autocomplete {
     ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
       this._searchInput.removeEventListener(type, this);
     });
-    ["mousemove", "mouseleave"].forEach((type) => {
+    ["mousemove", "mouseenter", "mouseleave"].forEach((type) => {
       this._dropElement.removeEventListener(type, this);
     });
 
@@ -617,6 +617,10 @@ class Autocomplete {
         }
         break;
     }
+  }
+
+  onmouseenter(e) {
+    this._isMouse = true;
   }
 
   onmousemove(e) {

@@ -22,6 +22,13 @@
  */
 
 /**
+ * @callback ValueCallback
+ * @param {String} value
+ * @param {Autocomplete} inst
+ * @returns {void}
+ */
+
+/**
  * @callback ServerCallback
  * @param {Response} response
  * @param {Autocomplete} inst
@@ -82,6 +89,7 @@
  * @property {String} notFoundMessage Display a no suggestions found message. Leave empty to disable
  * @property {RenderCallback} onRenderItem Callback function that returns the label
  * @property {ItemCallback} onSelectItem Callback function to call on selection
+ * @property {ValueCallback} onClearItem Callback function to call on clear
  * @property {ServerCallback} onServerResponse Callback function to process server response. Must return a Promise
  * @property {ErrorCallback} onServerError Callback function to process server errors.
  * @property {ItemCallback} onChange Callback function to call on change-event. Returns currently selected item if any
@@ -133,6 +141,7 @@ const DEFAULTS = {
     return label;
   },
   onSelectItem: (item, inst) => {},
+  onClearItem: (item, inst) => {},
   onServerResponse: (response, inst) => {
     return response.json();
   },
@@ -694,10 +703,14 @@ class Autocomplete {
   }
 
   clear() {
+	const v = this._searchInput.value;
+
     this._searchInput.value = "";
     if (this._hiddenInput) {
       this._hiddenInput.value = "";
     }
+
+    this._config.onClearItem(v, this);
   }
 
   // #endregion

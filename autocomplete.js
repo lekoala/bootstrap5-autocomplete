@@ -1241,6 +1241,9 @@ class Autocomplete {
     }
     this._abortController = new AbortController();
 
+    // call early so the config can be changed dynamically
+    this._config.onBeforeFetch(this);
+      
     // Read data params dynamically as well
     let extraParams = this._searchInput.dataset.serverParams || {};
     if (typeof extraParams == "string") {
@@ -1283,7 +1286,6 @@ class Autocomplete {
     }
 
     this._searchInput.classList.add(LOADING_CLASS);
-    this._config.onBeforeFetch(this);
 
     fetch(url, fetchOptions)
       .then((r) => this._config.onServerResponse(r, this))

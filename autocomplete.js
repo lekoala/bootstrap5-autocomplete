@@ -1243,7 +1243,7 @@ class Autocomplete {
 
     // call early so the config can be changed dynamically
     this._config.onBeforeFetch(this);
-      
+
     // Read data params dynamically as well
     let extraParams = this._searchInput.dataset.serverParams || {};
     if (typeof extraParams == "string") {
@@ -1256,18 +1256,18 @@ class Autocomplete {
     if (this._config.noCache) {
       params.t = Date.now();
     }
-      
+
      // We have a related field or an array of related fields
     if (params.related) {
       // Check if params.related is an array
       const relatedItems = Array.isArray(params.related) ? params.related : [params.related];
-    
+
       relatedItems.forEach((related) => {
         const input = document.getElementById(related);
         if (input) {
           const inputValue = input.value;
           const inputName = input.getAttribute("name");
-    
+
           // Update params with the input value
           if (inputName) {
             params[inputName] = inputValue;

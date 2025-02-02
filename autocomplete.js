@@ -1286,7 +1286,9 @@ class Autocomplete {
     if (fetchOptions.method === "POST") {
       fetchOptions.body = urlParams;
     } else {
-      url += "?" + urlParams.toString();
+      if (url.indexOf('?') == -1) url += "?";
+      else url += "&";
+      url += urlParams.toString();
     }
 
     this._searchInput.classList.add(LOADING_CLASS);

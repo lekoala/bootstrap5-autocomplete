@@ -46,52 +46,52 @@ Data can be nested in the response under the data key (configurable with serverD
 
 Options can be either passed to the constructor (eg: optionName) or in data-option-name format.
 
-| Name | Type | Description |
-| --- | --- | --- |
-| showAllSuggestions | <code>Boolean</code> | Show all suggestions even if they don't match |
-| suggestionsThreshold | <code>Number</code> | Number of chars required to show suggestions |
-| maximumItems | <code>Number</code> | Maximum number of items to display |
-| autoselectFirst | <code>Boolean</code> | Always select the first item |
-| ignoreEnter | <code>Boolean</code> | Ignore enter if no items are selected (play nicely with autoselectFirst=0) |
-| tabSelect | <code>Boolean</code> | Tab will trigger selection if active |
-| updateOnSelect | <code>Boolean</code> | Update input value on selection (doesn't play nice with autoselectFirst) |
-| highlightTyped | <code>Boolean</code> | Highlight matched part of the label |
-| highlightClass | <code>String</code> | Class added to the mark label |
-| fullWidth | <code>Boolean</code> | Match the width on the input field |
-| fixed | <code>Boolean</code> | Use fixed positioning (solve overflow issues) |
-| fuzzy | <code>Boolean</code> | Fuzzy search |
-| startsWith | <code>Boolean</code> | Must start with the string. Defaults to false (it matches any position). |
-| fillIn | <code>Boolean</code> | Show fill in icon. |
-| preventBrowserAutocomplete | <code>Boolean</code> | Additional measures to prevent browser autocomplete | 
-| itemClass | <code>String</code> | Applied to the dropdown item. Accepts space separated classes. |        
-| activeClasses | <code>Array</code> | By default: ["bg-primary", "text-white"] |
-| labelField | <code>String</code> | Key for the label |
-| valueField | <code>String</code> | Key for the value |
-| searchFields | <code>Array</code> | Key for the search |
-| queryParam | <code>String</code> | Key for the query parameter for server |
-| items | <code>Array</code> \| <code>Object</code> | An array of label/value objects or an object with key/values |
-| source | <code>function</code> | A function that provides the list of items |
-| hiddenInput | <code>Boolean</code> | Create an hidden input which stores the valueField |
-| hiddenValue | <code>String</code> | Populate the initial hidden value. Mostly useful with liveServer. |   
-| clearControl | <code>String</code> | Selector that will clear the input on click. |
-| datalist | <code>String</code> | The id of the source datalist |
-| server | <code>String</code> | Endpoint for data provider |
-| serverMethod | <code>String</code> | HTTP request method for data provider, default is GET |
-| serverParams | <code>String</code> \| <code>Object</code> | Parameters to pass along to the server. You can specify a "related" key with the id of a related field. |
-| serverDataKey | <code>String</code> | By default: data |
-| fetchOptions | <code>Object</code> | Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax) |
-| liveServer | <code>Boolean</code> | Should the endpoint be called each time on input |
-| noCache | <code>Boolean</code> | Prevent caching by appending a timestamp |
-| debounceTime | <code>Number</code> | Debounce time for live server |
-| notFoundMessage | <code>String</code> | Display a no suggestions found message. Leave empty to disable |  
-| onRenderItem | [<code>RenderCallback</code>](#RenderCallback) | Callback function that returns the label |
-| onSelectItem | [<code>ItemCallback</code>](#ItemCallback) | Callback function to call on selection |      
-| onClearItem | [<code>ValueCallback</code>](#ValueCallback) | Callback function to call on clear |
-| onServerResponse | [<code>ServerCallback</code>](#ServerCallback) | Callback function to process server response. Must return a Promise |
-| onServerError | [<code>ErrorCallback</code>](#ErrorCallback) | Callback function to process server errors. |
-| onChange | [<code>ItemCallback</code>](#ItemCallback) | Callback function to call on change-event. Returns currently selected item if any |
-| onBeforeFetch | [<code>FetchCallback</code>](#FetchCallback) | Callback function before fetch |
-| onAfterFetch | [<code>FetchCallback</code>](#FetchCallback) | Callback function after fetch |
+| Name                       | Type                                           | Description                                                                                             |
+|----------------------------|------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| showAllSuggestions         | <code>Boolean</code>                           | Show all suggestions even if they don't match                                                           |
+| suggestionsThreshold       | <code>Number</code>                            | Number of chars required to show suggestions                                                            |
+| maximumItems               | <code>Number</code>                            | Maximum number of items to display                                                                      |
+| autoselectFirst            | <code>Boolean</code>                           | Always select the first item                                                                            |
+| ignoreEnter                | <code>Boolean</code>                           | Ignore enter if no items are selected (play nicely with autoselectFirst=0)                              |
+| tabSelect                  | <code>Boolean</code>                           | Tab will trigger selection if active                                                                    |
+| updateOnSelect             | <code>Boolean</code>                           | Update input value on selection (doesn't play nice with autoselectFirst)                                |
+| highlightTyped             | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
+| highlightClass             | <code>String</code>                            | Class added to the mark label                                                                           |
+| fullWidth                  | <code>Boolean</code>                           | Match the width on the input field                                                                      |
+| fixed                      | <code>Boolean</code>                           | Use fixed positioning (solve overflow issues)                                                           |
+| fuzzy                      | <code>Boolean</code>                           | Fuzzy search                                                                                            |
+| startsWith                 | <code>Boolean</code>                           | Must start with the string. Defaults to false (it matches any position).                                |
+| fillIn                     | <code>Boolean</code>                           | Show fill in icon.                                                                                      |
+| preventBrowserAutocomplete | <code>Boolean</code>                           | Additional measures to prevent browser autocomplete                                                     |
+| itemClass                  | <code>String</code>                            | Applied to the dropdown item. Accepts space separated classes.                                          |
+| activeClasses              | <code>Array</code>                             | By default: ["bg-primary", "text-white"]                                                                |
+| labelField                 | <code>String</code>                            | Key for the label                                                                                       |
+| valueField                 | <code>String</code>                            | Key for the value                                                                                       |
+| searchFields               | <code>Array</code>                             | Key for the search                                                                                      |
+| queryParam                 | <code>String</code>                            | Key for the query parameter for server                                                                  |
+| items                      | <code>Array</code> \| <code>Object</code>      | An array of label/value objects or an object with key/values                                            |
+| source                     | <code>function</code>                          | A function that provides the list of items                                                              |
+| hiddenInput                | <code>Boolean</code>                           | Create an hidden input which stores the valueField                                                      |
+| hiddenValue                | <code>String</code>                            | Populate the initial hidden value. Mostly useful with liveServer.                                       |
+| clearControl               | <code>String</code>                            | Selector that will clear the input on click.                                                            |
+| datalist                   | <code>String</code>                            | The id of the source datalist                                                                           |
+| server                     | <code>String</code>                            | Endpoint for data provider                                                                              |
+| serverMethod               | <code>String</code>                            | HTTP request method for data provider, default is GET                                                   |
+| serverParams               | <code>String</code> \| <code>Object</code>     | Parameters to pass along to the server. You can specify a "related" key with the id of a related field. |
+| serverDataKey              | <code>String</code>                            | By default: data                                                                                        |
+| fetchOptions               | <code>Object</code>                            | Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)                 |
+| liveServer                 | <code>Boolean</code>                           | Should the endpoint be called each time on input                                                        |
+| noCache                    | <code>Boolean</code>                           | Prevent caching by appending a timestamp                                                                |
+| debounceTime               | <code>Number</code>                            | Debounce time for live server                                                                           |
+| notFoundMessage            | <code>String</code>                            | Display a no suggestions found message. Leave empty to disable                                          |
+| onRenderItem               | [<code>RenderCallback</code>](#RenderCallback) | Callback function that returns the label                                                                |
+| onSelectItem               | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on selection                                                                  |
+| onClearItem                | [<code>ValueCallback</code>](#ValueCallback)   | Callback function to call on clear                                                                      |
+| onServerResponse           | [<code>ServerCallback</code>](#ServerCallback) | Callback function to process server response. Must return a Promise                                     |
+| onServerError              | [<code>ErrorCallback</code>](#ErrorCallback)   | Callback function to process server errors.                                                             |
+| onChange                   | [<code>ItemCallback</code>](#ItemCallback)     | Callback function to call on change-event. Returns currently selected item if any                       |
+| onBeforeFetch              | [<code>FetchCallback</code>](#FetchCallback)   | Callback function before fetch                                                                          |
+| onAfterFetch               | [<code>FetchCallback</code>](#FetchCallback)   | Callback function after fetch                                                                           |
 
 ## Callbacks
 
@@ -116,10 +116,10 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 
 ## ValueCallback ⇒ <code>void</code>
 
-| Param | Type |
-| --- | --- |
-| value | <code>String</code> |
-| inst | [<code>Autocomplete</code>](#Autocomplete) |
+| Param | Type                                       |
+|-------|--------------------------------------------|
+| value | <code>String</code>                        |
+| inst  | [<code>Autocomplete</code>](#Autocomplete) |
 
 <a name="ValueCallback"></a>
 
@@ -146,6 +146,22 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 - If you have a really long list of options, a scrollbar will be used
 - Access instance on a given element with Autocomplete.getInstance(myEl)
 - Use type="search" for your inputs to get a clear icon
+- You can use a custom renderer to display images, for example:
+
+```js
+...
+let data = [
+    {
+        "value": "My value",
+        "label": "My label",
+        "html": "<img src=\"/images/demo.jpg\"><span>My label</span>"
+    }
+];
+...
+onRenderItem: function (item) {
+    return item.html;
+},
+```
 
 ## Groups
 

@@ -1,6 +1,6 @@
 # Autocomplete for Bootstrap 4/5
 
-[![NPM](https://nodei.co/npm/bootstrap5-autocomplete.png?mini=true)](https://nodei.co/npm/bootstrap5-autocomplete/)
+[![NPM](https://img.shields.io/npm/v/bootstrap5-autocomplete.svg)](https://www.npmjs.com/package/bootstrap5-autocomplete)
 [![Downloads](https://img.shields.io/npm/dt/bootstrap5-autocomplete.svg)](https://www.npmjs.com/package/bootstrap5-autocomplete)
 
 ## How to use

@@ -4,6 +4,7 @@
   "version": "1.1.35",
   "description": "Autocomplete for Bootstrap 5 (and 4!)",
   "main": "autocomplete",
+  "types": "types/autocomplete.d.ts",
   "scripts": {
     "test": "ava",
     "build": "esbuild --mangle-props=^_ --bundle --minify --format=esm --sourcemap autocomplete.js --outfile=autocomplete.min.js",

@@ -14,6 +14,30 @@ import Autocomplete from "./autocomplete.js";
 Autocomplete.init();
 ```
 
+When using CDN version from TypeScript file, for example:
+
+```ts
+import Autocomplete, { type Config } from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
+
+const options: Partial<Config> = {
+    //...
+}
+Autocomplete.init('#myInput', options);
+```
+
+Path mapping in `tsconfig.json` is required in order to load types from local NPM package:
+
+```json
+{
+    "compilerOptions": {
+        //...
+        "paths": {
+            "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js": [ "./node_modules/bootstrap5-autocomplete/types/autocomplete.d.ts" ]
+        }
+    }
+}
+```
+
 ## Server side support
 
 You can also use options provided by the server. This script expects a JSON response with the following structure:

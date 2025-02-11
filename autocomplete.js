@@ -338,7 +338,7 @@ class Autocomplete {
   /**
    * Attach to all elements matched by the selector
    * @param {string} selector
-   * @param {Config|Object} config
+   * @param {Partial<Config>} config
    */
   static init(selector = "input.autocomplete", config = {}) {
     /**

@@ -1,7 +1,10 @@
 export default Autocomplete;
 export type RenderCallback = (item: any, label: string, inst: Autocomplete) => string;
 export type ItemCallback = (item: any, inst: Autocomplete) => void;
+export type ValueCallback = (value: string, inst: Autocomplete) => void;
 export type ServerCallback = (response: Response, inst: Autocomplete) => Promise<any>;
+export type ErrorCallback = (e: Error, signal: AbortSignal, inst: Autocomplete) => void;
+export type FetchCallback = (inst: Autocomplete) => void;
 export type Config = {
     /**
      * Show all suggestions even if they don't match
@@ -23,6 +26,10 @@ export type Config = {
      * Ignore enter if no items are selected (play nicely with autoselectFirst=0)
      */
     ignoreEnter: boolean;
+    /**
+     * Tab will trigger selection if active
+     */
+    tabSelect: boolean;
     /**
      * Update input value on selection (doesn't play nice with autoselectFirst)
      */
@@ -51,6 +58,10 @@ export type Config = {
      * Must start with the string. Defaults to false (it matches any position).
      */
     startsWith: boolean;
+    /**
+     * Show fill in icon.
+     */
+    fillIn: boolean;
     /**
      * Additional measures to prevent browser autocomplete
      */
@@ -96,6 +107,10 @@ export type Config = {
      */
     hiddenValue: string;
     /**
+     * Selector that will clear the input on click.
+     */
+    clearControl: string;
+    /**
      * The id of the source datalist
      */
     datalist: string;
@@ -108,7 +123,7 @@ export type Config = {
      */
     serverMethod: string;
     /**
-     * Parameters to pass along to the server. You can specify a "related" key with the id of a related field.
+     * Parameters to pass along to the server.  You can specify a "related" key with (a) the id of a related field or (b) an array of related field ids.
      */
     serverParams: string | any;
     /**
@@ -144,21 +159,37 @@ export type Config = {
      */
     onSelectItem: ItemCallback;
     /**
+     * Callback function to call on clear
+     */
+    onClearItem: ValueCallback;
+    /**
      * Callback function to process server response. Must return a Promise
      */
     onServerResponse: ServerCallback;
     /**
+     * Callback function to process server errors.
+     */
+    onServerError: ErrorCallback;
+    /**
      * Callback function to call on change-event. Returns currently selected item if any
      */
     onChange: ItemCallback;
+    /**
+     * Callback function before fetch
+     */
+    onBeforeFetch: FetchCallback;
+    /**
+     * Callback function after fetch
+     */
+    onAfterFetch: FetchCallback;
 };
 declare class Autocomplete {
     /**
      * Attach to all elements matched by the selector
      * @param {string} selector
-     * @param {Config|Object} config
+     * @param {Partial<Config>} config
      */
-    static init(selector?: string, config?: Config | any): void;
+    static init(selector?: string, config?: Partial<Config>): void;
     /**
      * @param {HTMLInputElement} el
      */
@@ -174,21 +205,18 @@ declare class Autocomplete {
      */
     constructor(el: HTMLInputElement, config?: Config | any);
     _searchInput: HTMLInputElement;
+    _isMouse: boolean;
     _preventInput: boolean;
     _keyboardNavigation: boolean;
     _searchFunc: Function;
-    /**
-     * event-polyfill compat / handleEvent is expected on class
-     * @link https://github.com/lifaon74/events-polyfill/issues/10
-     * @param {Event} event
-     */
-    handleEvent(event: Event): void;
     dispose(): void;
+    _getClearControl(): any;
     /**
+     * @link https://github.com/lifaon74/events-polyfill/issues/10
      * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
      * @param {Event} event
      */
-    _handleEvent(event: Event): void;
+    handleEvent: (event: Event) => void;
     _timer: number;
     /**
      * @param {Config|Object} config
@@ -199,6 +227,7 @@ declare class Autocomplete {
     _hiddenInput: HTMLInputElement;
     _configureDropElement(): void;
     _dropElement: HTMLUListElement;
+    onclick(e: any): void;
     oninput(e: any): void;
     onchange(e: any): void;
     onblur(e: any): void;
@@ -208,6 +237,7 @@ declare class Autocomplete {
      * @param {KeyboardEvent} e
      */
     onkeydown(e: KeyboardEvent): void;
+    onmouseenter(e: any): void;
     onmousemove(e: any): void;
     onmouseleave(e: any): void;
     onscroll(e: any): void;
@@ -223,7 +253,7 @@ declare class Autocomplete {
      */
     setConfig(k: string, v: any): void;
     setData(src: any): void;
-    _items: {};
+    _items: any[];
     enable(): void;
     disable(): void;
     /**
@@ -234,6 +264,7 @@ declare class Autocomplete {
      * @returns {boolean}
      */
     isDropdownVisible(): boolean;
+    clear(): void;
     /**
      * @returns {HTMLElement}
      */
@@ -310,6 +341,7 @@ declare class Autocomplete {
     _positionMenu(): void;
     _fetchData(): void;
     _setHiddenVal(): void;
+    _normalizeData(src: any): any[];
     /**
      * @param {Array|Object} src An array of items or a value:label object
      */

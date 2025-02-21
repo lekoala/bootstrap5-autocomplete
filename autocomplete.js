@@ -82,7 +82,7 @@
  * @property {String} serverMethod HTTP request method for data provider, default is GET
  * @property {String|Object} serverParams Parameters to pass along to the server.  You can specify a "related" key with (a) the id of a related field or (b) an array of related field ids.
  * @property {String} serverDataKey By default: data
- * @property {Object} fetchOptions Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
+ * @property {RequestInit} fetchOptions Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
  * @property {Boolean} liveServer Should the endpoint be called each time on input
  * @property {Boolean} noCache Prevent caching by appending a timestamp
  * @property {Number} debounceTime Debounce time for live server
@@ -167,6 +167,9 @@ const SHOW_CLASS = "show";
 const NEXT = "next";
 const PREV = "prev";
 
+/**
+ * @type WeakMap<HTMLElement, Autocomplete>
+ */
 const INSTANCE_MAP = new WeakMap();
 let counter = 0;
 let activeCounter = 0;
@@ -286,7 +289,7 @@ function nested(str, obj = "window") {
 class Autocomplete {
   /**
    * @param {HTMLInputElement} el
-   * @param {Config|Object} config
+   * @param {Partial<Config>} config
    */
   constructor(el, config = {}) {
     if (!(el instanceof HTMLElement)) {
@@ -352,6 +355,7 @@ class Autocomplete {
 
   /**
    * @param {HTMLInputElement} el
+   * @returns {Autocomplete | null}
    */
   static getInstance(el) {
     return INSTANCE_MAP.has(el) ? INSTANCE_MAP.get(el) : null;
@@ -359,7 +363,8 @@ class Autocomplete {
 
   /**
    * @param {HTMLInputElement} el
-   * @param {Object} config
+   * @param {Partial<Config>} config
+   * @returns {Autocomplete}
    */
   static getOrCreateInstance(el, config = {}) {
     return this.getInstance(el) || new this(el, config);
@@ -416,7 +421,7 @@ class Autocomplete {
   };
 
   /**
-   * @param {Config|Object} config
+   * @param {Partial<Config>} config
    */
   _configure(config = {}) {
     this._config = Object.assign({}, DEFAULTS);

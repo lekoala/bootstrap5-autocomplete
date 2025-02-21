@@ -133,7 +133,7 @@ export type Config = {
     /**
      * Any other fetch options (https://developer.mozilla.org/en-US/docs/Web/API/fetch#syntax)
      */
-    fetchOptions: any;
+    fetchOptions: RequestInit;
     /**
      * Should the endpoint be called each time on input
      */
@@ -192,18 +192,20 @@ declare class Autocomplete {
     static init(selector?: string, config?: Partial<Config>): void;
     /**
      * @param {HTMLInputElement} el
+     * @returns {Autocomplete | null}
      */
-    static getInstance(el: HTMLInputElement): any;
+    static getInstance(el: HTMLInputElement): Autocomplete | null;
     /**
      * @param {HTMLInputElement} el
-     * @param {Object} config
+     * @param {Partial<Config>} config
+     * @returns {Autocomplete}
      */
-    static getOrCreateInstance(el: HTMLInputElement, config?: any): any;
+    static getOrCreateInstance(el: HTMLInputElement, config?: Partial<Config>): Autocomplete;
     /**
      * @param {HTMLInputElement} el
-     * @param {Config|Object} config
+     * @param {Partial<Config>} config
      */
-    constructor(el: HTMLInputElement, config?: Config | any);
+    constructor(el: HTMLInputElement, config?: Partial<Config>);
     _searchInput: HTMLInputElement;
     _isMouse: boolean;
     _preventInput: boolean;
@@ -219,9 +221,9 @@ declare class Autocomplete {
     handleEvent: (event: Event) => void;
     _timer: number;
     /**
-     * @param {Config|Object} config
+     * @param {Partial<Config>} config
      */
-    _configure(config?: Config | any): void;
+    _configure(config?: Partial<Config>): void;
     _config: any;
     _configureSearchInput(): void;
     _hiddenInput: HTMLInputElement;

@@ -14,6 +14,12 @@ import Autocomplete from "./autocomplete.js";
 Autocomplete.init();
 ```
 
+When using NPM package:
+```js
+import Autocomplete from "bootstrap5-autocomplete";
+Autocomplete.init();
+```
+
 When using CDN version from TypeScript file, for example:
 
 ```ts
@@ -32,7 +38,7 @@ Path mapping in `tsconfig.json` is required in order to load types from local NP
     "compilerOptions": {
         //...
         "paths": {
-            "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js": [ "./node_modules/bootstrap5-autocomplete/types/autocomplete.d.ts" ]
+            "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js": [ "./node_modules/bootstrap5-autocomplete" ]
         }
     }
 }

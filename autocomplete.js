@@ -959,11 +959,31 @@ class Autocomplete {
   }
 
   /**
+   * Get the active element, drilling into shadowRoot if necessary.
+   * @link https://www.abeautifulsite.net/posts/finding-the-active-element-in-a-shadow-root/
+   * @param {Document | ShadowRoot} root
+   * @returns {Element}
+   */
+  _getActiveElement(root = document) {
+    const activeEl = root.activeElement;
+
+    if (!activeEl) {
+      return null;
+    }
+
+    if (activeEl.shadowRoot) {
+      return this._getActiveElement(activeEl.shadowRoot);
+    } else {
+      return activeEl;
+    }
+  }
+
+  /**
    * Show drop menu with suggestions
    */
   _showSuggestions() {
     // It's not focused anymore
-    if (document.activeElement != this._searchInput) {
+    if (this._getActiveElement() != this._searchInput) {
       return;
     }
     const lookup = normalize(this._searchInput.value);

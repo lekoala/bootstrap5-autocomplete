@@ -228,7 +228,7 @@ function fuzzyMatch(str, lookup) {
   let pos = 0;
   for (let i = 0; i < lookup.length; i++) {
     const c = lookup[i];
-    if (c == " ") continue;
+    if (c === " ") continue;
     pos = str.indexOf(c, pos) + 1;
     if (pos <= 0) {
       return false;
@@ -251,7 +251,7 @@ function insertAfter(el, newEl) {
  * @returns {string}
  */
 function decodeHtml(html) {
-  var txt = document.createElement("textarea");
+  const txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;
 }
@@ -973,9 +973,8 @@ class Autocomplete {
 
     if (activeEl.shadowRoot) {
       return this._getActiveElement(activeEl.shadowRoot);
-    } else {
-      return activeEl;
     }
+    return activeEl;
   }
 
   /**
@@ -983,7 +982,7 @@ class Autocomplete {
    */
   _showSuggestions() {
     // It's not focused anymore
-    if (this._getActiveElement() != this._searchInput) {
+    if (this._getActiveElement() !== this._searchInput) {
       return;
     }
     const lookup = normalize(this._searchInput.value);
@@ -997,8 +996,8 @@ class Autocomplete {
       // Check search length since we can trigger dropdown with arrow
       const showAllSuggestions = this._config.showAllSuggestions || lookup.length === 0;
       // Do we find a matching string or do we display immediately ?
-      let isMatched = lookup.length == 0 && this._config.suggestionsThreshold === 0;
-      if (!showAllSuggestions && lookup.length > 0) {
+      let isMatched = lookup.length === 0 && this._config.suggestionsThreshold === 0;
+      if (lookup.length > 0) {
         // match on any field
         this._config.searchFields.forEach((sf) => {
           const text = normalize(entry[sf]);
@@ -1014,6 +1013,7 @@ class Autocomplete {
           }
         });
       }
+
       const selectFirst = isMatched || lookup.length === 0;
       if (showAllSuggestions || isMatched) {
         count++;

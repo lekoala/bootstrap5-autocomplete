@@ -181,6 +181,24 @@
     });
 
     new Autocomplete(document.getElementById("autocompleteGroup"), optsGrouped);
+
+    const optsShowAll = Object.assign({}, opts, {
+      items: [
+        {
+          label: "My first option",
+          value: "first",
+        },
+        {
+          label: "My second option",
+          value: "second",
+        },
+        {
+          label: "My third option",
+          value: "third",
+        }
+      ],
+    });
+    new Autocomplete(document.getElementById("autocompleteShowAll"), optsShowAll);
     new Autocomplete(document.getElementById("autocompleteDatalist"), opts);
     new Autocomplete(document.getElementById("autocompleteRemote"), opts);
     new Autocomplete(document.getElementById("autocompleteRemoteStart"), opts);
@@ -409,6 +427,14 @@
           <label for="autocompleteGroup" class="form-label">Grouped options</label>
           <input type="text" class="form-control" id="autocompleteGroup" name="autocompleteGroup" placeholder="Type something"
             data-hidden-input="true" />
+        </div>
+      </div>
+
+      <div class="row mb-3 g-3">
+        <div class="col-md-4">
+          <label for="autocompleteShowAll" class="form-label">Show all options + autoselect first</label>
+          <input type="text" class="form-control" id="autocompleteShowAll" name="autocompleteShowAll" placeholder="Type something"
+             data-show-all-suggestions="1" />
         </div>
       </div>
 

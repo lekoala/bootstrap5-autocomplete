@@ -1121,9 +1121,8 @@ class Autocomplete {
    * Position the dropdown menu
    */
   _positionMenu() {
-    const styles = window.getComputedStyle(this._searchInput);
     const bounds = this._searchInput.getBoundingClientRect();
-    const isRTL = styles.direction === "rtl";
+    const isRTL = this._searchInput.dir === "rtl" || (this._searchInput.dir === "" && document.dir === "rtl");
     const fullWidth = this._config.fullWidth;
     const fixed = this._config.fixed;
 

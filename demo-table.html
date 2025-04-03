@@ -1,0 +1,276 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+
+    <link rel="apple-touch-icon" type="image/png"
+        href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon"
+        href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+
+    <link rel="mask-icon" type="image/x-icon"
+        href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg"
+        color="#111">
+
+
+
+
+
+
+    <title>Untitled</title>
+
+    <link rel="canonical" href="https://codepen.io/fofo78/pen/QwWObpe">
+
+
+
+
+
+    <script>
+        window.console = window.console || function (t) { };
+    </script>
+
+
+
+</head>
+
+<body translate="no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js&quot;"></script>
+    <table id="collections" class="table w-100">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div style="display: flex; justify-content: space-between;">
+                        <label class="float-left" for="in-name">
+                            <span>Name</span>
+                            <i class="fs-5 ps-2 bi-sort-alpha-down icon-selected" role="button" id="ic-asc"></i>
+                            <i class="fs-5 bi-sort-alpha-up icon" role="button" id="ic-desc"></i>
+                        </label>
+                        <input type="text" class="form-control w-50 float-right" id="in-name" placeholder="Name" autocomplete="off"
+                            spellcheck="false" aria-autocomplete="list" aria-haspopup="menu" aria-expanded="false" role="combobox"
+                            aria-controls="ac-menu-1" aria-activedescendant="ac-menu-1-0">
+                        <ul id="ac-menu-1" class="dropdown-menu autocomplete-menu p-0"
+                            style="max-height: 280px; max-width: 360px; overflow-y: auto; overscroll-behavior: contain; text-align: unset; transform: translateY(calc(-100.1% - 37.1875px));"
+                            role="menu">
+                            <li role="presentation"><a id="ac-menu-1-0" class="dropdown-item text-truncate" data-value="opt0"
+                                    data-label="Option 0" tabindex="-1" role="menuitem" href="#" data-key="0"><mark class="">Op</mark>tion
+                                    0</a></li>
+                            <li role="presentation"><a id="ac-menu-1-1" class="dropdown-item text-truncate" data-value="opt1"
+                                    data-label="Option 1" tabindex="-1" role="menuitem" href="#" data-key="1"><mark class="">Op</mark>tion
+                                    1</a></li>
+                            <li role="presentation"><a id="ac-menu-1-2" class="dropdown-item text-truncate" data-value="opt2"
+                                    data-label="Option 2" tabindex="-1" role="menuitem" href="#" data-key="2"><mark class="">Op</mark>tion
+                                    2</a></li>
+                            <li role="presentation"><a id="ac-menu-1-3" class="dropdown-item text-truncate" data-value="opt3"
+                                    data-label="Option 3" tabindex="-1" role="menuitem" href="#" data-key="3"><mark class="">Op</mark>tion
+                                    3</a></li>
+                            <li role="presentation"><a id="ac-menu-1-4" class="dropdown-item text-truncate" data-value="opt4"
+                                    data-label="Option 4" tabindex="-1" role="menuitem" href="#" data-key="4"><mark class="">Op</mark>tion
+                                    4</a></li>
+                            <li role="presentation"><a id="ac-menu-1-5" class="dropdown-item text-truncate" data-value="opt5"
+                                    data-label="Option 5" tabindex="-1" role="menuitem" href="#" data-key="5"><mark class="">Op</mark>tion
+                                    5</a></li>
+                            <li role="presentation"><a id="ac-menu-1-6" class="dropdown-item text-truncate" data-value="opt6"
+                                    data-label="Option 6" tabindex="-1" role="menuitem" href="#" data-key="6"><mark class="">Op</mark>tion
+                                    6</a></li>
+                            <li role="presentation"><a id="ac-menu-1-7" class="dropdown-item text-truncate" data-value="opt7"
+                                    data-label="Option 7" tabindex="-1" role="menuitem" href="#" data-key="7"><mark class="">Op</mark>tion
+                                    7</a></li>
+                            <li role="presentation"><a id="ac-menu-1-8" class="dropdown-item text-truncate" data-value="opt8"
+                                    data-label="Option 8" tabindex="-1" role="menuitem" href="#" data-key="8"><mark class="">Op</mark>tion
+                                    8</a></li>
+                            <li role="presentation"><a id="ac-menu-1-9" class="dropdown-item text-truncate" data-value="opt9"
+                                    data-label="Option 9" tabindex="-1" role="menuitem" href="#" data-key="9"><mark class="">Op</mark>tion
+                                    9</a></li>
+                            <li role="presentation"><a id="ac-menu-1-10" class="dropdown-item text-truncate" data-value="opt10"
+                                    data-label="Option 10" tabindex="-1" role="menuitem" href="#" data-key="10"><mark class="">Op</mark>tion
+                                    10</a></li>
+                            <li role="presentation"><a id="ac-menu-1-11" class="dropdown-item text-truncate" data-value="opt11"
+                                    data-label="Option 11" tabindex="-1" role="menuitem" href="#" data-key="11"><mark class="">Op</mark>tion
+                                    11</a></li>
+                            <li role="presentation"><a id="ac-menu-1-12" class="dropdown-item text-truncate" data-value="opt12"
+                                    data-label="Option 12" tabindex="-1" role="menuitem" href="#" data-key="12"><mark class="">Op</mark>tion
+                                    12</a></li>
+                            <li role="presentation"><a id="ac-menu-1-13" class="dropdown-item text-truncate" data-value="opt13"
+                                    data-label="Option 13" tabindex="-1" role="menuitem" href="#" data-key="13"><mark class="">Op</mark>tion
+                                    13</a></li>
+                            <li role="presentation"><a id="ac-menu-1-14" class="dropdown-item text-truncate" data-value="opt14"
+                                    data-label="Option 14" tabindex="-1" role="menuitem" href="#" data-key="14"><mark class="">Op</mark>tion
+                                    14</a></li>
+                            <li role="presentation"><a id="ac-menu-1-15" class="dropdown-item text-truncate" data-value="opt15"
+                                    data-label="Option 15" tabindex="-1" role="menuitem" href="#" data-key="15"><mark class="">Op</mark>tion
+                                    15</a></li>
+                            <li role="presentation"><a id="ac-menu-1-16" class="dropdown-item text-truncate" data-value="opt16"
+                                    data-label="Option 16" tabindex="-1" role="menuitem" href="#" data-key="16"><mark class="">Op</mark>tion
+                                    16</a></li>
+                            <li role="presentation"><a id="ac-menu-1-17" class="dropdown-item text-truncate" data-value="opt17"
+                                    data-label="Option 17" tabindex="-1" role="menuitem" href="#" data-key="17"><mark class="">Op</mark>tion
+                                    17</a></li>
+                            <li role="presentation"><a id="ac-menu-1-18" class="dropdown-item text-truncate" data-value="opt18"
+                                    data-label="Option 18" tabindex="-1" role="menuitem" href="#" data-key="18"><mark class="">Op</mark>tion
+                                    18</a></li>
+                            <li role="presentation"><a id="ac-menu-1-19" class="dropdown-item text-truncate" data-value="opt19"
+                                    data-label="Option 19" tabindex="-1" role="menuitem" href="#" data-key="19"><mark class="">Op</mark>tion
+                                    19</a></li>
+                            <li role="presentation"><a id="ac-menu-1-20" class="dropdown-item text-truncate" data-value="opt20"
+                                    data-label="Option 20" tabindex="-1" role="menuitem" href="#" data-key="20"><mark class="">Op</mark>tion
+                                    20</a></li>
+                            <li role="presentation"><a id="ac-menu-1-21" class="dropdown-item text-truncate" data-value="opt21"
+                                    data-label="Option 21" tabindex="-1" role="menuitem" href="#" data-key="21"><mark class="">Op</mark>tion
+                                    21</a></li>
+                            <li role="presentation"><a id="ac-menu-1-22" class="dropdown-item text-truncate" data-value="opt22"
+                                    data-label="Option 22" tabindex="-1" role="menuitem" href="#" data-key="22"><mark class="">Op</mark>tion
+                                    22</a></li>
+                            <li role="presentation"><a id="ac-menu-1-23" class="dropdown-item text-truncate" data-value="opt23"
+                                    data-label="Option 23" tabindex="-1" role="menuitem" href="#" data-key="23"><mark class="">Op</mark>tion
+                                    23</a></li>
+                            <li role="presentation"><a id="ac-menu-1-24" class="dropdown-item text-truncate" data-value="opt24"
+                                    data-label="Option 24" tabindex="-1" role="menuitem" href="#" data-key="24"><mark class="">Op</mark>tion
+                                    24</a></li>
+                            <li role="presentation"><a id="ac-menu-1-25" class="dropdown-item text-truncate" data-value="opt25"
+                                    data-label="Option 25" tabindex="-1" role="menuitem" href="#" data-key="25"><mark class="">Op</mark>tion
+                                    25</a></li>
+                            <li role="presentation"><a id="ac-menu-1-26" class="dropdown-item text-truncate" data-value="opt26"
+                                    data-label="Option 26" tabindex="-1" role="menuitem" href="#" data-key="26"><mark class="">Op</mark>tion
+                                    26</a></li>
+                            <li role="presentation"><a id="ac-menu-1-27" class="dropdown-item text-truncate" data-value="opt27"
+                                    data-label="Option 27" tabindex="-1" role="menuitem" href="#" data-key="27"><mark class="">Op</mark>tion
+                                    27</a></li>
+                            <li role="presentation"><a id="ac-menu-1-28" class="dropdown-item text-truncate" data-value="opt28"
+                                    data-label="Option 28" tabindex="-1" role="menuitem" href="#" data-key="28"><mark class="">Op</mark>tion
+                                    28</a></li>
+                            <li role="presentation"><a id="ac-menu-1-29" class="dropdown-item text-truncate" data-value="opt29"
+                                    data-label="Option 29" tabindex="-1" role="menuitem" href="#" data-key="29"><mark class="">Op</mark>tion
+                                    29</a></li>
+                            <li role="presentation"><a id="ac-menu-1-30" class="dropdown-item text-truncate" data-value="opt30"
+                                    data-label="Option 30" tabindex="-1" role="menuitem" href="#" data-key="30"><mark class="">Op</mark>tion
+                                    30</a></li>
+                            <li role="presentation"><a id="ac-menu-1-31" class="dropdown-item text-truncate" data-value="opt31"
+                                    data-label="Option 31" tabindex="-1" role="menuitem" href="#" data-key="31"><mark class="">Op</mark>tion
+                                    31</a></li>
+                            <li role="presentation"><a id="ac-menu-1-32" class="dropdown-item text-truncate" data-value="opt32"
+                                    data-label="Option 32" tabindex="-1" role="menuitem" href="#" data-key="32"><mark class="">Op</mark>tion
+                                    32</a></li>
+                            <li role="presentation"><a id="ac-menu-1-33" class="dropdown-item text-truncate" data-value="opt33"
+                                    data-label="Option 33" tabindex="-1" role="menuitem" href="#" data-key="33"><mark class="">Op</mark>tion
+                                    33</a></li>
+                            <li role="presentation"><a id="ac-menu-1-34" class="dropdown-item text-truncate" data-value="opt34"
+                                    data-label="Option 34" tabindex="-1" role="menuitem" href="#" data-key="34"><mark class="">Op</mark>tion
+                                    34</a></li>
+                            <li role="presentation"><a id="ac-menu-1-35" class="dropdown-item text-truncate" data-value="opt35"
+                                    data-label="Option 35" tabindex="-1" role="menuitem" href="#" data-key="35"><mark class="">Op</mark>tion
+                                    35</a></li>
+                            <li role="presentation"><a id="ac-menu-1-36" class="dropdown-item text-truncate" data-value="opt36"
+                                    data-label="Option 36" tabindex="-1" role="menuitem" href="#" data-key="36"><mark class="">Op</mark>tion
+                                    36</a></li>
+                            <li role="presentation"><a id="ac-menu-1-37" class="dropdown-item text-truncate" data-value="opt37"
+                                    data-label="Option 37" tabindex="-1" role="menuitem" href="#" data-key="37"><mark class="">Op</mark>tion
+                                    37</a></li>
+                            <li role="presentation"><a id="ac-menu-1-38" class="dropdown-item text-truncate" data-value="opt38"
+                                    data-label="Option 38" tabindex="-1" role="menuitem" href="#" data-key="38"><mark class="">Op</mark>tion
+                                    38</a></li>
+                            <li role="presentation"><a id="ac-menu-1-39" class="dropdown-item text-truncate" data-value="opt39"
+                                    data-label="Option 39" tabindex="-1" role="menuitem" href="#" data-key="39"><mark class="">Op</mark>tion
+                                    39</a></li>
+                            <li role="presentation"><a id="ac-menu-1-40" class="dropdown-item text-truncate" data-value="opt40"
+                                    data-label="Option 40" tabindex="-1" role="menuitem" href="#" data-key="40"><mark class="">Op</mark>tion
+                                    40</a></li>
+                            <li role="presentation"><a id="ac-menu-1-41" class="dropdown-item text-truncate" data-value="opt41"
+                                    data-label="Option 41" tabindex="-1" role="menuitem" href="#" data-key="41"><mark class="">Op</mark>tion
+                                    41</a></li>
+                            <li role="presentation"><a id="ac-menu-1-42" class="dropdown-item text-truncate" data-value="opt42"
+                                    data-label="Option 42" tabindex="-1" role="menuitem" href="#" data-key="42"><mark class="">Op</mark>tion
+                                    42</a></li>
+                            <li role="presentation"><a id="ac-menu-1-43" class="dropdown-item text-truncate" data-value="opt43"
+                                    data-label="Option 43" tabindex="-1" role="menuitem" href="#" data-key="43"><mark class="">Op</mark>tion
+                                    43</a></li>
+                            <li role="presentation"><a id="ac-menu-1-44" class="dropdown-item text-truncate" data-value="opt44"
+                                    data-label="Option 44" tabindex="-1" role="menuitem" href="#" data-key="44"><mark class="">Op</mark>tion
+                                    44</a></li>
+                            <li role="presentation"><a id="ac-menu-1-45" class="dropdown-item text-truncate" data-value="opt45"
+                                    data-label="Option 45" tabindex="-1" role="menuitem" href="#" data-key="45"><mark class="">Op</mark>tion
+                                    45</a></li>
+                            <li role="presentation"><a id="ac-menu-1-46" class="dropdown-item text-truncate" data-value="opt46"
+                                    data-label="Option 46" tabindex="-1" role="menuitem" href="#" data-key="46"><mark class="">Op</mark>tion
+                                    46</a></li>
+                            <li role="presentation"><a id="ac-menu-1-47" class="dropdown-item text-truncate" data-value="opt47"
+                                    data-label="Option 47" tabindex="-1" role="menuitem" href="#" data-key="47"><mark class="">Op</mark>tion
+                                    47</a></li>
+                            <li role="presentation"><a id="ac-menu-1-48" class="dropdown-item text-truncate" data-value="opt48"
+                                    data-label="Option 48" tabindex="-1" role="menuitem" href="#" data-key="48"><mark class="">Op</mark>tion
+                                    48</a></li>
+                            <li role="presentation"><a id="ac-menu-1-49" class="dropdown-item text-truncate" data-value="opt49"
+                                    data-label="Option 49" tabindex="-1" role="menuitem" href="#" data-key="49"><mark class="">Op</mark>tion
+                                    49</a></li>
+                        </ul>
+
+                    </div>
+                </th>
+                <th scope="col">
+                    <div style="display: flex; justify-content: space-between;">
+                        <label class="float-left pe-2" for="sel-category">
+                            <span>Category</span>
+                        </label>
+
+                        <select class="form-select w-50" name="category" id="sel-category">
+                            <option selected="" value="0">-</option>
+                            <option value="1">Cat1</option>
+                            <option value="2">Cat2</option>
+                            <option value="3">Cat3</option>
+                        </select>
+                    </div>
+                </th>
+                <th scope="col" class="align-top">Number</th>
+                <th scope="col" class="align-top">Duration</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody id="collections-body">
+            <tr class="placeholder-glow">
+                <td><span class="placeholder col-2"></span></td>
+                <td><span class="placeholder col-2"></span></td>
+                <td><span class="placeholder col-1"></span></td>
+                <td><span class="placeholder col-1"></span></td>
+                <td><i class="fs-5 bi-pen"></i><i class="fs-5 bi-eraser"></i></td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="module">
+        import Autocomplete from "./autocomplete.js";
+        var data = [];
+        for (let i = 0; i < 50; i++) {
+            data.push({
+                title: "Option " + i,
+                id: "opt" + i,
+                data: {
+                    key: i,
+                },
+            });
+        }
+        const options = {
+            items: data,
+            valueField: "id",
+            labelField: "title",
+            highlightTyped: true,
+            fixed: true, // required
+            onSelectItem: console.log,
+        }
+        Autocomplete.init('#in-name', options);
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>

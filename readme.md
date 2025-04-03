@@ -88,7 +88,7 @@ Options can be either passed to the constructor (eg: optionName) or in data-opti
 | highlightTyped             | <code>Boolean</code>                           | Highlight matched part of the label                                                                     |
 | highlightClass             | <code>String</code>                            | Class added to the mark label                                                                           |
 | fullWidth                  | <code>Boolean</code>                           | Match the width on the input field                                                                      |
-| fixed                      | <code>Boolean</code>                           | Use fixed positioning (solve overflow issues)                                                           |
+| fixed                      | <code>Boolean</code>                           | Use fixed positioning (solve overflow or complex layout issues)                                         |
 | fuzzy                      | <code>Boolean</code>                           | Fuzzy search                                                                                            |
 | startsWith                 | <code>Boolean</code>                           | Must start with the string. Defaults to false (it matches any position).                                |
 | fillIn                     | <code>Boolean</code>                           | Show fill in icon.                                                                                      |

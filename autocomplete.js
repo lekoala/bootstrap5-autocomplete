@@ -534,7 +534,7 @@ class Autocomplete {
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
     this._dropElement.id = "ac-menu-" + counter;
-    this._dropElement.classList.add(...["dropdown-menu", "autocomplete-menu", "p-0"]);
+    this._dropElement.classList.add("dropdown-menu", "autocomplete-menu", "p-0");
     this._dropElement.style.maxHeight = "280px";
     if (!this._config.fullWidth) {
       this._dropElement.style.maxWidth = "360px";
@@ -775,7 +775,7 @@ class Autocomplete {
    * @returns {Array}
    */
   _activeClasses() {
-    return [...this._config.activeClasses, ...[ACTIVE_CLASS]];
+    return [...this._config.activeClasses, ACTIVE_CLASS];
   }
 
   /**
@@ -901,7 +901,7 @@ class Autocomplete {
     const newChild = this._createLi();
     const newChildSpan = document.createElement("span");
     newChild.append(newChildSpan);
-    newChildSpan.classList.add(...["dropdown-header", "text-truncate"]);
+    newChildSpan.classList.add("dropdown-header", "text-truncate");
     newChildSpan.innerHTML = name;
     return newChild;
   }
@@ -931,7 +931,7 @@ class Autocomplete {
     const newChildLink = document.createElement("a");
     newChild.append(newChildLink);
     newChildLink.id = this._dropElement.id + "-" + this._dropElement.children.length;
-    newChildLink.classList.add(...["dropdown-item", "text-truncate"]);
+    newChildLink.classList.add("dropdown-item", "text-truncate");
     if (this._config.itemClass) {
       newChildLink.classList.add(...this._config.itemClass.split(" "));
     }
@@ -952,12 +952,12 @@ class Autocomplete {
     if (this._config.fillIn) {
       const fillIn = document.createElement("button");
       fillIn.type = "button"; // prevent submit
-      fillIn.classList.add(...["btn", "btn-link", "border-0"]);
+      fillIn.classList.add("btn", "btn-link", "border-0");
       fillIn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H3.707l10.147 10.146a.5.5 0 0 1-.708.708L3 3.707V8.5a.5.5 0 0 1-1 0z"/>
       </svg>`;
       newChild.append(fillIn);
-      newChild.classList.add(...["d-flex", "justify-content-between"]);
+      newChild.classList.add("d-flex", "justify-content-between");
       fillIn.addEventListener("click", (event) => {
         this._searchInput.value = item.label;
         this._searchInput.focus(); // focus back to keep editing

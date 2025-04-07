@@ -258,7 +258,8 @@ function decodeHtml(html) {
 
 /**
  * @param {HTMLElement} el
- * @param {Object} attrs
+ * @param {{[key:string]: string}} attrs
+ * @returns {void}
  */
 function attrs(el, attrs) {
   for (const [k, v] of Object.entries(attrs)) {
@@ -269,6 +270,7 @@ function attrs(el, attrs) {
 /**
  * Add a zero width join between chars
  * @param {HTMLElement|Element} el
+ * @returns {void}
  */
 function zwijit(el) {
   //@ts-ignore
@@ -280,6 +282,11 @@ function zwijit(el) {
     .join("");
 }
 
+/**
+ * @param {string} str
+ * @param {string} obj
+ * @returns {string}
+ */
 function nested(str, obj = "window") {
   return str.split(".").reduce((r, p) => r[p], obj);
 }
@@ -304,9 +311,13 @@ class Autocomplete {
     this._configure(config);
 
     // Private vars
+    /** @private */
     this._isMouse = false;
+    /** @private */
     this._preventInput = false;
+    /** @private */
     this._keyboardNavigation = false;
+    /** @private */
     this._searchFunc = debounce(() => {
       this._loadFromServer(true);
     }, this._config.debounceTime);
@@ -342,6 +353,7 @@ class Autocomplete {
    * Attach to all elements matched by the selector
    * @param {string} selector
    * @param {Partial<Config>} config
+   * @returns {void}
    */
   static init(selector = "input.autocomplete", config = {}) {
     /**
@@ -396,6 +408,9 @@ class Autocomplete {
     INSTANCE_MAP.delete(this._searchInput);
   }
 
+  /**
+   * @private
+   */
   _getClearControl() {
     if (this._config.clearControl) {
       return document.querySelector(this._config.clearControl);
@@ -421,6 +436,7 @@ class Autocomplete {
   };
 
   /**
+   * @private
    * @param {Partial<Config>} config
    */
   _configure(config = {}) {
@@ -475,7 +491,9 @@ class Autocomplete {
   // #endregion
 
   // #region Html
-
+  /**
+   * @private
+   */
   _configureSearchInput() {
     this._searchInput.autocomplete = "off";
     this._searchInput.spellcheck = false;
@@ -510,6 +528,9 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @private
+   */
   _configureDropElement() {
     this._dropElement = document.createElement("ul");
     this._dropElement.id = "ac-menu-" + counter;
@@ -535,13 +556,19 @@ class Autocomplete {
   // #endregion
 
   // #region Events
-
+  /**
+   * @param {MouseEvent} e
+   */
   onclick(e) {
     if (e.target.matches(this._config.clearControl)) {
       this.clear();
     }
   }
 
+  /**
+   * @param {InputEvent} e
+   * @returns {void}
+   */
   oninput(e) {
     if (this._preventInput) {
       return;
@@ -553,12 +580,18 @@ class Autocomplete {
     this.showOrSearch();
   }
 
+  /**
+   * @param {InputEvent} e
+   */
   onchange(e) {
     const search = this._searchInput.value;
     const item = this._items.find((item) => item.label === search);
     this._config.onChange(item, this);
   }
 
+    /**
+   * @param {FocusEvent} e
+   */
   onblur(e) {
     const related = e.relatedTarget;
     // Clicking on the scroll in a modal blur the element incorrectly
@@ -681,6 +714,7 @@ class Autocomplete {
   }
 
   setData(src) {
+    /** @private */
     this._items = [];
     this._addItems(src);
   }
@@ -737,6 +771,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @returns {Array}
    */
   _activeClasses() {
@@ -744,6 +779,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {HTMLElement} li
    * @returns {Boolean}
    */
@@ -756,6 +792,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {String} dir
    * @param {*|HTMLElement} sel
    * @returns {HTMLElement}
@@ -824,6 +861,7 @@ class Autocomplete {
 
   /**
    * Do we have enough input to show suggestions ?
+   * @private
    * @returns {Boolean}
    */
   _shouldShow() {
@@ -855,6 +893,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {String} name
    * @returns {HTMLElement}
    */
@@ -868,6 +907,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {String} lookup
    * @param {Object} item
    * @returns {HTMLElement}
@@ -960,6 +1000,7 @@ class Autocomplete {
 
   /**
    * Get the active element, drilling into shadowRoot if necessary.
+   * @private
    * @link https://www.abeautifulsite.net/posts/finding-the-active-element-in-a-shadow-root/
    * @param {Document | ShadowRoot} root
    * @returns {Element}
@@ -979,6 +1020,7 @@ class Autocomplete {
 
   /**
    * Show drop menu with suggestions
+   * @private
    */
   _showSuggestions() {
     // It's not focused anymore
@@ -1059,6 +1101,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @returns {HTMLLIElement}
    */
   _createLi() {
@@ -1069,6 +1112,7 @@ class Autocomplete {
 
   /**
    * Show and position dropdown
+   * @private
    */
   _showDropdown() {
     this._dropElement.classList.add(SHOW_CLASS);
@@ -1119,6 +1163,7 @@ class Autocomplete {
 
   /**
    * Position the dropdown menu
+   * @private
    */
   _positionMenu() {
     const bounds = this._searchInput.getBoundingClientRect();
@@ -1171,6 +1216,9 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @private
+   */
   _fetchData() {
     this._items = [];
 
@@ -1204,6 +1252,9 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @private
+   */
   _setHiddenVal() {
     if (this._config.hiddenInput && !this._config.hiddenValue) {
       for (const entry of this._items) {
@@ -1214,6 +1265,11 @@ class Autocomplete {
     }
   }
 
+  /**
+   * @private
+   * @param {Array|Object} src
+   * @returns {Array}
+   */
   _normalizeData(src) {
     if (Array.isArray(src)) {
       return src;
@@ -1231,6 +1287,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {Array|Object} src An array of items or a value:label object
    */
   _addItems(src) {
@@ -1257,6 +1314,7 @@ class Autocomplete {
   }
 
   /**
+   * @private
    * @param {boolean} show
    */
   _loadFromServer(show = false) {

@@ -560,7 +560,7 @@ class Autocomplete {
    * @param {MouseEvent} e
    */
   onclick(e) {
-    if (e.target.matches(this._config.clearControl)) {
+    if (e.target instanceof Element && e.target.matches(this._config.clearControl)) {
       this.clear();
     }
   }
@@ -596,7 +596,7 @@ class Autocomplete {
     const related = e.relatedTarget;
     // Clicking on the scroll in a modal blur the element incorrectly
     // In chrome >= 127, the related target is the dropdown menu
-    if (this._isMouse && related && (related.classList.contains("modal") || related.classList.contains("autocomplete-menu"))) {
+    if (this._isMouse && related instanceof HTMLElement && (related.classList.contains("modal") || related.classList.contains("autocomplete-menu"))) {
       // Restore focus
       this._searchInput.focus();
       return;
@@ -1346,7 +1346,7 @@ class Autocomplete {
 
       relatedItems.forEach((related) => {
         const input = document.getElementById(related);
-        if (input) {
+        if (input instanceof HTMLInputElement) {
           const inputValue = input.value;
           const inputName = input.getAttribute("name");
 

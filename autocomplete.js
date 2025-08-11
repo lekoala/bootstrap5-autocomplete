@@ -1356,10 +1356,6 @@ class Autocomplete {
       const relatedItems = Array.isArray(params.related) ? params.related : [params.related];
 
       relatedItems.forEach((related) => {
-        /**
-         * @type {HTMLInputElement}
-         */
-        //@ts-ignore
         const input = document.getElementById(related);
         if (input instanceof HTMLInputElement) {
           const inputValue = input.value;

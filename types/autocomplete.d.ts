@@ -188,6 +188,7 @@ declare class Autocomplete {
      * Attach to all elements matched by the selector
      * @param {string} selector
      * @param {Partial<Config>} config
+     * @returns void
      */
     static init(selector?: string, config?: Partial<Config>): void;
     /**
@@ -207,12 +208,19 @@ declare class Autocomplete {
      */
     constructor(el: HTMLInputElement, config?: Partial<Config>);
     _searchInput: HTMLInputElement;
-    _isMouse: boolean;
-    _preventInput: boolean;
-    _keyboardNavigation: boolean;
-    _searchFunc: Function;
+    /** @private */
+    private _isMouse;
+    /** @private */
+    private _preventInput;
+    /** @private */
+    private _keyboardNavigation;
+    /** @private */
+    private _searchFunc;
     dispose(): void;
-    _getClearControl(): any;
+    /**
+     * @private
+     */
+    private _getClearControl;
     /**
      * @link https://github.com/lifaon74/events-polyfill/issues/10
      * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
@@ -221,18 +229,38 @@ declare class Autocomplete {
     handleEvent: (event: Event) => void;
     _timer: number;
     /**
+     * @private
      * @param {Partial<Config>} config
      */
-    _configure(config?: Partial<Config>): void;
+    private _configure;
     _config: any;
-    _configureSearchInput(): void;
+    /**
+     * @private
+     */
+    private _configureSearchInput;
     _hiddenInput: HTMLInputElement;
-    _configureDropElement(): void;
+    /**
+     * @private
+     */
+    private _configureDropElement;
     _dropElement: HTMLUListElement;
-    onclick(e: any): void;
-    oninput(e: any): void;
-    onchange(e: any): void;
-    onblur(e: any): void;
+    /**
+     * @param {MouseEvent} e
+     */
+    onclick(e: MouseEvent): void;
+    /**
+     * @param {InputEvent} e
+     * @returns void
+     */
+    oninput(e: InputEvent): void;
+    /**
+     * @param {InputEvent} e
+     */
+    onchange(e: InputEvent): void;
+    /**
+   * @param {FocusEvent} e
+   */
+    onblur(e: FocusEvent): void;
     onfocus(e: any): void;
     /**
      * keypress doesn't send arrow keys, so we use keydown
@@ -255,7 +283,8 @@ declare class Autocomplete {
      */
     setConfig(k: string, v: any): void;
     setData(src: any): void;
-    _items: any[];
+    /** @private */
+    private _items;
     enable(): void;
     disable(): void;
     /**
@@ -273,53 +302,70 @@ declare class Autocomplete {
     getSelection(): HTMLElement;
     removeSelection(): void;
     /**
+     * @private
      * @returns {Array}
      */
-    _activeClasses(): any[];
+    private _activeClasses;
     /**
+     * @private
      * @param {HTMLElement} li
      * @returns {Boolean}
      */
-    _isItemEnabled(li: HTMLElement): boolean;
+    private _isItemEnabled;
     /**
+     * @private
      * @param {String} dir
      * @param {*|HTMLElement} sel
      * @returns {HTMLElement}
      */
-    _moveSelection(dir?: string, sel?: any | HTMLElement): HTMLElement;
+    private _moveSelection;
     /**
      * Do we have enough input to show suggestions ?
+     * @private
      * @returns {Boolean}
      */
-    _shouldShow(): boolean;
+    private _shouldShow;
     /**
      * Show suggestions or load them
      * @param {Boolean} check
      */
     showOrSearch(check?: boolean): void;
     /**
+     * @private
      * @param {String} name
      * @returns {HTMLElement}
      */
-    _createGroup(name: string): HTMLElement;
+    private _createGroup;
     /**
+     * @private
      * @param {String} lookup
      * @param {Object} item
      * @returns {HTMLElement}
      */
-    _createItem(lookup: string, item: any): HTMLElement;
+    private _createItem;
+    /**
+     * Get the active element, drilling into shadowRoot if necessary.
+     * @private
+     * @link https://www.abeautifulsite.net/posts/finding-the-active-element-in-a-shadow-root/
+     * @param {Document | ShadowRoot} root
+     * @returns {Element}
+     */
+    private _getActiveElement;
     /**
      * Show drop menu with suggestions
+     * @private
      */
-    _showSuggestions(): void;
+    private _showSuggestions;
     /**
+     * @private
      * @returns {HTMLLIElement}
      */
-    _createLi(): HTMLLIElement;
+    private _createLi;
     /**
      * Show and position dropdown
+     * @private
      */
-    _showDropdown(): void;
+    private _showDropdown;
     /**
      * Show or hide suggestions
      * @param {Boolean} check
@@ -339,18 +385,32 @@ declare class Autocomplete {
     getDropMenu(): HTMLUListElement;
     /**
      * Position the dropdown menu
+     * @private
      */
-    _positionMenu(): void;
-    _fetchData(): void;
-    _setHiddenVal(): void;
-    _normalizeData(src: any): any[];
+    private _positionMenu;
     /**
+     * @private
+     */
+    private _fetchData;
+    /**
+     * @private
+     */
+    private _setHiddenVal;
+    /**
+     * @private
+     * @param {Array|Object} src
+     * @returns Array
+     */
+    private _normalizeData;
+    /**
+     * @private
      * @param {Array|Object} src An array of items or a value:label object
      */
-    _addItems(src: any[] | any): void;
+    private _addItems;
     /**
+     * @private
      * @param {boolean} show
      */
-    _loadFromServer(show?: boolean): void;
+    private _loadFromServer;
     _abortController: AbortController;
 }

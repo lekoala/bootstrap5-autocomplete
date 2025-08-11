@@ -326,7 +326,7 @@ class Autocomplete {
     }
 
     // Add listeners (remove then on dispose()). See handleEvent.
-    ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
+    ["focus", "change", "blur", "input", "beforeinput", "keydown"].forEach((type) => {
       this._searchInput.addEventListener(type, this);
     });
     ["mousemove", "mouseenter", "mouseleave"].forEach((type) => {
@@ -373,7 +373,7 @@ class Autocomplete {
   dispose() {
     activeCounter--;
 
-    ["focus", "change", "blur", "input", "keydown"].forEach((type) => {
+    ["focus", "change", "blur", "input", "beforeinput", "keydown"].forEach((type) => {
       this._searchInput.removeEventListener(type, this);
     });
     ["mousemove", "mouseenter", "mouseleave"].forEach((type) => {
@@ -542,13 +542,20 @@ class Autocomplete {
     }
   }
 
-  oninput(e) {
+  onbeforeinput(e) {
     if (this._preventInput) {
       return;
     }
     // Input has changed, clear value
-    if (this._hiddenInput) {
+    if (this._hiddenInput && this._hiddenInput.value) {
+      this._config.onClearItem(this._searchInput.value, this);
       this._hiddenInput.value = null;
+    }
+  }
+
+  oninput(e) {
+    if (this._preventInput) {
+      return;
     }
     this.showOrSearch();
   }
@@ -1287,6 +1294,10 @@ class Autocomplete {
       const relatedItems = Array.isArray(params.related) ? params.related : [params.related];
 
       relatedItems.forEach((related) => {
+        /**
+         * @type {HTMLInputElement}
+         */
+        //@ts-ignore
         const input = document.getElementById(related);
         if (input) {
           const inputValue = input.value;

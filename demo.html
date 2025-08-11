@@ -104,7 +104,15 @@
       valueField: "id",
       labelField: "title",
       highlightTyped: true,
-      onSelectItem: console.log,
+      onSelectItem:function(value, inst) {
+        console.log('Select value:', value);
+      },
+      onChange:function(value, inst) {
+        console.log('Change value:', value);
+      },
+      onClearItem: function(value, inst) {
+        console.log('Cleared value:', value);
+      },
       onBeforeFetch: (inst) => {
         const icon = inst.getInput().parentElement.querySelector('.loading-icon');
         if (icon) {
@@ -345,10 +353,9 @@
           <div class="input-group mb-3">
             <button class="btn btn-outline-secondary" type="button" id="button-clear">Clear</button>
             <input type="text" class="form-control autocomplete" name="autocompleteInputZero" id="autocompleteInputZero"
-              data-suggestions-threshold="0" data-active-classes="my,test,classes" data-clear-control="#button-clear" data-fixed="true"
+              data-suggestions-threshold="0" data-active-classes="my,test,classes" data-clear-control="#button-clear" data-hidden-input="true" data-fixed="true"
               data-fuzzy="true" placeholder="Type something" />
           </div>
-
         </div>
       </div>
       <div class="row mb-3 g-3">

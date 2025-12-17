@@ -1357,8 +1357,7 @@ class Autocomplete {
 
       relatedItems.forEach((related) => {
         const input = document.getElementById(related);
-        if (input && input.hasAttribute('name')) {
-          //@ts-ignore
+        if (input && "value" in input) {
           const inputValue = input.value;
           const inputName = input.getAttribute("name");
 

@@ -258,7 +258,7 @@ function decodeHtml(html) {
 
 /**
  * @param {HTMLElement} el
- * @param {{[key:string]: string}} attrs
+ * @param {Object.<string, string>} attrs
  * @returns {void}
  */
 function attrs(el, attrs) {

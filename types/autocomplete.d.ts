@@ -188,7 +188,7 @@ declare class Autocomplete {
      * Attach to all elements matched by the selector
      * @param {string} selector
      * @param {Partial<Config>} config
-     * @returns void
+     * @returns {void}
      */
     static init(selector?: string, config?: Partial<Config>): void;
     /**
@@ -250,7 +250,7 @@ declare class Autocomplete {
     onclick(e: MouseEvent): void;
     /**
      * @param {InputEvent} e
-     * @returns void
+     * @returns {void}
      */
     oninput(e: InputEvent): void;
     /**
@@ -399,7 +399,7 @@ declare class Autocomplete {
     /**
      * @private
      * @param {Array|Object} src
-     * @returns Array
+     * @returns {Array}
      */
     private _normalizeData;
     /**
